@@ -1,0 +1,12 @@
+export const MIN_COUNT_CHAR = 2;
+export const MARGIN_16 = 16;
+export const MARGIN_32 = 32;
+export const pathHome = '/';
+export const pathUsers = '/users';
+export const pathLogin = '/login';
+export const pathSetNick = '/login/setNick';
+export const pathUserEditing = '/users/editing/:id';
+export const admin = 'admin';
+export const errorMessage = 'Данный ник уже занят, попробуйте ввести другой';
+export const urlPicture =
+  'https=//png.pngtree.com/element_our/20200609/ourlarge/pngtree-default-avatar-image_2235111.jpg';

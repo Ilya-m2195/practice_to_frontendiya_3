@@ -1,0 +1,23 @@
+{
+  "welcome": "Welcome,",
+  "login": "Continue with",
+  "home": "Home",
+  "users": "Users",
+  "clients": "Clients",
+  "phone": "Phone",
+  "totalCount": "Total clients",
+  "addClient": "Add client",
+  "nickname": "Nickname",
+  "addNickname": "Add nickname",
+  "fullName": "Full name",
+  "AddFullName": "Add full name",
+  "role": "Role",
+  "email": "Email",
+  "balance": "balance",
+  "reset": "reset",
+  "save": "Save",
+  "clientEditing": "Client editing",
+  "backToClients": "Back to clients",
+  "search": "Search",
+  "back": "back"
+}
