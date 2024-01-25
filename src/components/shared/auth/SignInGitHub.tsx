@@ -1,28 +1,24 @@
-import { FC, useEffect } from 'react';
+import { FC } from 'react';
 
 import { Button } from '@mantine/core';
-import { t } from 'i18next';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
-import { LogInUser, getUsers } from '../../../api/api';
 import { provider } from '../../../firebase/firebase';
 import { useAppDispatch } from '../../../hooks/useAppDispatch';
-import { useGetUsers } from '../../../hooks/useGetUsers';
+import { logInUserThank } from '../../../store/slices/mainSlice';
 
 export const SignInGitHub: FC = () => {
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const users = useGetUsers();
+  const navigate = useNavigate();
+  const { t } = useTranslation();
 
-  useEffect(() => {
-    getUsers(dispatch);
-  }, [users]);
-
-  const LogInUserGitHub = (): Promise<void> =>
-    LogInUser(provider, users, dispatch, navigate);
+  const logInUserGitHub = (): void => {
+    dispatch(logInUserThank({ provider, navigate }));
+  };
 
   return (
-    <Button variant='filled' onClick={LogInUserGitHub}>
+    <Button variant='filled' onClick={logInUserGitHub}>
       {t('login')} Github
     </Button>
   );

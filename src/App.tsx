@@ -10,6 +10,8 @@ import { UserEditing } from './components/layout/UserEditing/UserEditing';
 import { Users } from './components/layout/Users/Users';
 import { AddUserNickForm } from './components/shared/AddUserNickForm/AddUserNickForm';
 import { LogOutUser } from './components/shared/auth/LogOutUser';
+import { ErrorMessage } from './components/shared/ErrorMessage/ErrorMessage';
+import { LoaderFC } from './components/shared/LoaderFC/LoaderFC';
 import { Navigation } from './components/shared/Navigation/Navigation';
 import { LoginRoute } from './components/shared/Routes/LoginRoute';
 import { PrivateRoute } from './components/shared/Routes/PrivateRoute';
@@ -24,10 +26,20 @@ import {
   pathUserEditing,
   pathUsers,
 } from './constants/constants';
-import { useGetState } from './hooks/useGetState';
+import { useAppSelector } from './hooks/useAppSelector';
 
 export const App: FC = () => {
-  const state = useGetState();
+  const isLoading = useAppSelector((state) => state.main.isLoading);
+  const isError = useAppSelector((state) => state.main.isError);
+  const isAuth = useAppSelector((state) => state.main.isAuth);
+
+  if (isLoading) {
+    return <LoaderFC />;
+  }
+
+  if (isError) {
+    return <ErrorMessage />;
+  }
 
   return (
     <AppShell
@@ -40,26 +52,23 @@ export const App: FC = () => {
           <SwitchButton />
           <SwitchLanguageBtn />
         </Group>
-        {state.isAuth && <Navigation />}
+        {isAuth && <Navigation />}
       </AppShell.Header>
       <AppShell.Navbar p='xl'>
         <LogOutUser />
       </AppShell.Navbar>
       <AppShell.Main>
         <Routes>
-          <Route element={<LoginRoute isAuth={state.isAuth} />}>
+          <Route element={<LoginRoute />}>
             <Route path={pathLogin} element={<LoginPage />} />
-            <Route
-              path={pathSetNick}
-              element={<AddUserNickForm email={state.email} id={state.id} />}
-            />
+            <Route path={pathSetNick} element={<AddUserNickForm />} />
           </Route>
-          <Route element={<PrivateRoute isAuth={state.isAuth} />}>
+          <Route element={<PrivateRoute isAuth={isAuth} />}>
             <Route path={pathHome} element={<Home />} />
           </Route>
-          <Route element={<PrivateRouteAdmin role={state.role} />}>
+          <Route element={<PrivateRouteAdmin />}>
             <Route path={pathUsers} element={<Users />} />
-            <Route path={pathUserEditing} element={<UserEditing />} />
+            <Route path={`${pathUserEditing}:id`} element={<UserEditing />} />
           </Route>
         </Routes>
       </AppShell.Main>

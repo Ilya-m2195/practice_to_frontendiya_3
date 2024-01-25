@@ -19,5 +19,7 @@
   "clientEditing": "Client editing",
   "backToClients": "Back to clients",
   "search": "Search",
-  "back": "back"
+  "back": "back",
+  "setNickname": "Set nickname",
+  "errorMessage": "Something went wrong! Try reloading the page or come back later!"
 }

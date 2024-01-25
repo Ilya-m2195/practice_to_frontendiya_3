@@ -3,19 +3,16 @@ import { FC } from 'react';
 import { Group, Button, TextInput, Box, Flex } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useMask } from '@react-input/mask';
-import { t } from 'i18next';
+import { useTranslation } from 'react-i18next';
 
-import { addUser } from '../../../api/api';
-import { MARGIN_16, MARGIN_32, errorMessage } from '../../../constants/constants';
-import { useGetUsers } from '../../../hooks/useGetUsers';
-import { IUser } from '../../../types/types';
+import { MARGIN_16, MARGIN_32 } from '../../../constants/constants';
 
 type Props = {
   usersCount: number;
 };
 
 export const AddUsersForm: FC<Props> = ({ usersCount }) => {
-  const users = useGetUsers();
+  const { t } = useTranslation();
   const form = useForm({
     initialValues: {
       phone: '',
@@ -25,13 +22,6 @@ export const AddUsersForm: FC<Props> = ({ usersCount }) => {
       email: '',
       balance: 0,
     },
-
-    validate: {
-      nickname: (value) =>
-        users.find((el: IUser) => el.nickname === value) === undefined
-          ? null
-          : errorMessage,
-    },
   });
   const inputRef = useMask({ mask: '+7 (___) ___-__-__', replacement: { _: /\d/ } });
 
@@ -39,7 +29,7 @@ export const AddUsersForm: FC<Props> = ({ usersCount }) => {
     <Box maw={700} mb={MARGIN_32} mt={MARGIN_16}>
       <form
         onSubmit={form.onSubmit((values) => {
-          addUser(values);
+          console.log(values);
           form.reset();
         })}
       >

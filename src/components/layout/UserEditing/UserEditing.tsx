@@ -5,18 +5,22 @@ import { useForm } from '@mantine/form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { updateUser } from '../../../api/api';
-import { MARGIN_16, errorMessage } from '../../../constants/constants';
-import { useGetUsers } from '../../../hooks/useGetUsers';
-import { IUser } from '../../../types/types';
+import { MARGIN_16 } from '../../../constants/constants';
+import { validateNickname } from '../../../helpers/validateNickname';
+import { useAppDispatch } from '../../../hooks/useAppDispatch';
+import { useAppSelector } from '../../../hooks/useAppSelector';
+import { updateUserThank } from '../../../store/slices/mainSlice';
 
 export const UserEditing: FC = () => {
   const navigate = useNavigate();
-  const goBackHandler = (): void => navigate(-1);
+  const dispatch = useAppDispatch();
+  const goBackHandler = (): void => {
+    navigate(-1);
+  };
   const { t } = useTranslation();
   const { id } = useParams();
-  const users = useGetUsers();
 
+  const users = useAppSelector((state) => state.main.users);
   const form = useForm({
     initialValues: {
       nickname: '',
@@ -25,10 +29,7 @@ export const UserEditing: FC = () => {
     },
 
     validate: {
-      nickname: (value) =>
-        users.find((el: IUser) => el.nickname === value) === undefined
-          ? null
-          : errorMessage,
+      nickname: (value) => validateNickname(value, users),
     },
   });
 
@@ -42,7 +43,10 @@ export const UserEditing: FC = () => {
       </Title>
       <form
         onSubmit={form.onSubmit((values) => {
-          updateUser(id!, values);
+          if (!id) {
+            return;
+          }
+          dispatch(updateUserThank({ id, values }));
           form.reset();
         })}
       >

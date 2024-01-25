@@ -3,11 +3,10 @@ import { FC } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 
 import { admin, pathHome } from '../../../constants/constants';
+import { useAppSelector } from '../../../hooks/useAppSelector';
 
-type Props = {
-  role: string;
-};
+export const PrivateRouteAdmin: FC = () => {
+  const role = useAppSelector((state) => state.main.role);
 
-export const PrivateRouteAdmin: FC<Props> = ({ role }) => {
   return role === admin ? <Outlet /> : <Navigate to={pathHome} />;
 };

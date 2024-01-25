@@ -1,24 +1,25 @@
 import { FC } from 'react';
 
 import { Button } from '@mantine/core';
-import { t } from 'i18next';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
-import { LogInUser } from '../../../api/api';
 import { googleProvider } from '../../../firebase/firebase';
 import { useAppDispatch } from '../../../hooks/useAppDispatch';
-import { useGetUsers } from '../../../hooks/useGetUsers';
+import { logInUserThank } from '../../../store/slices/mainSlice';
 
 export const SignInGoogle: FC = () => {
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const users = useGetUsers();
+  const navigate = useNavigate();
+  const { t } = useTranslation();
+  const provider = googleProvider;
 
-  const LogInUserGoogle = (): Promise<void> =>
-    LogInUser(googleProvider, users, dispatch, navigate);
+  const logInUserGoogle = (): void => {
+    dispatch(logInUserThank({ provider, navigate }));
+  };
 
   return (
-    <Button variant='filled' onClick={LogInUserGoogle}>
+    <Button variant='filled' onClick={logInUserGoogle}>
       {t('login')} Google
     </Button>
   );

@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 
 import { Group } from '@mantine/core';
-import { t } from 'i18next';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 import '../../../styles/navigation.css';
@@ -12,6 +12,7 @@ import { useAppSelector } from '../../../hooks/useAppSelector';
 export const Navigation: FC = () => {
   const [currentLink, setCurrentLink] = useState(pathHome);
   const CurrentUserRole = useAppSelector((state) => state.main.role);
+  const { t } = useTranslation();
 
   const setCurrentLinkHandler = (path: string): void => setCurrentLink(path);
 

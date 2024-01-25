@@ -3,11 +3,10 @@ import { FC } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 
 import { pathHome } from '../../../constants/constants';
+import { useAppSelector } from '../../../hooks/useAppSelector';
 
-type Props = {
-  isAuth: boolean;
-};
+export const LoginRoute: FC = () => {
+  const isAuth = useAppSelector((state) => state.main.isAuth);
 
-export const LoginRoute: FC<Props> = ({ isAuth }) => {
   return !isAuth ? <Outlet /> : <Navigate to={pathHome} />;
 };

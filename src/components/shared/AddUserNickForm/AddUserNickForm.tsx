@@ -1,26 +1,30 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 
 import { Button, TextInput, Box, Group } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { t } from 'i18next';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
-import { addUser } from '../../../api/api';
-import { MARGIN_16, MARGIN_32, errorMessage } from '../../../constants/constants';
+import { MARGIN_16, MARGIN_32 } from '../../../constants/constants';
+import { validateNickname } from '../../../helpers/validateNickname';
 import { useAppDispatch } from '../../../hooks/useAppDispatch';
-import { useGetUsers } from '../../../hooks/useGetUsers';
-import { setUser } from '../../../store/slices/mainSlice';
-import { IUser } from '../../../types/types';
+import { useAppSelector } from '../../../hooks/useAppSelector';
+import { addUserThank, getUsersThank } from '../../../store/slices/mainSlice';
 
-type Props = {
-  email: string;
-  id: string;
-};
-
-export const AddUserNickForm: FC<Props> = ({ email, id }) => {
+export const AddUserNickForm: FC = () => {
+  const id = useAppSelector((state) => state.main.id);
+  const email = useAppSelector((state) => state.main.email);
+  const users = useAppSelector((state) => state.main.users);
   const dispatch = useAppDispatch();
-  const goBackHandler = (): void => navigate(-1);
-  const users = useGetUsers();
+  const goBackHandler = (): void => {
+    navigate(-1);
+  };
+
+  useEffect(() => {
+    dispatch(getUsersThank());
+  }, []);
+
+  const { t } = useTranslation();
 
   const navigate = useNavigate();
   const form = useForm({
@@ -32,10 +36,7 @@ export const AddUserNickForm: FC<Props> = ({ email, id }) => {
       balance: 0,
     },
     validate: {
-      nickname: (value) =>
-        users.find((el: IUser) => el.nickname === value) === undefined
-          ? null
-          : errorMessage,
+      nickname: (value) => validateNickname(value, users),
     },
   });
 
@@ -43,26 +44,17 @@ export const AddUserNickForm: FC<Props> = ({ email, id }) => {
     <Box maw={300} mb={MARGIN_32}>
       <form
         onSubmit={form.onSubmit((values) => {
-          addUser({
-            email,
-            id,
-            role: values.role,
-            nickname: values.nickname,
-            balance: values.balance,
-            phone: values.phone,
-            fullName: values.fullName,
-          });
-          const currentUserInfo: IUser = {
-            email,
-            id,
-            role: values.role,
-            nickname: values.nickname,
-            balance: values.balance,
-            phone: values.phone,
-            fullName: values.fullName,
-          };
-
-          dispatch(setUser(currentUserInfo));
+          dispatch(
+            addUserThank({
+              email,
+              id,
+              role: values.role,
+              nickname: values.nickname,
+              balance: values.balance,
+              phone: values.phone,
+              fullName: values.fullName,
+            }),
+          );
           form.reset();
         })}
       >
@@ -71,14 +63,14 @@ export const AddUserNickForm: FC<Props> = ({ email, id }) => {
             {t('back')}
           </Button>
           <Button mb={MARGIN_16} type='submit'>
-            {t('addClient')}
+            {t('setNickname')}
           </Button>
         </Group>
-
         <TextInput
           label={t('nickname')}
-          placeholder={t('nickname')}
-          {...form.getInputProps('addNickname')}
+          placeholder={t('addNickname')}
+          {...form.getInputProps('nickname')}
+          withAsterisk
         />
       </form>
     </Box>
