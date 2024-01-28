@@ -2,7 +2,7 @@ import { FC } from 'react';
 
 import { Avatar, Group, Text } from '@mantine/core';
 
-import { urlPicture } from '../../../constants/constants';
+import { urlPicture } from 'constants/constants';
 import React from 'react';
 
 type Props = {

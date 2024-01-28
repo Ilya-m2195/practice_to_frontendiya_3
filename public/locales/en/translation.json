@@ -23,5 +23,6 @@
   "setNickname": "Set nickname",
   "errorMessage": "Something went wrong! Try reloading the page or come back later!",
   "errorMessageNicknameField": "This nickname is already taken, try entering another one",
-  "errorMessageEmptyField": "Fill in the field"
+  "errorMessageEmptyField": "Fill in the field",
+  "errorMessagePageNotFound" : "Page not found"
 }

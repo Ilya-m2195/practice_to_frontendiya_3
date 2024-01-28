@@ -1,5 +1,3 @@
-export const MARGIN_16 = 16;
-export const MARGIN_32 = 32;
 export const pathHome = '/';
 export const pathUsers = '/users';
 export const pathLogin = '/login';

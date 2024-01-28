@@ -3,7 +3,7 @@ import { FC } from 'react';
 import { Button } from '@mantine/core';
 import { IconArrowsSort } from '@tabler/icons-react';
 
-import { UsersKeys } from '../../../constants/enums';
+import { UsersKeys } from 'constants/enums';
 import React from 'react';
 
 type Props = {
@@ -12,7 +12,9 @@ type Props = {
 };
 
 export const ButtonSort: FC<Props> = ({ nameField, requestSort }) => {
-  const requestSortHandler = (): void => requestSort(nameField);
+  const requestSortHandler = (): void => {
+    requestSort(nameField);
+  };
 
   return (
     <Button ml={10} p={5} variant='default' onClick={requestSortHandler}>

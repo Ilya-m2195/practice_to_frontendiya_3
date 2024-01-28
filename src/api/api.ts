@@ -13,11 +13,11 @@ import {
   where,
 } from 'firebase/firestore';
 
-import { pathHome, pathSetNick } from '../constants/constants';
-import { auth, db, usersCollection } from '../firebase/firebase';
-import { addCurrentEmailId, setUser } from '../store/slices/mainSlice';
-import { AppDispatch } from '../store/store';
-import { ILogInUserArg, IUpdateUserArg, IUser } from '../types/types';
+import { pathHome, pathSetNick } from 'constants/constants';
+import { auth, db, usersCollection } from 'firebase/firebase';
+import { addCurrentEmailId, setUser } from 'store/slices/mainSlice';
+import { AppDispatch } from 'store/store';
+import { ILogInUserArg, IUpdateUserArg, IUser } from 'types/types';
 
 export const addUser = async (value: IUser): Promise<void> => {
   await setDoc(doc(usersCollection, value.id), value);
@@ -56,7 +56,7 @@ export const getDocCollection = async (
   return docInfo.data();
 };
 
-export const LogInUser = async (
+export const logInUser = async (
   { provider, navigate }: ILogInUserArg,
   dispatch: AppDispatch,
 ): Promise<void> => {

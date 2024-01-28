@@ -7,7 +7,6 @@ import { SignInGoogle } from '../../shared/auth/SignInGoogle';
 import React from 'react';
 
 export const LoginPage: FC = () => {
-
   return (
     <Group display='flex' align='center' justify='center' ml='-xl'>
       <SignInGitHub />

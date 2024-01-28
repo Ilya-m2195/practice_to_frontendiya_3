@@ -1,57 +1,54 @@
-import { FC, useEffect } from 'react';
+import { FC } from 'react';
 
 import { Button, TextInput, Box, Group } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
-import { MARGIN_16, MARGIN_32 } from '../../../constants/constants';
-import { validateNickname } from '../../../helpers/validateNickname';
-import { useAppDispatch } from '../../../hooks/useAppDispatch';
-import { useAppSelector } from '../../../hooks/useAppSelector';
-import { addUserThank, getUsersThank } from '../../../store/slices/mainSlice';
+import { validateNickname } from 'helpers/validateNickname';
+import { useAppDispatch } from 'hooks/useAppDispatch';
+import { useAppSelector } from 'hooks/useAppSelector';
+import { addUserThank } from 'store/slices/mainSlice';
 import React from 'react';
-
-interface IValues {
-  fullName: string;
-  nickname: string;
-  role: string;
-  phone: string;
-  balance: number;
-}
+import { getEmail, getId, getIsOccupiedNick } from 'store/selectors';
+import { IValuesAddUserNickForm } from 'types/types';
 
 export const AddUserNickForm: FC = () => {
-  const id = useAppSelector((state) => state.main.id);
-  const email = useAppSelector((state) => state.main.email);
-  const users = useAppSelector((state) => state.main.users);
+  const id = useAppSelector(getId);
+  const email = useAppSelector(getEmail);
+  const isOccupiedNick = useAppSelector(getIsOccupiedNick);
   const dispatch = useAppDispatch();
+
   const goBackHandler = (): void => {
     navigate(-1);
   };
 
-  const onSubmitHandler = (values: IValues): void => {
+  const onSubmitHandler = ({
+    role,
+    nickname,
+    balance,
+    phone,
+    fullName,
+  }: IValuesAddUserNickForm): void => {
     dispatch(
       addUserThank({
         email,
         id,
-        role: values.role,
-        nickname: values.nickname,
-        balance: values.balance,
-        phone: values.phone,
-        fullName: values.fullName,
+        role,
+        nickname,
+        balance,
+        phone,
+        fullName,
       }),
     );
     form.reset();
   };
 
-  useEffect(() => {
-    dispatch(getUsersThank());
-  }, []);
-
   const { t } = useTranslation();
 
   const navigate = useNavigate();
   const form = useForm({
+    validateInputOnChange: ['nickname'],
     initialValues: {
       fullName: '',
       nickname: '',
@@ -60,18 +57,18 @@ export const AddUserNickForm: FC = () => {
       balance: 0,
     },
     validate: {
-      nickname: (value) => validateNickname(value, users),
+      nickname: (value) => validateNickname(dispatch, value, isOccupiedNick),
     },
   });
 
   return (
-    <Box maw={300} mb={MARGIN_32}>
-      <form onSubmit={form.onSubmit((values) => onSubmitHandler(values))}>
-        <Group mb={MARGIN_16}>
-          <Button mb={MARGIN_16} onClick={goBackHandler}>
+    <Box maw={300} mb={'lg'}>
+      <form onSubmit={form.onSubmit(onSubmitHandler)}>
+        <Group mb={'md'}>
+          <Button mb={'md'} onClick={goBackHandler}>
             {t('back')}
           </Button>
-          <Button mb={MARGIN_16} type='submit'>
+          <Button mb={'md'} type='submit'>
             {t('setNickname')}
           </Button>
         </Group>

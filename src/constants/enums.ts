@@ -22,3 +22,12 @@ export enum ColorTheme {
   dark = 'dark',
   light = 'light',
 }
+
+export const headerTableNames = [
+  UsersKeys.fullName,
+  UsersKeys.role,
+  UsersKeys.nickname,
+  UsersKeys.phone,
+  UsersKeys.email,
+  UsersKeys.balance,
+];

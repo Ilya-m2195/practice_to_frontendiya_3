@@ -5,59 +5,56 @@ import { useForm } from '@mantine/form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { MARGIN_16 } from '../../../constants/constants';
-import { validateNickname } from '../../../helpers/validateNickname';
-import { useAppDispatch } from '../../../hooks/useAppDispatch';
-import { useAppSelector } from '../../../hooks/useAppSelector';
-import { updateUserThank } from '../../../store/slices/mainSlice';
+import { validateNickname } from 'helpers/validateNickname';
+import { useAppDispatch } from 'hooks/useAppDispatch';
+import { useAppSelector } from 'hooks/useAppSelector';
+import { updateUserThank } from 'store/slices/mainSlice';
 import React from 'react';
-
-interface IValues {
-  nickname: string;
-  fullName: string;
-  role: string;
-}
+import { getIsOccupiedNick } from 'store/selectors';
+import { IValuesUserEditing } from 'types/types';
 
 export const UserEditing: FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const goBackHandler = (): void => {
-    navigate(-1);
-  };
-  const onSubmitHandler = (values: IValues): void => {
-    if (!id) {
-      return;
-    }
-    dispatch(updateUserThank({ id, values }));
-    form.reset();
-  };
+  const isOccupiedNick = useAppSelector(getIsOccupiedNick);
 
   const { t } = useTranslation();
   const { id } = useParams();
 
-  const users = useAppSelector((state) => state.main.users);
+  const goBackHandler = (): void => {
+    navigate(-1);
+  };
+  const onSubmitHandler = (values: IValuesUserEditing): void => {
+    if (!id) {
+      return;
+    }
+
+    dispatch(updateUserThank({ id, values }));
+    form.reset();
+  };
+
   const form = useForm({
+    validateInputOnChange: ['nickname'],
     initialValues: {
       nickname: '',
       fullName: '',
       role: 'user',
     },
-
     validate: {
-      nickname: (value) => validateNickname(value, users),
+      nickname: (value) => validateNickname(dispatch, value, isOccupiedNick),
     },
   });
 
   return (
     <Box>
-      <Button mb={MARGIN_16} onClick={goBackHandler}>
+      <Button mb={'md'} onClick={goBackHandler}>
         {t('backToClients')}
       </Button>
-      <Title mb={MARGIN_16} order={2}>
+      <Title mb={'md'} order={2}>
         {t('clientEditing')}
       </Title>
-      <form onSubmit={form.onSubmit((values) => onSubmitHandler(values))}>
-        <Flex gap={MARGIN_16} align='end'>
+      <form onSubmit={form.onSubmit(onSubmitHandler)}>
+        <Flex gap={'md'} align='end' wrap='wrap'>
           <TextInput
             label={t('nickname')}
             placeholder={t('addNickname')}

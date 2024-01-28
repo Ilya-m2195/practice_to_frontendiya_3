@@ -1,14 +1,16 @@
+import { useAppDispatch } from 'hooks/useAppDispatch';
 import { t } from 'i18next';
-
-import { IUser } from '../types/types';
+import { isOccupiedNickThank } from 'store/slices/mainSlice';
+import { AppDispatch } from 'store/store';
 
 export const validateNickname = (
+  dispatch: AppDispatch,
   value: string,
-  users: Array<IUser>,
+  isOccupiedNick: boolean,
 ): string | undefined => {
-  const isOccupiedField = users.find((el) => el.nickname === value);
+  dispatch(isOccupiedNickThank(value));
 
-  if (isOccupiedField) {
+  if (isOccupiedNick) {
     return t('errorMessageNicknameField');
   }
   if (!value.length) {

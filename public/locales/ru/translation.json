@@ -23,5 +23,6 @@
   "setNickname": "Установить ник",
   "errorMessage": "Что-то пошло не так! Попробуйте перезагрузить страницу или зайдите позже!",
   "errorMessageNicknameField": "Данный ник уже занят, попробуйте ввести другой",
-  "errorMessageEmptyField": "Заполните поле"
+  "errorMessageEmptyField": "Заполните поле",
+  "errorMessagePageNotFound" : "Страница не найдена"
 }

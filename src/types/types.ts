@@ -4,13 +4,14 @@ import { NavigateFunction } from 'react-router-dom';
 export interface IInitialState {
   isLoading: boolean;
   isAuth: boolean;
+  isOccupiedNick: boolean;
   email: string;
   id: string;
   phone: string;
   balance: number;
   role: string;
   nickname: string;
-  isError: boolean;
+  errorMessage: string;
   users: Array<IUser>;
 }
 
@@ -43,3 +44,19 @@ export interface ILogInUserArg {
   provider: GoogleAuthProvider | GithubAuthProvider;
   navigate: NavigateFunction;
 }
+
+export interface IValuesUserEditing {
+  nickname: string;
+  fullName: string;
+  role: string;
+}
+
+export interface IValuesAddUserNickForm {
+  fullName: string;
+  nickname: string;
+  role: string;
+  phone: string;
+  balance: number;
+}
+
+

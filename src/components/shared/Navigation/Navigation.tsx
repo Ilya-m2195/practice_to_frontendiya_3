@@ -1,48 +1,30 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 
 import { Group } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
-import '../../../styles/navigation.css';
+import 'styles/navigation.css';
 
-import { admin, pathHome, pathUsers } from '../../../constants/constants';
-import { NamesActiveStyles } from '../../../constants/enums';
-import { useAppSelector } from '../../../hooks/useAppSelector';
+import { admin, pathHome, pathUsers } from 'constants/constants';
+import { NamesActiveStyles } from 'constants/enums';
+import { useAppSelector } from 'hooks/useAppSelector';
 import React from 'react';
+import { getRole } from 'store/selectors';
 
 export const Navigation: FC = () => {
-  const [currentLink, setCurrentLink] = useState(pathHome);
-  const CurrentUserRole = useAppSelector((state) => state.main.role);
+  const currentUserRole = useAppSelector(getRole);
   const { t } = useTranslation();
 
-  const setCurrentLinkHandler = (path: string): void => setCurrentLink(path);
-
   return (
-    <Group justify='center' mt={-30}>
-      <Link
-        to={pathHome}
-        className={
-          currentLink === pathHome
-            ? NamesActiveStyles.activeStyle
-            : NamesActiveStyles.itemStyle
-        }
-        onClick={() => setCurrentLinkHandler(pathHome)}
-      >
+    <Group justify='center'>
+      <NavLink to={pathHome} className={NamesActiveStyles.itemStyle}>
         {t('home')}
-      </Link>
-      {CurrentUserRole === admin && (
-        <Link
-          to={pathUsers}
-          className={
-            currentLink === pathUsers
-              ? NamesActiveStyles.activeStyle
-              : NamesActiveStyles.itemStyle
-          }
-          onClick={() => setCurrentLinkHandler(pathUsers)}
-        >
+      </NavLink>
+      {currentUserRole === admin && (
+        <NavLink to={pathUsers} className={NamesActiveStyles.itemStyle}>
           {t('users')}
-        </Link>
+        </NavLink>
       )}
     </Group>
   );
