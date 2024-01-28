@@ -4,6 +4,7 @@ import { Navigate, Outlet } from 'react-router-dom';
 
 import { admin, pathHome } from '../../../constants/constants';
 import { useAppSelector } from '../../../hooks/useAppSelector';
+import React from 'react';
 
 export const PrivateRouteAdmin: FC = () => {
   const role = useAppSelector((state) => state.main.role);

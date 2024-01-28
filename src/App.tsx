@@ -1,7 +1,13 @@
 import { FC } from 'react';
 
 import { AppShell, Group } from '@mantine/core';
-import { Route, Routes } from 'react-router-dom';
+import {
+  createBrowserRouter,
+  createRoutesFromElements,
+  Route,
+  RouterProvider,
+  Routes,
+} from 'react-router-dom';
 import './styles/reset.css';
 
 import { Home } from './components/layout/Home/Home';
@@ -27,6 +33,7 @@ import {
   pathUsers,
 } from './constants/constants';
 import { useAppSelector } from './hooks/useAppSelector';
+import React from 'react';
 
 export const App: FC = () => {
   const isLoading = useAppSelector((state) => state.main.isLoading);
@@ -63,7 +70,7 @@ export const App: FC = () => {
             <Route path={pathLogin} element={<LoginPage />} />
             <Route path={pathSetNick} element={<AddUserNickForm />} />
           </Route>
-          <Route element={<PrivateRoute isAuth={isAuth} />}>
+          <Route element={<PrivateRoute />}>
             <Route path={pathHome} element={<Home />} />
           </Route>
           <Route element={<PrivateRouteAdmin />}>

@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { provider } from '../../../firebase/firebase';
 import { useAppDispatch } from '../../../hooks/useAppDispatch';
 import { logInUserThank } from '../../../store/slices/mainSlice';
+import React from 'react';
 
 export const SignInGitHub: FC = () => {
   const dispatch = useAppDispatch();

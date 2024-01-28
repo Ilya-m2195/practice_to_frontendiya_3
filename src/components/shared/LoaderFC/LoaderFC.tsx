@@ -1,8 +1,10 @@
 import { FC } from 'react';
-import '../../../styles/loader.css';
 
 import { Loader } from '@mantine/core';
 
+import style from './loaderFC.module.css';
+import React from 'react';
+
 export const LoaderFC: FC = () => {
-  return <Loader className='loader' color='indigo' />;
+  return <Loader className={style.loader} />;
 };

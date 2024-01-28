@@ -1,8 +1,10 @@
 import { FC } from 'react';
 
+import { Box, Group, Text } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 
 import { useAppSelector } from '../../../hooks/useAppSelector';
+import React from 'react';
 
 export const Home: FC = () => {
   const nickname = useAppSelector((state) => state.main.nickname);
@@ -10,13 +12,13 @@ export const Home: FC = () => {
   const { t } = useTranslation();
 
   return (
-    <div>
+    <Box>
       {email && (
-        <div>
-          <span> {t('welcome')}</span>
-          <span> {nickname}</span>
-        </div>
+        <Group>
+          <Text> {t('welcome')}</Text>
+          <Text> {nickname}</Text>
+        </Group>
       )}
-    </div>
+    </Box>
   );
 };

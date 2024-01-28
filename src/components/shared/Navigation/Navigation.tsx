@@ -7,7 +7,9 @@ import { Link } from 'react-router-dom';
 import '../../../styles/navigation.css';
 
 import { admin, pathHome, pathUsers } from '../../../constants/constants';
+import { NamesActiveStyles } from '../../../constants/enums';
 import { useAppSelector } from '../../../hooks/useAppSelector';
+import React from 'react';
 
 export const Navigation: FC = () => {
   const [currentLink, setCurrentLink] = useState(pathHome);
@@ -16,14 +18,15 @@ export const Navigation: FC = () => {
 
   const setCurrentLinkHandler = (path: string): void => setCurrentLink(path);
 
-  const activeStyle = 'active';
-  const itemStyle = 'item';
-
   return (
     <Group justify='center' mt={-30}>
       <Link
         to={pathHome}
-        className={currentLink === pathHome ? activeStyle : itemStyle}
+        className={
+          currentLink === pathHome
+            ? NamesActiveStyles.activeStyle
+            : NamesActiveStyles.itemStyle
+        }
         onClick={() => setCurrentLinkHandler(pathHome)}
       >
         {t('home')}
@@ -31,7 +34,11 @@ export const Navigation: FC = () => {
       {CurrentUserRole === admin && (
         <Link
           to={pathUsers}
-          className={currentLink === pathUsers ? activeStyle : itemStyle}
+          className={
+            currentLink === pathUsers
+              ? NamesActiveStyles.activeStyle
+              : NamesActiveStyles.itemStyle
+          }
           onClick={() => setCurrentLinkHandler(pathUsers)}
         >
           {t('users')}

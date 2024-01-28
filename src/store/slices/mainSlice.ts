@@ -25,59 +25,59 @@ const initialState: IInitialState = {
 
 export const logOutUserThank = createAsyncThunk<void, undefined, ThunkApiConfig>(
   'mainSlice/logOutUser',
-  async (_, config) => {
+  async (_, { rejectWithValue }) => {
     try {
       await LogOut();
     } catch (error) {
-      return config.rejectWithValue(error);
+      return rejectWithValue(error);
     }
   },
 );
 
 export const logInUserThank = createAsyncThunk<void, ILogInUserArg, ThunkApiConfig>(
   'mainSlice/LogInUserThank',
-  async ({ provider, navigate }, config) => {
+  async ({ provider, navigate }, { dispatch, rejectWithValue }) => {
     try {
-      await LogInUser({ provider, navigate }, config.dispatch);
+      await LogInUser({ provider, navigate }, dispatch);
     } catch (error) {
-      return config.rejectWithValue(error);
+      return rejectWithValue(error);
     }
   },
 );
 
 export const updateUserThank = createAsyncThunk<void, IUpdateUserArg, ThunkApiConfig>(
   'mainSlice/updateUserThank',
-  async ({ id, values }, config) => {
+  async ({ id, values }, { rejectWithValue }) => {
     try {
       await updateUser({ id, values });
     } catch (error) {
-      return config.rejectWithValue(error);
+      return rejectWithValue(error);
     }
   },
 );
 
 export const getUsersThank = createAsyncThunk<Array<IUser>, void, ThunkApiConfig>(
   'mainSlice/getUsersThank',
-  async (_, config) => {
+  async (_, { rejectWithValue }) => {
     try {
       const result = await getUsers();
       const usersData = result.docs.map((doc) => doc.data());
 
       return usersData as Array<IUser>;
     } catch (error) {
-      return config.rejectWithValue(error);
+      return rejectWithValue(error);
     }
   },
 );
 
 export const addUserThank = createAsyncThunk<void, IUser, ThunkApiConfig>(
   'mainSlice/addUserThank',
-  async (value, config) => {
+  async (value, { dispatch, rejectWithValue }) => {
     try {
       await addUser(value);
-      config.dispatch(setUser(value));
+      dispatch(setUser(value));
     } catch (error) {
-      return config.rejectWithValue(error);
+      return rejectWithValue(error);
     }
   },
 );

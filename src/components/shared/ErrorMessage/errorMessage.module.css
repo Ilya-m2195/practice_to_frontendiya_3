@@ -1,8 +1,4 @@
-.errorMessageBlock {
-margin-top: 32px;
-  }
-
-.errorMessageBlock h2 {
+.errorMessage {
   text-decoration: underline;
   text-align: center;
   color: red;

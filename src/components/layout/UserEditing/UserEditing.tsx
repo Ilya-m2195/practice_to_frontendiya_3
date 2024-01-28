@@ -10,6 +10,13 @@ import { validateNickname } from '../../../helpers/validateNickname';
 import { useAppDispatch } from '../../../hooks/useAppDispatch';
 import { useAppSelector } from '../../../hooks/useAppSelector';
 import { updateUserThank } from '../../../store/slices/mainSlice';
+import React from 'react';
+
+interface IValues {
+  nickname: string;
+  fullName: string;
+  role: string;
+}
 
 export const UserEditing: FC = () => {
   const navigate = useNavigate();
@@ -17,6 +24,14 @@ export const UserEditing: FC = () => {
   const goBackHandler = (): void => {
     navigate(-1);
   };
+  const onSubmitHandler = (values: IValues): void => {
+    if (!id) {
+      return;
+    }
+    dispatch(updateUserThank({ id, values }));
+    form.reset();
+  };
+
   const { t } = useTranslation();
   const { id } = useParams();
 
@@ -41,15 +56,7 @@ export const UserEditing: FC = () => {
       <Title mb={MARGIN_16} order={2}>
         {t('clientEditing')}
       </Title>
-      <form
-        onSubmit={form.onSubmit((values) => {
-          if (!id) {
-            return;
-          }
-          dispatch(updateUserThank({ id, values }));
-          form.reset();
-        })}
-      >
+      <form onSubmit={form.onSubmit((values) => onSubmitHandler(values))}>
         <Flex gap={MARGIN_16} align='end'>
           <TextInput
             label={t('nickname')}

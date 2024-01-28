@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { MantineProvider } from '@mantine/core';
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
@@ -10,6 +8,7 @@ import { App } from './App';
 import reportWebVitals from './reportWebVitals';
 import '@mantine/core/styles.css';
 import { store } from './store/store';
+import React from 'react';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 

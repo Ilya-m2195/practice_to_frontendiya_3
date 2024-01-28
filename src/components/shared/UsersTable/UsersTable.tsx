@@ -5,17 +5,19 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 import { pathUserEditing } from '../../../constants/constants';
+import { UsersKeys } from '../../../constants/enums';
 import { useAppSelector } from '../../../hooks/useAppSelector';
 import { useSortableData } from '../../../hooks/useSortableData';
 import { ButtonSort } from '../ButtonSort/ButtonSort';
 import { UserName } from '../UserName/UserName';
+import React from 'react';
 
 export const UsersTable: FC = () => {
   const users = useAppSelector((state) => state.main.users);
-  const { items, requestSort } = useSortableData(users);
+  const { sortUsers, requestSort } = useSortableData(users);
   const { t } = useTranslation();
 
-  const rows = items.map((element) => (
+  const rows = sortUsers.map((element) => (
     <Table.Tr key={element.id}>
       <Table.Td>
         <Link to={`${pathUserEditing}${element.id}`}>
@@ -37,27 +39,27 @@ export const UsersTable: FC = () => {
           <Table.Tr>
             <Table.Th>
               {t('fullName')}
-              <ButtonSort nameField='fullName' requestSort={requestSort} />
+              <ButtonSort nameField={UsersKeys.fullName} requestSort={requestSort} />
             </Table.Th>
             <Table.Th>
               {t('role')}
-              <ButtonSort nameField='role' requestSort={requestSort} />
+              <ButtonSort nameField={UsersKeys.role} requestSort={requestSort} />
             </Table.Th>
             <Table.Th>
               {t('nickname')}
-              <ButtonSort nameField='nickname' requestSort={requestSort} />
+              <ButtonSort nameField={UsersKeys.nickname} requestSort={requestSort} />
             </Table.Th>
             <Table.Th>
               {t('phone')}
-              <ButtonSort nameField='phone' requestSort={requestSort} />
+              <ButtonSort nameField={UsersKeys.phone} requestSort={requestSort} />
             </Table.Th>
             <Table.Th>
               {t('email')}
-              <ButtonSort nameField='email' requestSort={requestSort} />
+              <ButtonSort nameField={UsersKeys.email} requestSort={requestSort} />
             </Table.Th>
             <Table.Th>
               {t('balance')}
-              <ButtonSort nameField='balance' requestSort={requestSort} />
+              <ButtonSort nameField={UsersKeys.balance} requestSort={requestSort} />
             </Table.Th>
           </Table.Tr>
         </Table.Thead>

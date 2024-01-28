@@ -3,9 +3,12 @@ import { FC } from 'react';
 import { Button } from '@mantine/core';
 import { IconArrowsSort } from '@tabler/icons-react';
 
+import { UsersKeys } from '../../../constants/enums';
+import React from 'react';
+
 type Props = {
-  nameField: string;
-  requestSort: (fill: string) => void;
+  nameField: UsersKeys;
+  requestSort: (fill: UsersKeys) => void;
 };
 
 export const ButtonSort: FC<Props> = ({ nameField, requestSort }) => {

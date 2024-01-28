@@ -1,14 +1,17 @@
 import { FC } from 'react';
-import '../../../styles/errorMessage.css';
 
+import { Title } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
+
+import styles from './errorMessage.module.css';
+import React from 'react';
 
 export const ErrorMessage: FC = () => {
   const { t } = useTranslation();
 
   return (
-    <div className='errorMessageBlock'>
-      <h2>{t('errorMessage')}</h2>
-    </div>
+    <Title mt={32} className={styles.errorMessage} order={2}>
+      {t('errorMessage')}
+    </Title>
   );
 };

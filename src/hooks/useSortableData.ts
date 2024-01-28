@@ -1,26 +1,35 @@
 import { useState, useMemo } from 'react';
 
+import { UsersKeys } from '../constants/enums';
+import { IUser } from '../types/types';
+
 interface IConfig {
-  key: string;
+  key: UsersKeys;
   direction: string;
 }
 
 interface IReturnType {
-  items: Array<any>;
-  requestSort: (key: string) => void;
+  sortUsers: Array<IUser>;
+  requestSort: (key: UsersKeys) => void;
 }
 
-export const useSortableData = (
-  items: Array<any>,
-  config: IConfig | null = null,
-): IReturnType => {
-  const [sortConfig, setSortConfig] = useState<IConfig | null>(config);
+export const useSortableData = (sortUsers: Array<IUser>): IReturnType => {
+  const [sortConfig, setSortConfig] = useState<IConfig | undefined>();
 
-  const sortedItems = useMemo(() => {
-    const sortableItems = [...items];
+  const requestSort = (key: UsersKeys): void => {
+    let direction = 'ascending';
 
-    if (sortConfig !== null) {
-      sortableItems.sort((a, b) => {
+    if (sortConfig && sortConfig.key === key && sortConfig.direction === 'ascending') {
+      direction = 'descending';
+    }
+    setSortConfig({ key, direction });
+  };
+
+  const sortedUsers = useMemo(() => {
+    const sortableUsers = [...sortUsers];
+
+    if (sortConfig) {
+      sortableUsers.sort((a, b) => {
         if (a[sortConfig.key] < b[sortConfig.key]) {
           return sortConfig.direction === 'ascending' ? -1 : 1;
         }
@@ -32,17 +41,8 @@ export const useSortableData = (
       });
     }
 
-    return sortableItems;
-  }, [items, sortConfig]);
+    return sortableUsers;
+  }, [sortUsers, sortConfig]);
 
-  const requestSort = (key: string): void => {
-    let direction = 'ascending';
-
-    if (sortConfig && sortConfig.key === key && sortConfig.direction === 'ascending') {
-      direction = 'descending';
-    }
-    setSortConfig({ key, direction });
-  };
-
-  return { items: sortedItems, requestSort };
+  return { sortUsers: sortedUsers, requestSort };
 };

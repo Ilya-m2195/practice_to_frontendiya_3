@@ -10,6 +10,15 @@ import { validateNickname } from '../../../helpers/validateNickname';
 import { useAppDispatch } from '../../../hooks/useAppDispatch';
 import { useAppSelector } from '../../../hooks/useAppSelector';
 import { addUserThank, getUsersThank } from '../../../store/slices/mainSlice';
+import React from 'react';
+
+interface IValues {
+  fullName: string;
+  nickname: string;
+  role: string;
+  phone: string;
+  balance: number;
+}
 
 export const AddUserNickForm: FC = () => {
   const id = useAppSelector((state) => state.main.id);
@@ -18,6 +27,21 @@ export const AddUserNickForm: FC = () => {
   const dispatch = useAppDispatch();
   const goBackHandler = (): void => {
     navigate(-1);
+  };
+
+  const onSubmitHandler = (values: IValues): void => {
+    dispatch(
+      addUserThank({
+        email,
+        id,
+        role: values.role,
+        nickname: values.nickname,
+        balance: values.balance,
+        phone: values.phone,
+        fullName: values.fullName,
+      }),
+    );
+    form.reset();
   };
 
   useEffect(() => {
@@ -42,22 +66,7 @@ export const AddUserNickForm: FC = () => {
 
   return (
     <Box maw={300} mb={MARGIN_32}>
-      <form
-        onSubmit={form.onSubmit((values) => {
-          dispatch(
-            addUserThank({
-              email,
-              id,
-              role: values.role,
-              nickname: values.nickname,
-              balance: values.balance,
-              phone: values.phone,
-              fullName: values.fullName,
-            }),
-          );
-          form.reset();
-        })}
-      >
+      <form onSubmit={form.onSubmit((values) => onSubmitHandler(values))}>
         <Group mb={MARGIN_16}>
           <Button mb={MARGIN_16} onClick={goBackHandler}>
             {t('back')}
