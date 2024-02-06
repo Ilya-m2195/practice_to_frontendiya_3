@@ -9,7 +9,6 @@ import 'styles/navigation.css';
 import { admin, pathHome, pathUsers } from 'constants/constants';
 import { NamesActiveStyles } from 'constants/enums';
 import { useAppSelector } from 'hooks/useAppSelector';
-import React from 'react';
 import { getRole } from 'store/selectors';
 
 export const Navigation: FC = () => {
@@ -18,11 +17,11 @@ export const Navigation: FC = () => {
 
   return (
     <Group justify='center'>
-      <NavLink to={pathHome} className={NamesActiveStyles.itemStyle}>
+      <NavLink to={pathHome} className={NamesActiveStyles.ItemStyle}>
         {t('home')}
       </NavLink>
       {currentUserRole === admin && (
-        <NavLink to={pathUsers} className={NamesActiveStyles.itemStyle}>
+        <NavLink to={pathUsers} className={NamesActiveStyles.ItemStyle}>
           {t('users')}
         </NavLink>
       )}

@@ -4,7 +4,6 @@ import { Button } from '@mantine/core';
 import { IconArrowsSort } from '@tabler/icons-react';
 
 import { UsersKeys } from 'constants/enums';
-import React from 'react';
 
 type Props = {
   nameField: UsersKeys;

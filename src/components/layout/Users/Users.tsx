@@ -3,10 +3,10 @@ import { FC, useEffect } from 'react';
 import { Box, Title } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 
+import { UsersTable } from '../../shared/UsersTable/UsersTable';
+
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { getUsersThank } from 'store/slices/mainSlice';
-import { UsersTable } from '../../shared/UsersTable/UsersTable';
-import React from 'react';
 
 export const Users: FC = () => {
   const { t } = useTranslation();
@@ -18,7 +18,9 @@ export const Users: FC = () => {
 
   return (
     <Box>
-      <Title order={2} mb={16}>{t('clients')}</Title>
+      <Title order={2} mb={16}>
+        {t('clients')}
+      </Title>
       <UsersTable />
     </Box>
   );

@@ -8,9 +8,8 @@ import { useNavigate } from 'react-router-dom';
 import { validateNickname } from 'helpers/validateNickname';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
-import { addUserThank } from 'store/slices/mainSlice';
-import React from 'react';
 import { getEmail, getId, getIsOccupiedNick } from 'store/selectors';
+import { setUserThank } from 'store/slices/mainSlice';
 import { IValuesAddUserNickForm } from 'types/types';
 
 export const AddUserNickForm: FC = () => {
@@ -30,17 +29,17 @@ export const AddUserNickForm: FC = () => {
     phone,
     fullName,
   }: IValuesAddUserNickForm): void => {
-    dispatch(
-      addUserThank({
-        email,
-        id,
-        role,
-        nickname,
-        balance,
-        phone,
-        fullName,
-      }),
-    );
+    const values = {
+      email,
+      id,
+      role,
+      nickname,
+      balance,
+      phone,
+      fullName,
+    };
+
+    dispatch(setUserThank({ id, values }));
     form.reset();
   };
 
@@ -62,13 +61,13 @@ export const AddUserNickForm: FC = () => {
   });
 
   return (
-    <Box maw={300} mb={'lg'}>
+    <Box maw={300} mb='lg'>
       <form onSubmit={form.onSubmit(onSubmitHandler)}>
-        <Group mb={'md'}>
-          <Button mb={'md'} onClick={goBackHandler}>
+        <Group mb='md'>
+          <Button mb='md' onClick={goBackHandler}>
             {t('back')}
           </Button>
-          <Button mb={'md'} type='submit'>
+          <Button mb='md' type='submit'>
             {t('setNickname')}
           </Button>
         </Group>

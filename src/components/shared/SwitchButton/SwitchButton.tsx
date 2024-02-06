@@ -3,22 +3,21 @@ import { FC } from 'react';
 import { Switch, useMantineColorScheme } from '@mantine/core';
 import { IconSun, IconMoonStars } from '@tabler/icons-react';
 
-import { ColorTheme } from 'constants/enums';
+import style from './SwitchButton.module.css';
 
-import  style  from './SwitchButton.module.css';
-import React from 'react';
+import { ColorTheme } from 'constants/enums';
 
 export const SwitchButton: FC = () => {
   const { colorScheme, setColorScheme } = useMantineColorScheme();
 
   const setColorTheme = (): void => {
-    colorScheme === ColorTheme.dark
-      ? setColorScheme(ColorTheme.light)
-      : setColorScheme(ColorTheme.dark);
+    return colorScheme === ColorTheme.Dark
+      ? setColorScheme(ColorTheme.Light)
+      : setColorScheme(ColorTheme.Dark);
   };
 
-  const sunIcon = <IconSun className={style.iconSun}/>;
-  const moonIcon = <IconMoonStars className={style.iconMoon}/>;
+  const sunIcon = <IconSun className={style.iconSun} />;
+  const moonIcon = <IconMoonStars className={style.iconMoon} />;
 
   return (
     <Switch

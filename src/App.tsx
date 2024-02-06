@@ -1,8 +1,20 @@
 import { FC } from 'react';
 
 import { AppShell, Burger, Flex } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
+import { useTranslation } from 'react-i18next';
 import { Route, Routes } from 'react-router-dom';
 import 'styles/reset.css';
+
+import {
+  pathHome,
+  pathLogin,
+  pathSetNick,
+  pathUserEditing,
+  pathUsers,
+} from './constants/constants';
+import { useAppSelector } from './hooks/useAppSelector';
+import { getIsAuth, getErrorMessage, getIsLoading } from './store/selectors';
 
 import { Home } from 'components/layout/Home/Home';
 import { LoginPage } from 'components/layout/LoginPage/LoginPage';
@@ -18,18 +30,6 @@ import { PrivateRoute } from 'components/shared/Routes/PrivateRoute';
 import { PrivateRouteAdmin } from 'components/shared/Routes/PrivateRouteAdmin';
 import { SwitchButton } from 'components/shared/SwitchButton/SwitchButton';
 import { SwitchLanguageBtn } from 'components/shared/SwitchLanguageBtn/SwitchLanguageBtn';
-import {
-  pathHome,
-  pathLogin,
-  pathSetNick,
-  pathUserEditing,
-  pathUsers,
-} from './constants/constants';
-import { useAppSelector } from './hooks/useAppSelector';
-import React from 'react';
-import { getIsAuth, getErrorMessage, getIsLoading } from './store/selectors';
-import { useTranslation } from 'react-i18next';
-import { useDisclosure } from '@mantine/hooks';
 
 export const App: FC = () => {
   const isLoading = useAppSelector(getIsLoading);
@@ -59,7 +59,7 @@ export const App: FC = () => {
           onClick={toggle}
           hiddenFrom='sm'
           size='md'
-          pos={'absolute'}
+          pos='absolute'
           top={10}
         />
       </AppShell.Header>

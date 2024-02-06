@@ -4,7 +4,6 @@ import { Navigate, Outlet } from 'react-router-dom';
 
 import { pathHome } from 'constants/constants';
 import { useAppSelector } from 'hooks/useAppSelector';
-import React from 'react';
 import { getIsAuth } from 'store/selectors';
 
 export const LoginRoute: FC = () => {

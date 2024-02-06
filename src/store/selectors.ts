@@ -1,4 +1,5 @@
 import { IUser } from '../types/types';
+
 import { RootState } from './store';
 
 export const getIsLoading = (state: RootState): boolean => state.main.isLoading;
@@ -9,4 +10,4 @@ export const getRole = (state: RootState): string => state.main.role;
 export const getIsAuth = (state: RootState): boolean => state.main.isAuth;
 export const getErrorMessage = (state: RootState): string => state.main.errorMessage;
 export const getNickname = (state: RootState): string => state.main.nickname;
-export const getIsOccupiedNick = (state: RootState): boolean=> state.main.isOccupiedNick;
+export const getIsOccupiedNick = (state: RootState): boolean => state.main.isOccupiedNick;
