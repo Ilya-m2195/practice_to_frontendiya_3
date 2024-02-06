@@ -5,7 +5,6 @@ import { useForm } from '@mantine/form';
 import { useMask } from '@react-input/mask';
 import { useTranslation } from 'react-i18next';
 
-import React from 'react';
 import { IValuesAddUserNickForm } from 'types/types';
 
 type Props = {
@@ -14,7 +13,7 @@ type Props = {
 
 export const AddUsersForm: FC<Props> = ({ usersCount }) => {
   const { t } = useTranslation();
-  
+
   const form = useForm({
     initialValues: {
       phone: '',
@@ -34,30 +33,30 @@ export const AddUsersForm: FC<Props> = ({ usersCount }) => {
   const inputRef = useMask({ mask: '+7 (___) ___-__-__', replacement: { _: /\d/ } });
 
   return (
-    <Box maw={700} mb={'lg'} mt={'md'}>
+    <Box maw={700} mb='lg' mt='md'>
       <form onSubmit={form.onSubmit(onSubmitHandler)}>
-        <Group mb={'lg'}>
+        <Group mb='lg'>
           <Text>
             {t('totalCount')} {usersCount}
           </Text>
           <Button type='submit'>{t('addClient')}</Button>
         </Group>
-        <Flex gap={'md'}>
+        <Flex gap='md'>
           <TextInput
             ref={inputRef}
-            mb={'md'}
+            mb='md'
             label={t('phone')}
             placeholder='+7 (999) 999-99-99'
             {...form.getInputProps('phone')}
           />
           <TextInput
-            mb={'md'}
+            mb='md'
             label={t('nickname')}
             placeholder={t('addNickname')}
             {...form.getInputProps('nickname')}
           />
           <TextInput
-            mb={'md'}
+            mb='md'
             label={t('fullName')}
             placeholder={t('AddFullName')}
             {...form.getInputProps('fullName')}

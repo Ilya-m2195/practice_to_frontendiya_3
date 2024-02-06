@@ -9,7 +9,6 @@ import 'styles/navigation.css';
 import { admin, pathHome, pathUsers } from 'constants/constants';
 import { NamesActiveStyles } from 'constants/enums';
 import { useAppSelector } from 'hooks/useAppSelector';
-import React from 'react';
 import { getRole } from 'store/selectors';
 
 export const Navigation: FC = () => {

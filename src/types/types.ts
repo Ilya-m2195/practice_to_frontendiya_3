@@ -58,5 +58,3 @@ export interface IValuesAddUserNickForm {
   phone: string;
   balance: number;
 }
-
-

@@ -5,7 +5,6 @@ import { IconLogout2 } from '@tabler/icons-react';
 
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { logOutUserThank } from 'store/slices/mainSlice';
-import React from 'react';
 
 export const LogOutUser: FC = () => {
   const theme = {

@@ -4,12 +4,11 @@ import { NativeSelect } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 
 import { Languages } from 'constants/enums';
-import React from 'react';
 
 export const SwitchLanguageBtn: FC = () => {
   const languageValueLocalStorage = localStorage.getItem('currentLanguage');
   const setCurrentLanguage = (): string => {
-    return languageValueLocalStorage ? languageValueLocalStorage : Languages.en;
+    return languageValueLocalStorage || Languages.en;
   };
   const [valueLanguage, setValueLanguage] = useState<Languages | string>(
     setCurrentLanguage(),

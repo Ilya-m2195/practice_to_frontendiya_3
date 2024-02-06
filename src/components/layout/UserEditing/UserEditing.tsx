@@ -8,9 +8,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { validateNickname } from 'helpers/validateNickname';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
-import { updateUserThank } from 'store/slices/mainSlice';
-import React from 'react';
 import { getIsOccupiedNick } from 'store/selectors';
+import { updateUserThank } from 'store/slices/mainSlice';
 import { IValuesUserEditing } from 'types/types';
 
 export const UserEditing: FC = () => {
@@ -47,14 +46,14 @@ export const UserEditing: FC = () => {
 
   return (
     <Box>
-      <Button mb={'md'} onClick={goBackHandler}>
+      <Button mb='md' onClick={goBackHandler}>
         {t('backToClients')}
       </Button>
-      <Title mb={'md'} order={2}>
+      <Title mb='md' order={2}>
         {t('clientEditing')}
       </Title>
       <form onSubmit={form.onSubmit(onSubmitHandler)}>
-        <Flex gap={'md'} align='end' wrap='wrap'>
+        <Flex gap='md' align='end' wrap='wrap'>
           <TextInput
             label={t('nickname')}
             placeholder={t('addNickname')}

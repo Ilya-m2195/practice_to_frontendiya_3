@@ -1,6 +1,8 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { User } from 'firebase/auth';
 
+import { AppDispatch, RootState } from '../store';
+
 import {
   logInUser,
   LogOut,
@@ -9,9 +11,8 @@ import {
   updateUser,
   checkFieldValueExists,
 } from 'api/api';
-import { IInitialState, ILogInUserArg, IUpdateUserArg, IUser } from 'types/types';
-import { AppDispatch, RootState } from '../store';
 import { usersCollection } from 'firebase/firebase';
+import { IInitialState, ILogInUserArg, IUpdateUserArg, IUser } from 'types/types';
 
 type ThunkApiConfig = {
   state: RootState;
@@ -32,9 +33,9 @@ const initialState: IInitialState = {
   users: [],
 };
 
-const errorHandler = ( dispatch: AppDispatch, error: unknown ) => {
-   dispatch(setErrorMessage(error as string));
-}
+const errorHandler = (dispatch: AppDispatch, error: unknown): void => {
+  dispatch(setErrorMessage(error as string));
+};
 
 export const logOutUserThank = createAsyncThunk<void, undefined, ThunkApiConfig>(
   'mainSlice/logOutUser',
@@ -191,7 +192,6 @@ const mainReducer = createSlice({
     builder.addCase(getUsersThank.fulfilled, (state, action) => {
       state.users = action.payload;
     });
-    builder.addCase(getUsersThank.rejected, (state) => {});
     builder.addCase(addUserThank.pending, (state) => {
       state.isLoading = true;
       state.errorMessage = '';
@@ -209,7 +209,6 @@ const mainReducer = createSlice({
     builder.addCase(isOccupiedNickThank.fulfilled, (state) => {
       state.errorMessage = '';
     });
-    builder.addCase(isOccupiedNickThank.rejected, (state) => {});
   },
 });
 
