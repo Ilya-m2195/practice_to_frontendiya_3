@@ -1,18 +1,26 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { User } from 'firebase/auth';
 
+import { NamesDBCollection } from '../../constants/enums';
 import { AppDispatch, RootState } from '../store';
 
 import {
   logInUser,
   LogOut,
-  addUser,
-  getUsers,
-  updateUser,
+  getFirestoreData,
   checkFieldValueExists,
+  setFirestoreData,
+  updateFirestoreDataById,
+  deleteFirestoreDataById,
 } from 'api/api';
 import { usersCollection } from 'firebase/firebase';
-import { IInitialState, ILogInUserArg, IUpdateUserArg, IUser } from 'types/types';
+import {
+  IInitialState,
+  ILogInUserArg,
+  IUniversalObjectArguments,
+  IUpdateUser,
+  IUser,
+} from 'types/types';
 
 type ThunkApiConfig = {
   state: RootState;
@@ -59,43 +67,61 @@ export const logInUserThank = createAsyncThunk<void, ILogInUserArg, ThunkApiConf
   },
 );
 
-export const updateUserThank = createAsyncThunk<void, IUpdateUserArg, ThunkApiConfig>(
-  'mainSlice/updateUserThank',
-  async ({ id, values }, { rejectWithValue, dispatch }) => {
-    try {
-      await updateUser({ id, values });
-    } catch (error) {
-      return rejectWithValue(errorHandler(dispatch, error));
-    }
-  },
-);
+export const updateUserThank = createAsyncThunk<
+  void,
+  IUniversalObjectArguments<IUpdateUser>,
+  ThunkApiConfig
+>('mainSlice/updateUserThank', async ({ id, values }, { rejectWithValue, dispatch }) => {
+  try {
+    await updateFirestoreDataById<IUpdateUser>({ id, values }, NamesDBCollection.Users);
+  } catch (error) {
+    return rejectWithValue(errorHandler(dispatch, error));
+  }
+});
 
-export const getUsersThank = createAsyncThunk<Array<IUser>, void, ThunkApiConfig>(
-  'mainSlice/getUsersThank',
-  async (_, { rejectWithValue, dispatch }) => {
-    try {
-      const result = await getUsers();
-      const usersData = result.docs.map((doc) => doc.data());
+export const getUsersThank = createAsyncThunk<
+  Array<IUser>,
+  number | undefined,
+  ThunkApiConfig
+>('mainSlice/getUsersThank', async (limit, { rejectWithValue, dispatch }) => {
+  try {
+    const result = await getFirestoreData(usersCollection, limit);
+    const usersData = result.docs.map((doc) => doc.data());
 
-      return usersData as Array<IUser>;
-    } catch (error) {
-      return rejectWithValue(errorHandler(dispatch, error));
-    }
-  },
-);
+    return usersData as Array<IUser>;
+  } catch (error) {
+    return rejectWithValue(errorHandler(dispatch, error));
+  }
+});
 
-export const addUserThank = createAsyncThunk<void, IUser, ThunkApiConfig>(
-  'mainSlice/addUserThank',
-  async (value, { dispatch, rejectWithValue, getState }) => {
+export const setUserThank = createAsyncThunk<
+  void,
+  IUniversalObjectArguments<IUser>,
+  ThunkApiConfig
+>(
+  'mainSlice/setUserThank',
+  async ({ id, values }, { dispatch, rejectWithValue, getState }) => {
     try {
-      dispatch(isOccupiedNickThank(value.nickname));
+      dispatch(isOccupiedNickThank(values.nickname));
 
       if (getState().main.isOccupiedNick) {
         return;
       }
 
-      await addUser(value);
-      dispatch(setUser(value));
+      await setFirestoreData(usersCollection, { id, values });
+
+      dispatch(setUser(values));
+    } catch (error) {
+      return rejectWithValue(errorHandler(dispatch, error));
+    }
+  },
+);
+
+export const deleteUserThank = createAsyncThunk<void, string, ThunkApiConfig>(
+  'mainSlice/DeleteUserThank',
+  async (id, { dispatch, rejectWithValue }) => {
+    try {
+      await deleteFirestoreDataById(NamesDBCollection.Users, id);
     } catch (error) {
       return rejectWithValue(errorHandler(dispatch, error));
     }
@@ -192,15 +218,15 @@ const mainReducer = createSlice({
     builder.addCase(getUsersThank.fulfilled, (state, action) => {
       state.users = action.payload;
     });
-    builder.addCase(addUserThank.pending, (state) => {
+    builder.addCase(setUserThank.pending, (state) => {
       state.isLoading = true;
       state.errorMessage = '';
     });
-    builder.addCase(addUserThank.fulfilled, (state) => {
+    builder.addCase(setUserThank.fulfilled, (state) => {
       state.isLoading = false;
       state.errorMessage = '';
     });
-    builder.addCase(addUserThank.rejected, (state) => {
+    builder.addCase(setUserThank.rejected, (state) => {
       state.isLoading = false;
     });
     builder.addCase(isOccupiedNickThank.pending, (state) => {

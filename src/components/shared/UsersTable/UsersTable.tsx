@@ -7,8 +7,9 @@ import { Link } from 'react-router-dom';
 import { ButtonSort } from '../ButtonSort/ButtonSort';
 import { UserName } from '../UserName/UserName';
 
+import { headerTableNames } from './config';
+
 import { pathUserEditing } from 'constants/constants';
-import { headerTableNames } from 'constants/enums';
 import { useAppSelector } from 'hooks/useAppSelector';
 import { useSortableData } from 'hooks/useSortableData';
 import { getUsers } from 'store/selectors';

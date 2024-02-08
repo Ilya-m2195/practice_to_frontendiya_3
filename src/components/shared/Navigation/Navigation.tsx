@@ -17,11 +17,11 @@ export const Navigation: FC = () => {
 
   return (
     <Group justify='center'>
-      <NavLink to={pathHome} className={NamesActiveStyles.itemStyle}>
+      <NavLink to={pathHome} className={NamesActiveStyles.ItemStyle}>
         {t('home')}
       </NavLink>
       {currentUserRole === admin && (
-        <NavLink to={pathUsers} className={NamesActiveStyles.itemStyle}>
+        <NavLink to={pathUsers} className={NamesActiveStyles.ItemStyle}>
           {t('users')}
         </NavLink>
       )}

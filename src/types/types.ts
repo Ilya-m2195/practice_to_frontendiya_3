@@ -25,30 +25,20 @@ export interface IUser {
   balance: number;
 }
 
-export interface IId {
-  id: string;
-}
-
 export interface IUpdateUser {
   fullName: string;
   nickname: string;
   role: string;
 }
 
-export interface IUpdateUserArg {
-  id: string;
-  values: IUpdateUser;
+export interface IUniversalObjectArguments<T> {
+  id?: string;
+  values: T;
 }
 
 export interface ILogInUserArg {
   provider: GoogleAuthProvider | GithubAuthProvider;
   navigate: NavigateFunction;
-}
-
-export interface IValuesUserEditing {
-  nickname: string;
-  fullName: string;
-  role: string;
 }
 
 export interface IValuesAddUserNickForm {

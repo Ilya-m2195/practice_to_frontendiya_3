@@ -9,7 +9,7 @@ import { validateNickname } from 'helpers/validateNickname';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import { getEmail, getId, getIsOccupiedNick } from 'store/selectors';
-import { addUserThank } from 'store/slices/mainSlice';
+import { setUserThank } from 'store/slices/mainSlice';
 import { IValuesAddUserNickForm } from 'types/types';
 
 export const AddUserNickForm: FC = () => {
@@ -29,17 +29,17 @@ export const AddUserNickForm: FC = () => {
     phone,
     fullName,
   }: IValuesAddUserNickForm): void => {
-    dispatch(
-      addUserThank({
-        email,
-        id,
-        role,
-        nickname,
-        balance,
-        phone,
-        fullName,
-      }),
-    );
+    const values = {
+      email,
+      id,
+      role,
+      nickname,
+      balance,
+      phone,
+      fullName,
+    };
+
+    dispatch(setUserThank({ id, values }));
     form.reset();
   };
 

@@ -5,12 +5,13 @@ import { useForm } from '@mantine/form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 
+import { IUpdateUser } from '../../../types/types';
+
 import { validateNickname } from 'helpers/validateNickname';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import { getIsOccupiedNick } from 'store/selectors';
 import { updateUserThank } from 'store/slices/mainSlice';
-import { IValuesUserEditing } from 'types/types';
 
 export const UserEditing: FC = () => {
   const navigate = useNavigate();
@@ -23,7 +24,7 @@ export const UserEditing: FC = () => {
   const goBackHandler = (): void => {
     navigate(-1);
   };
-  const onSubmitHandler = (values: IValuesUserEditing): void => {
+  const onSubmitHandler = (values: IUpdateUser): void => {
     if (!id) {
       return;
     }

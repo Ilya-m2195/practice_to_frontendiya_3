@@ -2,8 +2,8 @@ import { signInWithPopup, signOut } from 'firebase/auth';
 import {
   CollectionReference,
   DocumentData,
-  Firestore,
   QuerySnapshot,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
@@ -11,49 +11,87 @@ import {
   setDoc,
   updateDoc,
   where,
+  limit,
 } from 'firebase/firestore';
+
+import { NamesDBCollection } from '../constants/enums';
 
 import { pathHome, pathSetNick } from 'constants/constants';
 import { auth, db, usersCollection } from 'firebase/firebase';
 import { addCurrentEmailId, setUser } from 'store/slices/mainSlice';
 import { AppDispatch } from 'store/store';
-import { ILogInUserArg, IUpdateUserArg, IUser } from 'types/types';
+import { ILogInUserArg, IUniversalObjectArguments, IUser } from 'types/types';
 
-export const addUser = async (value: IUser): Promise<void> => {
-  await setDoc(doc(usersCollection, value.id), value);
+export const setFirestoreData = async <T extends {}>(
+  collection: CollectionReference,
+  { id, values }: IUniversalObjectArguments<T>,
+): Promise<void> => {
+  if (!id) {
+    return;
+  }
+
+  await setDoc(doc(collection, id), { ...values });
 };
 
-export const getUsers = async (): Promise<QuerySnapshot<DocumentData, DocumentData>> => {
-  const data = await getDocs(usersCollection);
+export const deleteFirestoreDataById = async (
+  nameCollection: string,
+  id: string,
+): Promise<void> => {
+  await deleteDoc(doc(db, nameCollection, id));
+};
+
+export const getFirestoreDataById = async (
+  nameCollection: string,
+  id: string,
+): Promise<DocumentData | void> => {
+  const docRef = doc(db, nameCollection, id);
+  const docInfo = await getDoc(docRef);
+
+  return docInfo.data();
+};
+
+export const updateFirestoreDataById = async <T extends {}>(
+  { id, values }: IUniversalObjectArguments<T>,
+  nameCollection: string,
+): Promise<void> => {
+  if (!id) {
+    return;
+  }
+  const userDoc = doc(db, nameCollection, id);
+
+  await updateDoc(userDoc, values);
+};
+
+export const getFirestoreData = async (
+  collection: CollectionReference,
+  limitNumber?: number,
+): Promise<QuerySnapshot> => {
+  let data;
+
+  if (limitNumber !== undefined && limitNumber > 0) {
+    data = await getDocs(query(collection, limit(limitNumber)));
+
+    return data;
+  }
+
+  data = await getDocs(collection);
 
   return data;
 };
 
-export const LogOut = async (): Promise<void> => {
-  await signOut(auth);
-};
-
 export const checkFieldValueExists = async (
-  collectionPath: CollectionReference<DocumentData, DocumentData>,
+  collectionPath: CollectionReference,
   fieldName: string,
   value: string,
 ): Promise<boolean> => {
-  const collectionRef = collectionPath;
-  const docsQuery = query(collectionRef, where(fieldName, '==', value));
+  const docsQuery = query(collectionPath, where(fieldName, '==', value));
   const querySnapshot = await getDocs(docsQuery);
 
   return !querySnapshot.empty;
 };
 
-export const getDocCollection = async (
-  dataBase: Firestore,
-  nameCollection: string,
-  id: string,
-): Promise<DocumentData | void> => {
-  const docRef = doc(dataBase, nameCollection, id);
-  const docInfo = await getDoc(docRef);
-
-  return docInfo.data();
+export const LogOut = async (): Promise<void> => {
+  await signOut(auth);
 };
 
 export const logInUser = async (
@@ -68,7 +106,10 @@ export const logInUser = async (
   );
 
   if (isUser) {
-    const currentUserInfo = await getDocCollection(db, 'users', resultUserInfo.user.uid);
+    const currentUserInfo = await getFirestoreDataById(
+      NamesDBCollection.Users,
+      resultUserInfo.user.uid,
+    );
 
     dispatch(setUser(currentUserInfo as IUser));
     navigate(pathHome);
@@ -76,10 +117,4 @@ export const logInUser = async (
     dispatch(addCurrentEmailId(resultUserInfo.user));
     navigate(pathSetNick);
   }
-};
-
-export const updateUser = async ({ id, values }: IUpdateUserArg): Promise<void> => {
-  const userDoc = doc(db, 'users', id);
-
-  await updateDoc(userDoc, { ...values });
 };
