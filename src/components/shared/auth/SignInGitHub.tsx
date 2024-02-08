@@ -4,9 +4,9 @@ import { Button } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
-import { gitHubProvider } from 'firebase/firebase';
-import { useAppDispatch } from 'hooks/useAppDispatch';
-import { logInUserThank } from 'store/slices/mainSlice';
+import { gitHubProvider } from 'firebase';
+import { useAppDispatch } from 'hooks';
+import { logInUserThank } from 'store';
 
 export const SignInGitHub: FC = () => {
   const dispatch = useAppDispatch();

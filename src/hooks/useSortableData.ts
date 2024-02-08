@@ -1,7 +1,8 @@
+import { UsersKeys } from 'constants';
+
 import { useState, useMemo } from 'react';
 
-import { UsersKeys } from '../constants/enums';
-import { IUser } from '../types/types';
+import { IUser } from 'types';
 
 interface IConfig {
   key: UsersKeys;

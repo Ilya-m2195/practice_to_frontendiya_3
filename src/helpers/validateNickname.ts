@@ -1,7 +1,6 @@
 import { t } from 'i18next';
 
-import { isOccupiedNickThank } from 'store/slices/mainSlice';
-import { AppDispatch } from 'store/store';
+import { isOccupiedNickThank, AppDispatch } from 'store';
 
 export const validateNickname = (
   dispatch: AppDispatch,

@@ -4,9 +4,9 @@ import { Button } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
-import { googleProvider } from 'firebase/firebase';
-import { useAppDispatch } from 'hooks/useAppDispatch';
-import { logInUserThank } from 'store/slices/mainSlice';
+import { googleProvider } from 'firebase';
+import { useAppDispatch } from 'hooks';
+import { logInUserThank } from 'store';
 
 export const SignInGoogle: FC = () => {
   const dispatch = useAppDispatch();
