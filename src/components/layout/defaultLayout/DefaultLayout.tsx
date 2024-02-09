@@ -1,10 +1,16 @@
-import { FC } from 'react';
+import { FC, Suspense } from 'react';
 
 import { AppShell, Burger, Flex } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Outlet } from 'react-router-dom';
 
-import { Navigation, SwitchButton, SwitchLanguageBtn, LogOutUser } from 'components';
+import {
+  Navigation,
+  SwitchButton,
+  SwitchLanguageBtn,
+  LogOutUser,
+  LoaderFC,
+} from 'components';
 import { useAppSelector } from 'hooks';
 import { getIsAuth } from 'store';
 
@@ -37,7 +43,9 @@ export const DefaultLayout: FC = () => {
         </Flex>
       </AppShell.Navbar>
       <AppShell.Main>
-        <Outlet />
+        <Suspense fallback={<LoaderFC />}>
+          <Outlet />
+        </Suspense>
       </AppShell.Main>
     </AppShell>
   );

@@ -1,11 +1,25 @@
+import { lazy } from 'react';
+
 import { createBrowserRouter } from 'react-router-dom';
 
 import { PrivateRouteAdmin } from './privateRouterAdmin/PrivateRouteAdmin';
 import { Path } from './types';
 
 import { DefaultLayout, AddUserNickForm, ErrorMessage } from 'components';
-import { UsersPage, HomePage, LoginPage, UserEditingPage } from 'pages';
 import { LoginRoute, PrivateRoute } from 'routes';
+
+const UsersPage = lazy(() =>
+  import('pages').then(({ UsersPage }) => ({ default: UsersPage })),
+);
+const HomePage = lazy(() =>
+  import('pages').then(({ HomePage }) => ({ default: HomePage })),
+);
+const LoginPage = lazy(() =>
+  import('pages').then(({ LoginPage }) => ({ default: LoginPage })),
+);
+const UserEditingPage = lazy(() =>
+  import('pages').then(({ UserEditingPage }) => ({ default: UserEditingPage })),
+);
 
 export const router = createBrowserRouter([
   {
