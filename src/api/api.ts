@@ -1,3 +1,5 @@
+import { pathHome, pathSetNick } from 'constants';
+
 import { signInWithPopup, signOut } from 'firebase/auth';
 import {
   CollectionReference,
@@ -13,11 +15,9 @@ import {
   where,
 } from 'firebase/firestore';
 
-import { pathHome, pathSetNick } from 'constants/constants';
-import { auth, db, usersCollection } from 'firebase/firebase';
-import { addCurrentEmailId, setUser } from 'store/slices/mainSlice';
-import { AppDispatch } from 'store/store';
-import { ILogInUserArg, IUpdateUserArg, IUser } from 'types/types';
+import { auth, db, usersCollection } from 'firebase';
+import { addCurrentEmailId, setUser, AppDispatch } from 'store';
+import { ILogInUserArg, IUpdateUserArg, IUser } from 'types';
 
 export const addUser = async (value: IUser): Promise<void> => {
   await setDoc(doc(usersCollection, value.id), value);
