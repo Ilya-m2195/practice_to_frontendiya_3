@@ -1,8 +1,6 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { User } from 'firebase/auth';
 
-import { AppDispatch, RootState } from '../store';
-
 import {
   logInUser,
   LogOut,
@@ -10,9 +8,10 @@ import {
   getUsers,
   updateUser,
   checkFieldValueExists,
-} from 'api/api';
-import { usersCollection } from 'firebase/firebase';
-import { IInitialState, ILogInUserArg, IUpdateUserArg, IUser } from 'types/types';
+} from 'api';
+import { usersCollection } from 'firebase';
+import { AppDispatch, RootState } from 'store';
+import { IInitialState, ILogInUserArg, IUpdateUserArg, IUser } from 'types';
 
 type ThunkApiConfig = {
   state: RootState;

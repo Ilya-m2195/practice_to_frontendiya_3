@@ -1,6 +1,5 @@
-import { IUser } from '../types/types';
-
-import { RootState } from './store';
+import { RootState } from 'store';
+import { IUser } from 'types';
 
 export const getIsLoading = (state: RootState): boolean => state.main.isLoading;
 export const getId = (state: RootState): string => state.main.id;

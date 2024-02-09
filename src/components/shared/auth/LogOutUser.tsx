@@ -3,8 +3,8 @@ import { FC } from 'react';
 import { Button } from '@mantine/core';
 import { IconLogout2 } from '@tabler/icons-react';
 
-import { useAppDispatch } from 'hooks/useAppDispatch';
-import { logOutUserThank } from 'store/slices/mainSlice';
+import { useAppDispatch } from 'hooks';
+import { logOutUserThank } from 'store';
 
 export const LogOutUser: FC = () => {
   const theme = {
