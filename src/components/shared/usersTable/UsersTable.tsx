@@ -1,4 +1,4 @@
-import { pathUserEditing, headerTableNames } from 'constants';
+import { Path, headerTableNames } from 'constants';
 
 import { FC } from 'react';
 
@@ -18,7 +18,7 @@ export const UsersTable: FC = () => {
   const rowsTables = sortUsers.map((element) => (
     <Table.Tr key={element.id}>
       <Table.Td align='center'>
-        <Link to={`${pathUserEditing}${element.id}`}>
+        <Link to={`${Path.UserEditing}${element.id}`}>
           <UserName name={element.fullName} />
         </Link>
       </Table.Td>

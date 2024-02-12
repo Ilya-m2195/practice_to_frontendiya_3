@@ -1,4 +1,4 @@
-import { pathHome } from 'constants';
+import { Path } from 'constants';
 
 import { FC } from 'react';
 
@@ -10,5 +10,5 @@ import { getIsAuth } from 'store';
 export const LoginRoute: FC = () => {
   const isAuth = useAppSelector(getIsAuth);
 
-  return !isAuth ? <Outlet /> : <Navigate to={pathHome} />;
+  return !isAuth ? <Outlet /> : <Navigate to={Path.Home} />;
 };

@@ -23,6 +23,10 @@ export enum ColorTheme {
   light = 'light',
 }
 
+export enum Collections {
+  Users = 'users',
+}
+
 export const headerTableNames = [
   UsersKeys.fullName,
   UsersKeys.role,
@@ -31,3 +35,12 @@ export const headerTableNames = [
   UsersKeys.email,
   UsersKeys.balance,
 ];
+
+export enum Path {
+  Home = '/',
+  Users = '/users',
+  Login = '/login',
+  SetNick = '/set-nick',
+  UserEditing = '/editing/',
+  Admin = '/admin',
+}

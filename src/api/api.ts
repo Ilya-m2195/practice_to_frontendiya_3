@@ -1,8 +1,7 @@
-import { pathHome, pathSetNick } from 'constants';
+import { Path, Collections } from 'constants';
 
 import { signInWithPopup, signOut } from 'firebase/auth';
 import {
-  CollectionReference,
   DocumentData,
   Firestore,
   QuerySnapshot,
@@ -13,6 +12,10 @@ import {
   setDoc,
   updateDoc,
   where,
+  collection,
+  orderBy,
+  startAt,
+  endAt,
 } from 'firebase/firestore';
 
 import { auth, db, usersCollection } from 'firebase';
@@ -34,15 +37,35 @@ export const LogOut = async (): Promise<void> => {
 };
 
 export const checkFieldValueExists = async (
-  collectionPath: CollectionReference<DocumentData, DocumentData>,
+  collectionName: Collections,
   fieldName: string,
   value: string,
-): Promise<boolean> => {
-  const collectionRef = collectionPath;
+): Promise<QuerySnapshot<DocumentData, DocumentData>> => {
+  const collectionRef = collection(db, collectionName);
   const docsQuery = query(collectionRef, where(fieldName, '==', value));
   const querySnapshot = await getDocs(docsQuery);
 
-  return !querySnapshot.empty;
+  return querySnapshot;
+};
+
+export const searchData = async (
+  collectionName: Collections,
+  fieldName: string,
+  value: string,
+): Promise<QuerySnapshot<DocumentData, DocumentData>> => {
+  const collectionRef = collection(db, collectionName);
+  const searchTermLow = value.toLowerCase();
+
+  const docsQuery = query(
+    collectionRef,
+    orderBy(fieldName),
+    startAt(searchTermLow),
+    endAt(`${searchTermLow}\uf8ff`),
+  );
+
+  const querySnapshot = await getDocs(docsQuery);
+
+  return querySnapshot;
 };
 
 export const getDocCollection = async (
@@ -62,19 +85,19 @@ export const logInUser = async (
 ): Promise<void> => {
   const resultUserInfo = await signInWithPopup(auth, provider);
   const isUser = await checkFieldValueExists(
-    usersCollection,
+    Collections.Users,
     'email',
     resultUserInfo.user.email!,
   );
 
-  if (isUser) {
+  if (!isUser.empty) {
     const currentUserInfo = await getDocCollection(db, 'users', resultUserInfo.user.uid);
 
     dispatch(setUser(currentUserInfo as IUser));
-    navigate(pathHome);
+    navigate(Path.Home);
   } else {
     dispatch(addCurrentEmailId(resultUserInfo.user));
-    navigate(pathSetNick);
+    navigate(Path.SetNick);
   }
 };
 

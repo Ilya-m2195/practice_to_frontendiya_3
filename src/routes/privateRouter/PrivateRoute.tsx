@@ -1,4 +1,4 @@
-import { pathLogin } from 'constants';
+import { Path } from 'constants';
 
 import { FC } from 'react';
 
@@ -10,5 +10,5 @@ import { getIsAuth } from 'store';
 export const PrivateRoute: FC = () => {
   const isAuth = useAppSelector(getIsAuth);
 
-  return isAuth ? <Outlet /> : <Navigate to={pathLogin} />;
+  return isAuth ? <Outlet /> : <Navigate to={Path.Login} />;
 };

@@ -1,3 +1,5 @@
+import { DocumentData } from 'firebase/firestore';
+
 import { RootState } from 'store';
 import { IUser } from 'types';
 
@@ -10,3 +12,5 @@ export const getIsAuth = (state: RootState): boolean => state.main.isAuth;
 export const getErrorMessage = (state: RootState): string => state.main.errorMessage;
 export const getNickname = (state: RootState): string => state.main.nickname;
 export const getIsOccupiedNick = (state: RootState): boolean => state.main.isOccupiedNick;
+export const getSearchData = (state: RootState): Nullable<DocumentData[]> =>
+  state.search.data;

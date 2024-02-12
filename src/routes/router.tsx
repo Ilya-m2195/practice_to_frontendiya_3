@@ -1,9 +1,10 @@
+import { Path } from 'constants';
+
 import { lazy } from 'react';
 
 import { createBrowserRouter } from 'react-router-dom';
 
 import { PrivateRouteAdmin } from './privateRouterAdmin/PrivateRouteAdmin';
-import { Path } from './types';
 
 import { DefaultLayout, AddUserNickForm, ErrorMessage } from 'components';
 import { LoginRoute, PrivateRoute } from 'routes';

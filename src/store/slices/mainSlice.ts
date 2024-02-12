@@ -1,3 +1,5 @@
+import { Collections } from 'constants';
+
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { User } from 'firebase/auth';
 
@@ -9,14 +11,9 @@ import {
   updateUser,
   checkFieldValueExists,
 } from 'api';
-import { usersCollection } from 'firebase';
+// import { usersCollection } from 'firebase';
 import { AppDispatch, RootState } from 'store';
 import { IInitialState, ILogInUserArg, IUpdateUserArg, IUser } from 'types';
-
-type ThunkApiConfig = {
-  state: RootState;
-  dispatch: AppDispatch;
-};
 
 const initialState: IInitialState = {
   isLoading: false,
@@ -29,7 +26,13 @@ const initialState: IInitialState = {
   phone: '',
   balance: 0,
   errorMessage: '',
+  photoURL: '',
   users: [],
+};
+
+export type ThunkApiConfig = {
+  state: RootState;
+  dispatch: AppDispatch;
 };
 
 const errorHandler = (dispatch: AppDispatch, error: unknown): void => {
@@ -105,11 +108,12 @@ export const isOccupiedNickThank = createAsyncThunk<void, string, ThunkApiConfig
   'mainSlice/isOccupiedNickThank',
   async (valueNick, { rejectWithValue, dispatch }) => {
     try {
-      const isOccupiedNick = await checkFieldValueExists(
-        usersCollection,
+      const promiseData = await checkFieldValueExists(
+        Collections.Users,
         'nickname',
         valueNick,
       );
+      const isOccupiedNick = !promiseData.empty;
 
       dispatch(setIsOccupiedNick(isOccupiedNick));
     } catch (error) {
@@ -129,6 +133,7 @@ const mainReducer = createSlice({
       state.nickname = action.payload.nickname;
       state.phone = action.payload.phone;
       state.balance = action.payload.balance;
+      state.photoURL = action.payload.photoURL;
       state.isAuth = true;
     },
     setErrorMessage: (state, action: PayloadAction<string>) => {

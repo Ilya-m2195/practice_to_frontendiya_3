@@ -1,4 +1,4 @@
-import { admin, pathHome, pathUsers, NamesActiveStyles } from 'constants';
+import { admin, NamesActiveStyles, Path } from 'constants';
 
 import { FC } from 'react';
 
@@ -17,11 +17,11 @@ export const Navigation: FC = () => {
 
   return (
     <Group justify='center'>
-      <NavLink to={pathHome} className={NamesActiveStyles.itemStyle}>
+      <NavLink to={Path.Home} className={NamesActiveStyles.itemStyle}>
         {t('home')}
       </NavLink>
       {currentUserRole === admin && (
-        <NavLink to={pathUsers} className={NamesActiveStyles.itemStyle}>
+        <NavLink to={Path.Users} className={NamesActiveStyles.itemStyle}>
           {t('users')}
         </NavLink>
       )}
