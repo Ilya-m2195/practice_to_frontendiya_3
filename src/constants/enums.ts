@@ -26,3 +26,12 @@ export enum ColorTheme {
 export enum NamesDBCollection {
   Users = 'users',
 }
+
+export enum Path {
+  Home = '/',
+  Users = '/users',
+  Login = '/login',
+  SetNick = '/set-nick',
+  UserEditing = '/editing/',
+  Admin = '/admin',
+}

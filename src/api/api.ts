@@ -1,3 +1,5 @@
+import { NamesDBCollection } from 'constants';
+
 import { signInWithPopup, signOut } from 'firebase/auth';
 import {
   DocumentData,
@@ -12,17 +14,10 @@ import {
   where,
   limit,
   collection,
-  startAfter,
 } from 'firebase/firestore';
 
-import { NamesDBCollection } from '../constants/enums';
-
-import { auth, db } from 'firebase/firebase';
-import {
-  ILogInUserArg,
-  IResultUserInfoData,
-  IUniversalObjectArguments,
-} from 'types/types';
+import { auth, db } from 'firebase';
+import { ILogInUserArg, IResultUserInfoData, IUniversalObjectArguments } from 'types';
 
 export const setFirestoreData = async <T extends {}>(
   nameCollection: string,

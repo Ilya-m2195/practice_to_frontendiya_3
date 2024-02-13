@@ -1,27 +1,26 @@
-import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { Path, NamesDBCollection } from 'constants';
 
-import { pathHome, pathSetNick } from '../../constants/constants';
-import { NamesDBCollection } from '../../constants/enums';
-import { AppDispatch, RootState } from '../store';
+import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 import {
   logInUser,
   LogOut,
-  getFirestoreData,
   checkFieldValueExists,
   setFirestoreData,
   updateFirestoreDataById,
   deleteFirestoreDataById,
   getFirestoreDataById,
-} from 'api/api';
+  getFirestoreData,
+} from 'api';
+import { AppDispatch, RootState } from 'store';
 import {
   IInitialState,
   ILogInUserArg,
+  IUser,
   IResultUserInfoData,
   IUniversalObjectArguments,
   IUpdateUser,
-  IUser,
-} from 'types/types';
+} from 'types';
 
 type ThunkApiConfig = {
   state: RootState;
@@ -70,10 +69,10 @@ export const logInUserThank = createAsyncThunk<void, ILogInUserArg, ThunkApiConf
         );
 
         dispatch(setUser(currentUserInfo as IUser));
-        navigate(pathHome);
+        navigate(Path.Home);
       } else {
         dispatch(addCurrentEmailId(resultUserInfoData));
-        navigate(pathSetNick);
+        navigate(Path.SetNick);
       }
     } catch (error) {
       return rejectWithValue(errorHandler(dispatch, error));
