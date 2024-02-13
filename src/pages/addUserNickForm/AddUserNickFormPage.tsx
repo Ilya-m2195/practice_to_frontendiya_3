@@ -5,10 +5,12 @@ import { useForm } from '@mantine/form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
-import { validateNickname } from 'helpers';
-import { useAppDispatch, useAppSelector } from 'hooks';
-import { getEmail, getId, getIsOccupiedNick, addUserThank } from 'store';
-import { IValuesAddUserNickForm } from 'types';
+import { validateNickname } from 'helpers/validateNickname';
+import { useAppDispatch } from 'hooks/useAppDispatch';
+import { useAppSelector } from 'hooks/useAppSelector';
+import { getEmail, getId, getIsOccupiedNick } from 'store/selectors';
+import { setUserThank } from 'store/slices/mainSlice';
+import { IValuesAddUserNickForm } from 'types/types';
 
 export const AddUserNickFormPage: FC = () => {
   const id = useAppSelector(getId);
@@ -27,17 +29,17 @@ export const AddUserNickFormPage: FC = () => {
     phone,
     fullName,
   }: IValuesAddUserNickForm): void => {
-    dispatch(
-      addUserThank({
-        email,
-        id,
-        role,
-        nickname,
-        balance,
-        phone,
-        fullName,
-      }),
-    );
+    const values = {
+      email,
+      id,
+      role,
+      nickname,
+      balance,
+      phone,
+      fullName,
+    };
+
+    dispatch(setUserThank({ id, values }));
     form.reset();
   };
 

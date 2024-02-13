@@ -19,7 +19,6 @@ export const HomePage: FC = () => {
           <Text> {nickname}</Text>
         </Group>
       )}
-      Hello
     </Box>
   );
 };

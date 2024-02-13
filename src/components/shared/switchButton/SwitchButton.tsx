@@ -11,9 +11,9 @@ export const SwitchButton: FC = () => {
   const { colorScheme, setColorScheme } = useMantineColorScheme();
 
   const setColorTheme = (): void => {
-    return colorScheme === ColorTheme.dark
-      ? setColorScheme(ColorTheme.light)
-      : setColorScheme(ColorTheme.dark);
+    return colorScheme === ColorTheme.Dark
+      ? setColorScheme(ColorTheme.Light)
+      : setColorScheme(ColorTheme.Dark);
   };
 
   const sunIcon = <IconSun className={style.iconSun} />;

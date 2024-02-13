@@ -1,10 +1,12 @@
-import { headerTableNames, Path } from 'constants';
+import { Path } from 'constants';
 
 import { FC } from 'react';
 
 import { Flex, Table, Text } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+
+import { headerTableNames } from './config';
 
 import { ButtonSort, UserName } from 'components';
 import { useAppSelector, useSortableData } from 'hooks';

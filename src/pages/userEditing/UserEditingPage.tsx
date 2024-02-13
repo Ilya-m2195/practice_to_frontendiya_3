@@ -8,7 +8,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { validateNickname } from 'helpers';
 import { useAppDispatch, useAppSelector } from 'hooks';
 import { getIsOccupiedNick, updateUserThank } from 'store';
-import { IValuesUserEditing } from 'types';
+import { IUpdateUser } from 'types';
 
 export const UserEditingPage: FC = () => {
   const navigate = useNavigate();
@@ -21,7 +21,7 @@ export const UserEditingPage: FC = () => {
   const goBackHandler = (): void => {
     navigate(-1);
   };
-  const onSubmitHandler = (values: IValuesUserEditing): void => {
+  const onSubmitHandler = (values: IUpdateUser): void => {
     if (!id) {
       return;
     }

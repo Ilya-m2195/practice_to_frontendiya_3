@@ -1,36 +1,31 @@
 export enum UsersKeys {
-  phone = 'phone',
-  nickname = 'nickname',
-  fullName = 'fullName',
-  role = 'role',
-  email = 'email',
-  id = 'id',
-  balance = 'balance',
+  Phone = 'phone',
+  Nickname = 'nickname',
+  FullName = 'fullName',
+  Role = 'role',
+  Email = 'email',
+  Id = 'id',
+  Balance = 'balance',
 }
 
 export enum Languages {
-  en = 'en',
-  ru = 'ru',
+  En = 'en',
+  Ru = 'ru',
 }
 
 export enum NamesActiveStyles {
-  activeStyle = 'active',
-  itemStyle = 'item',
+  ActiveStyle = 'active',
+  ItemStyle = 'item',
 }
 
 export enum ColorTheme {
-  dark = 'dark',
-  light = 'light',
+  Dark = 'dark',
+  Light = 'light',
 }
 
-export const headerTableNames = [
-  UsersKeys.fullName,
-  UsersKeys.role,
-  UsersKeys.nickname,
-  UsersKeys.phone,
-  UsersKeys.email,
-  UsersKeys.balance,
-];
+export enum NamesDBCollection {
+  Users = 'users',
+}
 
 export enum Path {
   Home = '/',
