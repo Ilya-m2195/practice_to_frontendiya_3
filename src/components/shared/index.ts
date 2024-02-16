@@ -8,6 +8,7 @@ export * from 'components/shared/buttonSort/ButtonSort';
 export * from 'components/shared/errorMessage/ErrorMessage';
 export * from 'components/shared/loaderFC/LoaderFC';
 export * from 'components/shared/navigation/Navigation';
+export * from 'components/shared/searchInput/SearchInput';
 export * from 'components/shared/switchButton/SwitchButton';
 export * from 'components/shared/switchLanguageBtn/SwitchLanguageBtn';
 export * from 'components/shared/userName/UserName';

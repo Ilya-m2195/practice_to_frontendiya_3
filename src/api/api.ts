@@ -12,8 +12,9 @@ import {
   setDoc,
   updateDoc,
   where,
-  limit,
   collection,
+  orderBy,
+  limit,
 } from 'firebase/firestore';
 
 import { auth, db } from 'firebase';
@@ -77,7 +78,7 @@ export const getFirestoreData = async (
 };
 
 export const checkFieldValueExists = async (
-  nameCollection: string,
+  nameCollection: NamesDBCollection,
   fieldName: string,
   value: string,
 ): Promise<boolean> => {
@@ -85,6 +86,35 @@ export const checkFieldValueExists = async (
   const querySnapshot = await getDocs(docsQuery);
 
   return !querySnapshot.empty;
+};
+
+export const searchData = async (
+  collectionName: NamesDBCollection,
+  fieldName: string,
+  value: string,
+  searchCaseSensitive: boolean,
+): Promise<Array<DocumentData>> => {
+  const collectionRef = collection(db, collectionName);
+  const searchTermLow = searchCaseSensitive ? value : value.toLowerCase();
+
+  const docsQuery = query(
+    collectionRef,
+    where(fieldName, '>=', searchTermLow),
+    where(fieldName, '<=', `${searchTermLow}\uf8ff`),
+    orderBy(fieldName),
+  );
+
+  const querySnapshot = await getDocs(docsQuery);
+
+  if (!querySnapshot || querySnapshot.empty) return [];
+
+  const data: Array<DocumentData> = [];
+
+  querySnapshot.forEach((doc) => {
+    data.push(doc.data());
+  });
+
+  return data;
 };
 
 export const LogOut = async (): Promise<void> => {
@@ -107,6 +137,7 @@ export const logInUser = async ({
   const resultUserInfoData = {
     email: resultUserInfo.user.email!,
     id: resultUserInfo.user.uid,
+    photoURL: resultUserInfo.user.photoURL!,
   };
 
   return { isUser, resultUserInfoData };

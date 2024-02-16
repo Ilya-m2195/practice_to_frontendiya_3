@@ -6,6 +6,7 @@ export enum UsersKeys {
   Email = 'email',
   Id = 'id',
   Balance = 'balance',
+  SearchNickname = 'searchNickname',
 }
 
 export enum Languages {
@@ -25,6 +26,11 @@ export enum ColorTheme {
 
 export enum NamesDBCollection {
   Users = 'users',
+}
+
+export enum UserRole {
+  User = 'user',
+  Admin = 'admin',
 }
 
 export enum Path {

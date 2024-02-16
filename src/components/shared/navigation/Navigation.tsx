@@ -1,4 +1,4 @@
-import { admin, NamesActiveStyles, Path } from 'constants';
+import { UserRole, NamesActiveStyles, Path } from 'constants';
 
 import { FC } from 'react';
 
@@ -20,7 +20,7 @@ export const Navigation: FC = () => {
       <NavLink to={Path.Home} className={NamesActiveStyles.ItemStyle}>
         {t('home')}
       </NavLink>
-      {currentUserRole === admin && (
+      {currentUserRole === UserRole.Admin && (
         <NavLink to={Path.Users} className={NamesActiveStyles.ItemStyle}>
           {t('users')}
         </NavLink>

@@ -22,11 +22,6 @@ import {
   IUpdateUser,
 } from 'types';
 
-type ThunkApiConfig = {
-  state: RootState;
-  dispatch: AppDispatch;
-};
-
 const initialState: IInitialState = {
   isLoading: false,
   isAuth: false,
@@ -38,7 +33,14 @@ const initialState: IInitialState = {
   phone: '',
   balance: 0,
   errorMessage: '',
+  photoURL: '',
+  searchNickname: '',
   users: [],
+};
+
+export type ThunkApiConfig = {
+  state: RootState;
+  dispatch: AppDispatch;
 };
 
 const errorHandler = (dispatch: AppDispatch, error: unknown): void => {
@@ -169,6 +171,7 @@ const mainReducer = createSlice({
       state.nickname = action.payload.nickname;
       state.phone = action.payload.phone;
       state.balance = action.payload.balance;
+      state.photoURL = action.payload.photoURL;
       state.isAuth = true;
     },
     setErrorMessage: (state, action: PayloadAction<string>) => {
@@ -177,6 +180,7 @@ const mainReducer = createSlice({
     addCurrentEmailId: (state, action: PayloadAction<IResultUserInfoData>) => {
       state.email = action.payload.email!;
       state.id = action.payload.id;
+      state.photoURL = action.payload.photoURL;
     },
     setRole: (state, action) => {
       state.role = action.payload.role;
@@ -253,5 +257,4 @@ const mainReducer = createSlice({
 
 export const { setUser, setRole, addCurrentEmailId, setErrorMessage, setIsOccupiedNick } =
   mainReducer.actions;
-
 export default mainReducer.reducer;

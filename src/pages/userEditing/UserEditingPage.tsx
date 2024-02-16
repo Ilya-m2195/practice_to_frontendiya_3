@@ -1,3 +1,5 @@
+import { UserRole } from 'constants';
+
 import { FC } from 'react';
 
 import { Box, Button, Flex, Select, TextInput, Title } from '@mantine/core';
@@ -35,7 +37,7 @@ export const UserEditingPage: FC = () => {
     initialValues: {
       nickname: '',
       fullName: '',
-      role: 'user',
+      role: UserRole.User,
     },
     validate: {
       nickname: (value) => validateNickname(dispatch, value, isOccupiedNick),
@@ -64,7 +66,7 @@ export const UserEditingPage: FC = () => {
           />
           <Select
             label={t('role')}
-            data={['user', 'admin']}
+            data={[UserRole.User, UserRole.Admin]}
             {...form.getInputProps('role')}
           />
           <Button type='submit'>{t('save')}</Button>

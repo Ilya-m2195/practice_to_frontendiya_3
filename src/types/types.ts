@@ -1,6 +1,8 @@
 import { GoogleAuthProvider, GithubAuthProvider } from 'firebase/auth';
 import { NavigateFunction } from 'react-router-dom';
 
+import { AppDispatch, RootState } from '../store';
+
 export interface IInitialState {
   isLoading: boolean;
   isAuth: boolean;
@@ -12,6 +14,8 @@ export interface IInitialState {
   role: string;
   nickname: string;
   errorMessage: string;
+  photoURL: Nullable<string>;
+  searchNickname: string;
   users: Array<IUser>;
 }
 
@@ -23,6 +27,8 @@ export interface IUser {
   email: string;
   id: string;
   balance: number;
+  photoURL: Nullable<string>;
+  searchNickname: string;
 }
 
 export interface IUpdateUser {
@@ -44,6 +50,7 @@ export interface ILogInUserArg {
 export interface IResultUserInfoData {
   email: string;
   id: string;
+  photoURL: Nullable<string>;
 }
 
 export interface IValuesAddUserNickForm {
@@ -53,3 +60,9 @@ export interface IValuesAddUserNickForm {
   phone: string;
   balance: number;
 }
+
+export type ThunkApiConfig = {
+  state: RootState;
+  dispatch: AppDispatch;
+  rejectValue: string;
+};

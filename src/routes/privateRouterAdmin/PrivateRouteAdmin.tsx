@@ -1,4 +1,4 @@
-import { admin, Path } from 'constants';
+import { UserRole, Path } from 'constants';
 
 import { FC } from 'react';
 
@@ -10,5 +10,5 @@ import { getRole } from 'store';
 export const PrivateRouteAdmin: FC = () => {
   const role = useAppSelector(getRole);
 
-  return role === admin ? <Outlet /> : <Navigate to={Path.Home} />;
+  return role === UserRole.Admin ? <Outlet /> : <Navigate to={Path.Home} />;
 };
