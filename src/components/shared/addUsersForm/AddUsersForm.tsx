@@ -1,3 +1,5 @@
+import { UserRole } from 'constants';
+
 import { FC } from 'react';
 
 import { Group, Button, TextInput, Box, Flex, Text } from '@mantine/core';
@@ -19,7 +21,7 @@ export const AddUsersForm: FC<Props> = ({ usersCount }) => {
       phone: '',
       nickname: '',
       fullName: '',
-      role: 'user',
+      role: UserRole.User,
       email: '',
       balance: 0,
     },

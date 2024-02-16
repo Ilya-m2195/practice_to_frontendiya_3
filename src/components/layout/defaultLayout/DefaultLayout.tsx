@@ -1,10 +1,11 @@
 import { FC, Suspense } from 'react';
 
-import { AppShell, Burger, Flex } from '@mantine/core';
+import { AppShell, Flex } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Outlet } from 'react-router-dom';
 
 import {
+  Header,
   Navigation,
   SwitchButton,
   SwitchLanguageBtn,
@@ -25,18 +26,11 @@ export const DefaultLayout: FC = () => {
       padding='xl'
     >
       <AppShell.Header p='sm'>
-        {isAuth && <Navigation />}
-        <Burger
-          opened={opened}
-          onClick={toggle}
-          hiddenFrom='sm'
-          size='md'
-          pos='absolute'
-          top={10}
-        />
+        <Header opened={opened} toggle={toggle} />
       </AppShell.Header>
       <AppShell.Navbar p='xl' className='navBar'>
         <Flex direction='column' align='center' gap={20}>
+          {isAuth && <Navigation />}
           <LogOutUser />
           <SwitchButton />
           <SwitchLanguageBtn />

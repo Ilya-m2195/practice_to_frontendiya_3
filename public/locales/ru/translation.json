@@ -24,5 +24,7 @@
   "errorMessage": "Что-то пошло не так! Попробуйте перезагрузить страницу или зайдите позже!",
   "errorMessageNicknameField": "Данный ник уже занят, попробуйте ввести другой",
   "errorMessageEmptyField": "Заполните поле",
-  "errorMessagePageNotFound" : "Страница не найдена"
+  "errorMessagePageNotFound" : "Страница не найдена",
+  "friendSearch": "Поиск друзей...",
+  "nothingFound": "Ничего не найдено"
 }
