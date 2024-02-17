@@ -1,8 +1,8 @@
+import { Path } from 'constants';
+
 import { lazy } from 'react';
 
 import { createBrowserRouter } from 'react-router-dom';
-
-import { Path } from '../constants';
 
 import { PrivateRouteAdmin } from './privateRouterAdmin/PrivateRouteAdmin';
 

@@ -15,6 +15,8 @@ import {
   orderBy,
   limit,
   startAfter,
+  getCountFromServer,
+  QuerySnapshot,
 } from 'firebase/firestore';
 
 import { auth, db } from 'firebase';
@@ -65,29 +67,15 @@ export const updateFirestoreDataById = async <T extends {}>(
   await updateDoc(userDoc, values);
 };
 
-export const getLimitFirestoreData = async (
+export const getFirestoreData = async (
   nameCollection: string,
   nameField: string,
   limitNumber: number,
+  lastVisibleData: Nullable<QuerySnapshot>,
 ): Promise<IReturnGetFirestoreData> => {
-  const allData = await getDocs(collection(db, nameCollection));
-  const lengthData = allData.docs.length;
+  const snapshot = await getCountFromServer(collection(db, nameCollection));
+  const lengthData = snapshot.data().count;
 
-  const data = await getDocs(
-    query(collection(db, nameCollection), orderBy(nameField), limit(limitNumber)),
-  );
-
-  const lastVisible = data.docs[data.docs.length - 1];
-
-  return { data, lastVisible, lengthData };
-};
-
-export const getMoreFirestoreData = async (
-  nameCollection: string,
-  nameField: string,
-  limitNumber: number,
-  lastVisibleData: unknown,
-): Promise<IReturnGetFirestoreData> => {
   const data = await getDocs(
     query(
       collection(db, nameCollection),
@@ -99,11 +87,11 @@ export const getMoreFirestoreData = async (
 
   const lastVisible = data.docs[data.docs.length - 1];
 
-  return { data, lastVisible };
+  return { data, lastVisible, lengthData };
 };
 
 export const checkFieldValueExists = async (
-  nameCollection: string,
+  nameCollection: NamesDBCollection,
   fieldName: string,
   value: string,
 ): Promise<boolean> => {
@@ -111,6 +99,35 @@ export const checkFieldValueExists = async (
   const querySnapshot = await getDocs(docsQuery);
 
   return !querySnapshot.empty;
+};
+
+export const searchData = async (
+  collectionName: NamesDBCollection,
+  fieldName: string,
+  value: string,
+  searchCaseSensitive: boolean,
+): Promise<Array<DocumentData>> => {
+  const collectionRef = collection(db, collectionName);
+  const searchTermLow = searchCaseSensitive ? value : value.toLowerCase();
+
+  const docsQuery = query(
+    collectionRef,
+    where(fieldName, '>=', searchTermLow),
+    where(fieldName, '<=', `${searchTermLow}\uf8ff`),
+    orderBy(fieldName),
+  );
+
+  const querySnapshot = await getDocs(docsQuery);
+
+  if (!querySnapshot || querySnapshot.empty) return [];
+
+  const data: Array<DocumentData> = [];
+
+  querySnapshot.forEach((doc) => {
+    data.push(doc.data());
+  });
+
+  return data;
 };
 
 export const LogOut = async (): Promise<void> => {
@@ -133,6 +150,7 @@ export const logInUser = async ({
   const resultUserInfoData = {
     email: resultUserInfo.user.email!,
     id: resultUserInfo.user.uid,
+    photoURL: resultUserInfo.user.photoURL!,
   };
 
   return { isUser, resultUserInfoData };

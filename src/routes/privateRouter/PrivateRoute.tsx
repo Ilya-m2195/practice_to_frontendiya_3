@@ -1,8 +1,8 @@
+import { Path } from 'constants';
+
 import { FC } from 'react';
 
 import { Navigate, Outlet } from 'react-router-dom';
-
-import { Path } from '../../constants';
 
 import { useAppSelector } from 'hooks';
 import { getIsAuth } from 'store';

@@ -1,9 +1,3 @@
-export const pathHome = '/';
-export const pathUsers = '/users';
-export const pathLogin = '/login';
-export const pathSetNick = '/login/setNick';
-export const pathUserEditing = '/users/editing/';
-export const admin = 'admin';
 export const errorMessageNicknameField = 'Данный ник уже занят, попробуйте ввести другой';
 export const errorMessageEmptyField = 'Заполните поле';
 export const urlPicture =

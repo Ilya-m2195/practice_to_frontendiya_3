@@ -4,6 +4,8 @@ import { Box, Button, Center, Title } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
+import { limit } from './config';
+
 import { UsersTable } from 'components';
 import { useAppDispatch } from 'hooks';
 import {
@@ -14,12 +16,12 @@ import {
 } from 'store';
 
 export const UsersPage: FC = () => {
-  const limit = 2;
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const users = useSelector(getUsers);
-  const usersLength = users.length;
   const lengthAllUsersData = useSelector(getLengthDataUsers);
+
+  const usersLength = users.length;
   const visibleMoreBtn = usersLength < lengthAllUsersData;
   const getMoreDataHandler = (): void => {
     dispatch(getMoreUsersThank({ nickname: 'nickname', limit }));

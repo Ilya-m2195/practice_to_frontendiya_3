@@ -4,6 +4,9 @@
     "es6": true,
     "browser": true
   },
+  "globals": {
+    "Nullable": "writable"
+  },
   "extends": [
     "airbnb",
     "prettier",

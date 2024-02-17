@@ -2,6 +2,9 @@ import { GoogleAuthProvider, GithubAuthProvider } from 'firebase/auth';
 import { QuerySnapshot } from 'firebase/firestore';
 import { NavigateFunction } from 'react-router-dom';
 
+import { UserRole } from '../constants';
+import { AppDispatch, RootState } from '../store';
+
 export interface IInitialState {
   isLoading: boolean;
   isAuth: boolean;
@@ -13,8 +16,10 @@ export interface IInitialState {
   role: string;
   nickname: string;
   errorMessage: string;
+  photoURL: Nullable<string>;
+  searchNickname: string;
   users: Array<IUser>;
-  lastUser: unknown;
+  lastUser: Nullable<QuerySnapshot>;
   lengthDataUsers: number;
 }
 
@@ -22,10 +27,12 @@ export interface IUser {
   phone: string;
   nickname: string;
   fullName: string;
-  role: string;
+  role: UserRole.Admin | UserRole.User;
   email: string;
   id: string;
   balance: number;
+  photoURL: Nullable<string>;
+  searchNickname: string;
 }
 
 export interface IUpdateUser {
@@ -48,6 +55,7 @@ export interface ILogInUserArg {
 export interface IResultUserInfoData {
   email: string;
   id: string;
+  photoURL: Nullable<string>;
 }
 
 export interface IValuesAddUserNickForm {
@@ -58,14 +66,20 @@ export interface IValuesAddUserNickForm {
   balance: number;
 }
 
+export type ThunkApiConfig = {
+  state: RootState;
+  dispatch: AppDispatch;
+  rejectValue: string;
+};
+
 export interface IReturnGetFirestoreData {
   data: QuerySnapshot;
-  lastVisible: unknown;
+  lastVisible: Nullable<QuerySnapshot>;
   lengthData?: number;
 }
 
 export interface IReturnTypeGetUsersThank {
   usersData: Array<IUser>;
-  lastVisible: unknown;
+  lastVisible: Nullable<QuerySnapshot>;
   lengthData?: number;
 }

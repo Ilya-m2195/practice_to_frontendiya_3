@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 
 import { Balance } from '../balance/Balance';
 
-import { headerTableNames } from './config';
+import { headerTableNames, UserColor } from './config';
 
 import { ButtonSort, UserName } from 'components';
 import { useAppSelector, useSortableData } from 'hooks';
@@ -19,10 +19,6 @@ export const UsersTable: FC = () => {
   const { sortUsers, requestSort } = useSortableData(users);
   const { t } = useTranslation();
 
-  const roleColor = (role: string): string => {
-    return role === 'admin' ? '#cf0a4c' : '#1641e7';
-  };
-
   const rowsTables = sortUsers.map((element) => (
     <Table.Tr key={element.id}>
       <Table.Td align='center'>
@@ -31,7 +27,7 @@ export const UsersTable: FC = () => {
         </Link>
       </Table.Td>
       <Table.Td>
-        <Badge color={roleColor(element.role)}>{element.role}</Badge>
+        <Badge color={UserColor[element.role].color}>{element.role}</Badge>
       </Table.Td>
       <Table.Td>{element.nickname}</Table.Td>
       <Table.Td>{element.phone}</Table.Td>

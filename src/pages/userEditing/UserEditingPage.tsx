@@ -1,3 +1,5 @@
+import { UserRole } from 'constants';
+
 import { FC } from 'react';
 
 import { Box, Button, Flex, Select, TextInput, Title } from '@mantine/core';
@@ -7,18 +9,17 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import { validateNickname } from 'helpers';
 import { useAppDispatch, useAppSelector } from 'hooks';
-import { getIsOccupiedNick, getLimitUsersThank, getUsers, updateUserThank } from 'store';
+import { getIsOccupiedNick, updateUserThank } from 'store';
 import { IUpdateUser } from 'types';
 
 export const UserEditingPage: FC = () => {
   const navigate = useNavigate();
+  const { id } = useParams();
+
   const dispatch = useAppDispatch();
   const isOccupiedNick = useAppSelector(getIsOccupiedNick);
 
   const { t } = useTranslation();
-  const { id } = useParams();
-  const users = useAppSelector(getUsers);
-  const limit = users.length;
 
   const goBackHandler = (): void => {
     navigate(-1);
@@ -29,7 +30,6 @@ export const UserEditingPage: FC = () => {
     }
 
     dispatch(updateUserThank({ id, values }));
-    dispatch(getLimitUsersThank({ nickname: 'nickname', limit }));
 
     form.reset();
   };
@@ -39,8 +39,8 @@ export const UserEditingPage: FC = () => {
     initialValues: {
       nickname: '',
       fullName: '',
-      role: 'user',
       phone: '',
+      role: UserRole.User,
     },
     validate: {
       nickname: (value) => validateNickname(dispatch, value, isOccupiedNick),
@@ -69,7 +69,7 @@ export const UserEditingPage: FC = () => {
           />
           <Select
             label={t('role')}
-            data={['user', 'admin']}
+            data={[UserRole.User, UserRole.Admin]}
             {...form.getInputProps('role')}
           />
           <TextInput

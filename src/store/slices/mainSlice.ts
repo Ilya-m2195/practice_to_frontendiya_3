@@ -2,6 +2,8 @@ import { Path, NamesDBCollection } from 'constants';
 
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
+import { handleError } from '../../helpers';
+
 import {
   logInUser,
   LogOut,
@@ -10,8 +12,8 @@ import {
   updateFirestoreDataById,
   deleteFirestoreDataById,
   getFirestoreDataById,
-  getLimitFirestoreData,
-  getMoreFirestoreData,
+  // getLimitFirestoreData,
+  getFirestoreData,
 } from 'api';
 import { AppDispatch, RootState } from 'store';
 import {
@@ -24,11 +26,6 @@ import {
   IReturnTypeGetUsersThank,
 } from 'types';
 
-type ThunkApiConfig = {
-  state: RootState;
-  dispatch: AppDispatch;
-};
-
 const initialState: IInitialState = {
   isLoading: false,
   isAuth: false,
@@ -40,22 +37,27 @@ const initialState: IInitialState = {
   phone: '',
   balance: 0,
   errorMessage: '',
+  photoURL: '',
+  searchNickname: '',
   users: [],
   lastUser: null,
   lengthDataUsers: 0,
 };
 
-const errorHandler = (dispatch: AppDispatch, error: unknown): void => {
-  dispatch(setErrorMessage(error as string));
+export type ThunkApiConfig = {
+  state: RootState;
+  dispatch: AppDispatch;
 };
 
 export const logOutUserThank = createAsyncThunk<void, undefined, ThunkApiConfig>(
   'mainSlice/logOutUser',
-  async (_, { rejectWithValue, dispatch }) => {
+  async (_, { rejectWithValue }) => {
     try {
       await LogOut();
     } catch (error) {
-      return rejectWithValue(errorHandler(dispatch, error));
+      const message = handleError(error as Error);
+
+      return rejectWithValue(message);
     }
   },
 );
@@ -79,7 +81,9 @@ export const logInUserThank = createAsyncThunk<void, ILogInUserArg, ThunkApiConf
         navigate(Path.SetNick);
       }
     } catch (error) {
-      return rejectWithValue(errorHandler(dispatch, error));
+      const message = handleError(error as Error);
+
+      return rejectWithValue(message);
     }
   },
 );
@@ -88,11 +92,13 @@ export const updateUserThank = createAsyncThunk<
   void,
   IUniversalObjectArguments<IUpdateUser>,
   ThunkApiConfig
->('mainSlice/updateUserThank', async ({ id, values }, { rejectWithValue, dispatch }) => {
+>('mainSlice/updateUserThank', async ({ id, values }, { rejectWithValue }) => {
   try {
     await updateFirestoreDataById<IUpdateUser>({ id, values }, NamesDBCollection.Users);
   } catch (error) {
-    return rejectWithValue(errorHandler(dispatch, error));
+    const message = handleError(error as Error);
+
+    return rejectWithValue(message);
   }
 });
 
@@ -105,24 +111,24 @@ export const getLimitUsersThank = createAsyncThunk<
   IReturnTypeGetUsersThank,
   IArguments,
   ThunkApiConfig
->(
-  'mainSlice/getLimitUsersThank',
-  async ({ nickname, limit }, { rejectWithValue, dispatch }) => {
-    try {
-      const { data, lastVisible, lengthData } = await getLimitFirestoreData(
-        NamesDBCollection.Users,
-        nickname,
-        limit!,
-      );
+>('mainSlice/getLimitUsersThank', async ({ nickname, limit }, { rejectWithValue }) => {
+  try {
+    const { data, lastVisible, lengthData } = await getFirestoreData(
+      NamesDBCollection.Users,
+      nickname,
+      limit!,
+      null,
+    );
 
-      const usersData = data.docs.map((doc) => doc.data());
+    const usersData = data.docs.map((doc) => doc.data());
 
-      return { usersData, lastVisible, lengthData } as IReturnTypeGetUsersThank;
-    } catch (error) {
-      return rejectWithValue(errorHandler(dispatch, error));
-    }
-  },
-);
+    return { usersData, lastVisible, lengthData } as IReturnTypeGetUsersThank;
+  } catch (error) {
+    const message = handleError(error as Error);
+
+    return rejectWithValue(message);
+  }
+});
 
 export const getMoreUsersThank = createAsyncThunk<
   IReturnTypeGetUsersThank,
@@ -130,12 +136,12 @@ export const getMoreUsersThank = createAsyncThunk<
   ThunkApiConfig
 >(
   'mainSlice/getMoreUsersThank',
-  async ({ nickname, limit }, { rejectWithValue, dispatch, getState }) => {
+  async ({ nickname, limit }, { rejectWithValue, getState }) => {
     try {
-      const { data, lastVisible } = await getMoreFirestoreData(
+      const { data, lastVisible } = await getFirestoreData(
         NamesDBCollection.Users,
         nickname,
-        limit!,
+        limit,
         getState().main.lastUser,
       );
 
@@ -143,7 +149,9 @@ export const getMoreUsersThank = createAsyncThunk<
 
       return { usersData, lastVisible } as IReturnTypeGetUsersThank;
     } catch (error) {
-      return rejectWithValue(errorHandler(dispatch, error));
+      const message = handleError(error as Error);
+
+      return rejectWithValue(message);
     }
   },
 );
@@ -166,18 +174,22 @@ export const setUserThank = createAsyncThunk<
 
       dispatch(setUser(values));
     } catch (error) {
-      return rejectWithValue(errorHandler(dispatch, error));
+      const message = handleError(error as Error);
+
+      return rejectWithValue(message);
     }
   },
 );
 
 export const deleteUserThank = createAsyncThunk<void, string, ThunkApiConfig>(
   'mainSlice/DeleteUserThank',
-  async (id, { dispatch, rejectWithValue }) => {
+  async (id, { rejectWithValue }) => {
     try {
       await deleteFirestoreDataById(NamesDBCollection.Users, id);
     } catch (error) {
-      return rejectWithValue(errorHandler(dispatch, error));
+      const message = handleError(error as Error);
+
+      return rejectWithValue(message);
     }
   },
 );
@@ -194,7 +206,9 @@ export const isOccupiedNickThank = createAsyncThunk<void, string, ThunkApiConfig
 
       dispatch(setIsOccupiedNick(isOccupiedNick));
     } catch (error) {
-      return rejectWithValue(errorHandler(dispatch, error));
+      const message = handleError(error as Error);
+
+      return rejectWithValue(message);
     }
   },
 );
@@ -210,6 +224,7 @@ const mainReducer = createSlice({
       state.nickname = action.payload.nickname;
       state.phone = action.payload.phone;
       state.balance = action.payload.balance;
+      state.photoURL = action.payload.photoURL;
       state.isAuth = true;
     },
     setErrorMessage: (state, action: PayloadAction<string>) => {
@@ -218,6 +233,7 @@ const mainReducer = createSlice({
     addCurrentEmailId: (state, action: PayloadAction<IResultUserInfoData>) => {
       state.email = action.payload.email!;
       state.id = action.payload.id;
+      state.photoURL = action.payload.photoURL;
     },
     setRole: (state, action) => {
       state.role = action.payload.role;
@@ -310,5 +326,4 @@ const mainReducer = createSlice({
 
 export const { setUser, setRole, addCurrentEmailId, setErrorMessage, setIsOccupiedNick } =
   mainReducer.actions;
-
 export default mainReducer.reducer;
