@@ -10,7 +10,8 @@ import {
   updateFirestoreDataById,
   deleteFirestoreDataById,
   getFirestoreDataById,
-  getFirestoreData,
+  getLimitFirestoreData,
+  getMoreFirestoreData,
 } from 'api';
 import { AppDispatch, RootState } from 'store';
 import {
@@ -20,6 +21,7 @@ import {
   IResultUserInfoData,
   IUniversalObjectArguments,
   IUpdateUser,
+  IReturnTypeGetUsersThank,
 } from 'types';
 
 type ThunkApiConfig = {
@@ -39,6 +41,8 @@ const initialState: IInitialState = {
   balance: 0,
   errorMessage: '',
   users: [],
+  lastUser: null,
+  lengthDataUsers: 0,
 };
 
 const errorHandler = (dispatch: AppDispatch, error: unknown): void => {
@@ -92,20 +96,57 @@ export const updateUserThank = createAsyncThunk<
   }
 });
 
-export const getUsersThank = createAsyncThunk<
-  Array<IUser>,
-  number | undefined,
-  ThunkApiConfig
->('mainSlice/getUsersThank', async (limit, { rejectWithValue, dispatch }) => {
-  try {
-    const result = await getFirestoreData(NamesDBCollection.Users, limit);
-    const usersData = result.docs.map((doc) => doc.data());
+interface IArguments {
+  nickname: string;
+  limit: number;
+}
 
-    return usersData as Array<IUser>;
-  } catch (error) {
-    return rejectWithValue(errorHandler(dispatch, error));
-  }
-});
+export const getLimitUsersThank = createAsyncThunk<
+  IReturnTypeGetUsersThank,
+  IArguments,
+  ThunkApiConfig
+>(
+  'mainSlice/getLimitUsersThank',
+  async ({ nickname, limit }, { rejectWithValue, dispatch }) => {
+    try {
+      const { data, lastVisible, lengthData } = await getLimitFirestoreData(
+        NamesDBCollection.Users,
+        nickname,
+        limit!,
+      );
+
+      const usersData = data.docs.map((doc) => doc.data());
+
+      return { usersData, lastVisible, lengthData } as IReturnTypeGetUsersThank;
+    } catch (error) {
+      return rejectWithValue(errorHandler(dispatch, error));
+    }
+  },
+);
+
+export const getMoreUsersThank = createAsyncThunk<
+  IReturnTypeGetUsersThank,
+  IArguments,
+  ThunkApiConfig
+>(
+  'mainSlice/getMoreUsersThank',
+  async ({ nickname, limit }, { rejectWithValue, dispatch, getState }) => {
+    try {
+      const { data, lastVisible } = await getMoreFirestoreData(
+        NamesDBCollection.Users,
+        nickname,
+        limit!,
+        getState().main.lastUser,
+      );
+
+      const usersData = data.docs.map((doc) => doc.data());
+
+      return { usersData, lastVisible } as IReturnTypeGetUsersThank;
+    } catch (error) {
+      return rejectWithValue(errorHandler(dispatch, error));
+    }
+  },
+);
 
 export const setUserThank = createAsyncThunk<
   void,
@@ -224,12 +265,28 @@ const mainReducer = createSlice({
     builder.addCase(updateUserThank.rejected, (state) => {
       state.isLoading = false;
     });
-    builder.addCase(getUsersThank.pending, (state) => {
+    builder.addCase(getLimitUsersThank.pending, (state) => {
       state.errorMessage = '';
     });
 
-    builder.addCase(getUsersThank.fulfilled, (state, action) => {
-      state.users = action.payload;
+    builder.addCase(getLimitUsersThank.fulfilled, (state, action) => {
+      state.users = action.payload.usersData;
+      state.lastUser = action.payload.lastVisible;
+      state.lengthDataUsers = action.payload.lengthData!;
+    });
+    builder.addCase(getLimitUsersThank.rejected, (state) => {
+      state.isLoading = false;
+    });
+    builder.addCase(getMoreUsersThank.pending, (state) => {
+      state.errorMessage = '';
+    });
+
+    builder.addCase(getMoreUsersThank.fulfilled, (state, action) => {
+      state.users = [...state.users, ...action.payload.usersData];
+      state.lastUser = action.payload.lastVisible;
+    });
+    builder.addCase(getMoreUsersThank.rejected, (state) => {
+      state.isLoading = false;
     });
     builder.addCase(setUserThank.pending, (state) => {
       state.isLoading = true;

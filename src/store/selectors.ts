@@ -10,3 +10,5 @@ export const getIsAuth = (state: RootState): boolean => state.main.isAuth;
 export const getErrorMessage = (state: RootState): string => state.main.errorMessage;
 export const getNickname = (state: RootState): string => state.main.nickname;
 export const getIsOccupiedNick = (state: RootState): boolean => state.main.isOccupiedNick;
+export const getLengthDataUsers = (state: RootState): number =>
+  state.main.lengthDataUsers;

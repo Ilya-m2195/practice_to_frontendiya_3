@@ -1,4 +1,5 @@
 import { GoogleAuthProvider, GithubAuthProvider } from 'firebase/auth';
+import { QuerySnapshot } from 'firebase/firestore';
 import { NavigateFunction } from 'react-router-dom';
 
 export interface IInitialState {
@@ -13,6 +14,8 @@ export interface IInitialState {
   nickname: string;
   errorMessage: string;
   users: Array<IUser>;
+  lastUser: unknown;
+  lengthDataUsers: number;
 }
 
 export interface IUser {
@@ -29,6 +32,7 @@ export interface IUpdateUser {
   fullName: string;
   nickname: string;
   role: string;
+  phone: string;
 }
 
 export interface IUniversalObjectArguments<T> {
@@ -52,4 +56,16 @@ export interface IValuesAddUserNickForm {
   role: string;
   phone: string;
   balance: number;
+}
+
+export interface IReturnGetFirestoreData {
+  data: QuerySnapshot;
+  lastVisible: unknown;
+  lengthData?: number;
+}
+
+export interface IReturnTypeGetUsersThank {
+  usersData: Array<IUser>;
+  lastVisible: unknown;
+  lengthData?: number;
 }

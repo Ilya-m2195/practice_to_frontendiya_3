@@ -3,7 +3,6 @@ import { NamesDBCollection } from 'constants';
 import { signInWithPopup, signOut } from 'firebase/auth';
 import {
   DocumentData,
-  QuerySnapshot,
   deleteDoc,
   doc,
   getDoc,
@@ -12,12 +11,19 @@ import {
   setDoc,
   updateDoc,
   where,
-  limit,
   collection,
+  orderBy,
+  limit,
+  startAfter,
 } from 'firebase/firestore';
 
 import { auth, db } from 'firebase';
-import { ILogInUserArg, IResultUserInfoData, IUniversalObjectArguments } from 'types';
+import {
+  ILogInUserArg,
+  IResultUserInfoData,
+  IReturnGetFirestoreData,
+  IUniversalObjectArguments,
+} from 'types';
 
 export const setFirestoreData = async <T extends {}>(
   nameCollection: string,
@@ -59,21 +65,41 @@ export const updateFirestoreDataById = async <T extends {}>(
   await updateDoc(userDoc, values);
 };
 
-export const getFirestoreData = async (
+export const getLimitFirestoreData = async (
   nameCollection: string,
-  limitNumber?: number,
-): Promise<QuerySnapshot> => {
-  let data;
+  nameField: string,
+  limitNumber: number,
+): Promise<IReturnGetFirestoreData> => {
+  const allData = await getDocs(collection(db, nameCollection));
+  const lengthData = allData.docs.length;
 
-  if (limitNumber) {
-    data = await getDocs(query(collection(db, nameCollection), limit(limitNumber)));
+  const data = await getDocs(
+    query(collection(db, nameCollection), orderBy(nameField), limit(limitNumber)),
+  );
 
-    return data;
-  }
+  const lastVisible = data.docs[data.docs.length - 1];
 
-  data = await getDocs(collection(db, nameCollection));
+  return { data, lastVisible, lengthData };
+};
 
-  return data;
+export const getMoreFirestoreData = async (
+  nameCollection: string,
+  nameField: string,
+  limitNumber: number,
+  lastVisibleData: unknown,
+): Promise<IReturnGetFirestoreData> => {
+  const data = await getDocs(
+    query(
+      collection(db, nameCollection),
+      orderBy(nameField),
+      startAfter(lastVisibleData),
+      limit(limitNumber),
+    ),
+  );
+
+  const lastVisible = data.docs[data.docs.length - 1];
+
+  return { data, lastVisible };
 };
 
 export const checkFieldValueExists = async (

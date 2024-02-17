@@ -1,19 +1,35 @@
 import { FC, useEffect } from 'react';
 
-import { Box, Title } from '@mantine/core';
+import { Box, Button, Center, Title } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 
 import { UsersTable } from 'components';
 import { useAppDispatch } from 'hooks';
-import { getUsersThank } from 'store';
+import {
+  getLengthDataUsers,
+  getLimitUsersThank,
+  getMoreUsersThank,
+  getUsers,
+} from 'store';
 
 export const UsersPage: FC = () => {
+  const limit = 2;
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
+  const users = useSelector(getUsers);
+  const usersLength = users.length;
+  const lengthAllUsersData = useSelector(getLengthDataUsers);
+  const visibleMoreBtn = usersLength < lengthAllUsersData;
+  const getMoreDataHandler = (): void => {
+    dispatch(getMoreUsersThank({ nickname: 'nickname', limit }));
+  };
 
   useEffect(() => {
-    dispatch(getUsersThank());
-  }, []);
+    if (!usersLength) {
+      dispatch(getLimitUsersThank({ nickname: 'nickname', limit }));
+    }
+  }, [limit]);
 
   return (
     <Box>
@@ -21,6 +37,11 @@ export const UsersPage: FC = () => {
         {t('clients')}
       </Title>
       <UsersTable />
+      {visibleMoreBtn && (
+        <Center mt='30'>
+          <Button onClick={getMoreDataHandler}>{t('showMore')}</Button>
+        </Center>
+      )}
     </Box>
   );
 };

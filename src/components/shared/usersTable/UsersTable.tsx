@@ -2,9 +2,11 @@ import { Path } from 'constants';
 
 import { FC } from 'react';
 
-import { Flex, Table, Text } from '@mantine/core';
+import { Badge, Flex, Table, Text } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+
+import { Balance } from '../balance/Balance';
 
 import { headerTableNames } from './config';
 
@@ -17,6 +19,10 @@ export const UsersTable: FC = () => {
   const { sortUsers, requestSort } = useSortableData(users);
   const { t } = useTranslation();
 
+  const roleColor = (role: string): string => {
+    return role === 'admin' ? '#cf0a4c' : '#1641e7';
+  };
+
   const rowsTables = sortUsers.map((element) => (
     <Table.Tr key={element.id}>
       <Table.Td align='center'>
@@ -24,19 +30,23 @@ export const UsersTable: FC = () => {
           <UserName name={element.fullName} />
         </Link>
       </Table.Td>
-      <Table.Td align='center'>{element.role}</Table.Td>
-      <Table.Td align='center'>{element.nickname}</Table.Td>
-      <Table.Td align='center'>{element.phone}</Table.Td>
-      <Table.Td align='center'>{element.email}</Table.Td>
-      <Table.Td align='center'>{element.balance}</Table.Td>
+      <Table.Td>
+        <Badge color={roleColor(element.role)}>{element.role}</Badge>
+      </Table.Td>
+      <Table.Td>{element.nickname}</Table.Td>
+      <Table.Td>{element.phone}</Table.Td>
+      <Table.Td>{element.email}</Table.Td>
+      <Table.Td>
+        <Balance NumberCoins={element.balance} />
+      </Table.Td>
     </Table.Tr>
   ));
 
   const headerTable = headerTableNames.map((el) => {
     return (
       <Table.Th key={el}>
-        <Flex wrap='nowrap' gap={5} align='center'>
-          <Text w={80}> {t(el)} </Text>
+        <Flex wrap='nowrap' gap={5} align='start'>
+          <Text mr='16'> {t(el)} </Text>
           <ButtonSort nameField={el} requestSort={requestSort} />
         </Flex>
       </Table.Th>
@@ -46,7 +56,7 @@ export const UsersTable: FC = () => {
   return (
     users && (
       <Table.ScrollContainer minWidth={766}>
-        <Table horizontalSpacing='xl' withColumnBorders>
+        <Table horizontalSpacing='sm' striped>
           <Table.Thead>
             <Table.Tr>{headerTable}</Table.Tr>
           </Table.Thead>
