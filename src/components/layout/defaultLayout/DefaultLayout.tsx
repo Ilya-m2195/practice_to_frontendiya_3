@@ -1,10 +1,11 @@
 import { FC, Suspense } from 'react';
 
 import { AppShell, Flex } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
+import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { Outlet } from 'react-router-dom';
 
 import {
+  SearchInput,
   Header,
   Navigation,
   SwitchButton,
@@ -17,7 +18,9 @@ import { getIsAuth } from 'store';
 
 export const DefaultLayout: FC = () => {
   const isAuth = useAppSelector(getIsAuth);
+
   const [opened, { toggle }] = useDisclosure();
+  const matches = useMediaQuery('(max-width: 767.5px)');
 
   return (
     <AppShell
@@ -30,10 +33,11 @@ export const DefaultLayout: FC = () => {
       </AppShell.Header>
       <AppShell.Navbar p='xl' className='navBar'>
         <Flex direction='column' align='center' gap={20}>
+          {matches && <SearchInput />}
           {isAuth && <Navigation />}
           <LogOutUser />
-          <SwitchButton />
-          <SwitchLanguageBtn />
+          {matches && <SwitchButton />}
+          {matches && <SwitchLanguageBtn />}
         </Flex>
       </AppShell.Navbar>
       <AppShell.Main>

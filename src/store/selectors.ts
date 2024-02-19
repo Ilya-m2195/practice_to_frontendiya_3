@@ -12,6 +12,7 @@ export const getRole = (state: RootState): string => state.main.role;
 export const getIsAuth = (state: RootState): boolean => state.main.isAuth;
 export const getErrorMessage = (state: RootState): string => state.main.errorMessage;
 export const getNickname = (state: RootState): string => state.main.nickname;
+export const getBalance = (state: RootState): number => state.main.balance;
 export const getIsOccupiedNick = (state: RootState): boolean => state.main.isOccupiedNick;
 export const getSearchData = (state: RootState): Nullable<DocumentData[]> =>
   state.search.data;
