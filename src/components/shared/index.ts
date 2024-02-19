@@ -13,3 +13,5 @@ export * from 'components/shared/switchButton/SwitchButton';
 export * from 'components/shared/switchLanguageBtn/SwitchLanguageBtn';
 export * from 'components/shared/userName/UserName';
 export * from 'components/shared/usersTable/UsersTable';
+export * from 'components/shared/svgSprite/SvgSprite';
+export * from 'components/shared/userInfoHeader/UserInfoHeader';

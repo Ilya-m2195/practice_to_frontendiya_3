@@ -1,8 +1,19 @@
+import { Path } from 'constants';
+
 import { FC } from 'react';
 
-import { Burger } from '@mantine/core';
+import { Flex, Burger } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
+import { Link } from 'react-router-dom';
 
-import { SearchInput } from 'components';
+import {
+  SearchInput,
+  SwitchButton,
+  SwitchLanguageBtn,
+  SvgSprite,
+  UserInfoHeader,
+} from 'components';
+import styles from 'components/widget/header/header.module.css';
 import { useAppSelector } from 'hooks';
 import { getIsAuth } from 'store';
 
@@ -14,17 +25,27 @@ interface IProps {
 export const Header: FC<IProps> = ({ opened, toggle }) => {
   const isAuth = useAppSelector(getIsAuth);
 
+  const matches = useMediaQuery('(min-width: 768px)');
+
   return (
-    <>
-      {isAuth && <SearchInput />}
-      <Burger
-        opened={opened}
-        onClick={toggle}
-        hiddenFrom='sm'
-        size='md'
-        pos='absolute'
-        top={10}
-      />
-    </>
+    <Flex direction='row' gap={{ base: 'sm', sm: 'lg' }} justify='space-between'>
+      <Link
+        className={styles.logo}
+        aria-label='logo'
+        role='link'
+        aria-current='page'
+        to={Path.Home}
+      >
+        <SvgSprite id='logo' size={['109', '27']} color='#fffff' />
+      </Link>
+
+      <Flex align='center' gap='sm'>
+        {isAuth && matches && <SearchInput />}
+        {matches && <SwitchLanguageBtn />}
+        {matches && <SwitchButton />}
+        {isAuth && <UserInfoHeader />}
+        <Burger opened={opened} onClick={toggle} hiddenFrom='sm' size='md' />
+      </Flex>
+    </Flex>
   );
 };

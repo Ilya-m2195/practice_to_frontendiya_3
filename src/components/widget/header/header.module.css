@@ -1,0 +1,16 @@
+.logo {
+    transform: scale(1);
+    transition: transform 0.3s ease-in-out;
+}
+
+@media (hover: hover) {
+    .logo:hover {
+       transform: scale(1.1);
+    }
+}
+
+@media (pointer: coarse) {
+    .logo:active {
+        transform: scale(1.1);
+    }
+}
