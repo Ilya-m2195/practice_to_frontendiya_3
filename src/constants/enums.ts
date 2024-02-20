@@ -10,8 +10,8 @@ export enum UsersKeys {
 }
 
 export enum Languages {
-  En = 'en',
-  Ru = 'ru',
+  En = 'EN',
+  Ru = 'RU',
 }
 
 export enum NamesActiveStyles {
@@ -40,4 +40,5 @@ export enum Path {
   SetNick = '/set-nick',
   UserEditing = '/editing/',
   Admin = '/admin',
+  Profile = '/profile',
 }

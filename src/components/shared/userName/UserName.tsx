@@ -6,12 +6,15 @@ import { Avatar, Group, Text } from '@mantine/core';
 
 type Props = {
   name: string;
+  photoURL: Nullable<string>;
 };
 
-export const UserName: FC<Props> = ({ name }) => {
+export const UserName: FC<Props> = ({ name, photoURL }) => {
+  const avatar = photoURL || urlPicture;
+
   return (
     <Group>
-      <Avatar src={urlPicture} />
+      <Avatar src={avatar} />
       <Text>{name}</Text>
     </Group>
   );

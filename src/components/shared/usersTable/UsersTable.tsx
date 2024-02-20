@@ -23,7 +23,7 @@ export const UsersTable: FC = () => {
     <Table.Tr key={element.id}>
       <Table.Td align='center'>
         <Link to={`${Path.UserEditing}${element.id}`}>
-          <UserName name={element.fullName} />
+          <UserName name={element.fullName} photoURL={element.photoURL} />
         </Link>
       </Table.Td>
       <Table.Td>
