@@ -2,7 +2,7 @@ import { UserRole, NamesActiveStyles, Path } from 'constants';
 
 import { FC } from 'react';
 
-import { Group } from '@mantine/core';
+import { Flex } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import { NavLink } from 'react-router-dom';
 
@@ -13,10 +13,11 @@ import { getRole } from 'store';
 
 export const Navigation: FC = () => {
   const currentUserRole = useAppSelector(getRole);
+
   const { t } = useTranslation();
 
   return (
-    <Group justify='center'>
+    <Flex justify='center' align-items='center' direction='column'>
       <NavLink to={Path.Home} className={NamesActiveStyles.ItemStyle}>
         {t('home')}
       </NavLink>
@@ -25,6 +26,6 @@ export const Navigation: FC = () => {
           {t('users')}
         </NavLink>
       )}
-    </Group>
+    </Flex>
   );
 };

@@ -21,7 +21,7 @@ export const SwitchButton: FC = () => {
 
   return (
     <Switch
-      size='xl'
+      size='md'
       color='dark.4'
       onClick={setColorTheme}
       onLabel={sunIcon}
