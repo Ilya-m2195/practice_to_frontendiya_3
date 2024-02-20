@@ -1,4 +1,4 @@
-import { gold } from 'constants';
+import { blue, gold, red } from 'constants';
 
 import React from 'react';
 
@@ -17,6 +17,8 @@ const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 const theme = createTheme({
   colors: {
     gold,
+    red,
+    blue,
   },
 });
 

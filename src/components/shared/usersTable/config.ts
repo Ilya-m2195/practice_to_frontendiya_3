@@ -9,17 +9,10 @@ export const headerTableNames = [
   UsersKeys.Balance,
 ];
 
-export const colorBlue = '#0053fa';
-
-export const colorRed = '#f71919';
-
-interface IColor {
-  color: string;
-}
-
 type TRole = UserRole.Admin | UserRole.User;
+type TColor = 'red' | 'blue';
 
-export const UserColor: Record<TRole, IColor> = {
-  admin: { color: colorRed },
-  user: { color: colorBlue },
+export const UserColor: Record<TRole, TColor> = {
+  admin: 'red',
+  user: 'blue',
 };

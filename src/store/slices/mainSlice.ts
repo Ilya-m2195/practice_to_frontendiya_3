@@ -12,7 +12,6 @@ import {
   updateFirestoreDataById,
   deleteFirestoreDataById,
   getFirestoreDataById,
-  // getLimitFirestoreData,
   getFirestoreData,
 } from 'api';
 import { AppDispatch, RootState } from 'store';
@@ -227,16 +226,10 @@ const mainReducer = createSlice({
       state.photoURL = action.payload.photoURL;
       state.isAuth = true;
     },
-    setErrorMessage: (state, action: PayloadAction<string>) => {
-      state.errorMessage = action.payload;
-    },
     addCurrentEmailId: (state, action: PayloadAction<IResultUserInfoData>) => {
       state.email = action.payload.email!;
       state.id = action.payload.id;
       state.photoURL = action.payload.photoURL;
-    },
-    setRole: (state, action) => {
-      state.role = action.payload.role;
     },
     setIsOccupiedNick: (state, action: PayloadAction<boolean>) => {
       state.isOccupiedNick = action.payload;
@@ -324,6 +317,5 @@ const mainReducer = createSlice({
   },
 });
 
-export const { setUser, setRole, addCurrentEmailId, setErrorMessage, setIsOccupiedNick } =
-  mainReducer.actions;
+export const { setUser, addCurrentEmailId, setIsOccupiedNick } = mainReducer.actions;
 export default mainReducer.reducer;

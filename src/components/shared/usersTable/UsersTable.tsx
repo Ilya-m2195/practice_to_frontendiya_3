@@ -27,7 +27,7 @@ export const UsersTable: FC = () => {
         </Link>
       </Table.Td>
       <Table.Td>
-        <Badge color={UserColor[element.role].color}>{element.role}</Badge>
+        <Badge color={UserColor[element.role]}>{element.role}</Badge>
       </Table.Td>
       <Table.Td>{element.nickname}</Table.Td>
       <Table.Td>{element.phone}</Table.Td>
