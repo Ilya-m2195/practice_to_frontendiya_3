@@ -1,4 +1,4 @@
-import { UsersKeys } from 'constants/enums';
+import { UsersKeys, UserRole } from 'constants/enums';
 
 export const headerTableNames = [
   UsersKeys.FullName,
@@ -8,3 +8,11 @@ export const headerTableNames = [
   UsersKeys.Email,
   UsersKeys.Balance,
 ];
+
+type TRole = UserRole.Admin | UserRole.User;
+type TColor = 'red' | 'blue';
+
+export const UserColor: Record<TRole, TColor> = {
+  admin: 'red',
+  user: 'blue',
+};

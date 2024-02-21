@@ -14,11 +14,12 @@ import { IUpdateUser } from 'types';
 
 export const UserEditingPage: FC = () => {
   const navigate = useNavigate();
+  const { id } = useParams();
+
   const dispatch = useAppDispatch();
   const isOccupiedNick = useAppSelector(getIsOccupiedNick);
 
   const { t } = useTranslation();
-  const { id } = useParams();
 
   const goBackHandler = (): void => {
     navigate(-1);
@@ -29,6 +30,7 @@ export const UserEditingPage: FC = () => {
     }
 
     dispatch(updateUserThank({ id, values }));
+
     form.reset();
   };
 
@@ -37,6 +39,7 @@ export const UserEditingPage: FC = () => {
     initialValues: {
       nickname: '',
       fullName: '',
+      phone: '',
       role: UserRole.User,
     },
     validate: {
@@ -46,12 +49,12 @@ export const UserEditingPage: FC = () => {
 
   return (
     <Box>
-      <Button mb='md' onClick={goBackHandler}>
-        {t('backToClients')}
-      </Button>
-      <Title mb='md' order={2}>
+      <Title mb='xl' order={2}>
         {t('clientEditing')}
       </Title>
+      <Button mb='lg' onClick={goBackHandler}>
+        {t('backToClients')}
+      </Button>
       <form onSubmit={form.onSubmit(onSubmitHandler)}>
         <Flex gap='md' align='end' wrap='wrap'>
           <TextInput
@@ -68,6 +71,12 @@ export const UserEditingPage: FC = () => {
             label={t('role')}
             data={[UserRole.User, UserRole.Admin]}
             {...form.getInputProps('role')}
+          />
+          <TextInput
+            disabled
+            label={t('phone')}
+            placeholder='+7-999-999-99-99'
+            {...form.getInputProps('phone')}
           />
           <Button type='submit'>{t('save')}</Button>
         </Flex>

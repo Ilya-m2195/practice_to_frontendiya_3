@@ -1,6 +1,8 @@
 import { GoogleAuthProvider, GithubAuthProvider } from 'firebase/auth';
+import { QuerySnapshot } from 'firebase/firestore';
 import { NavigateFunction } from 'react-router-dom';
 
+import { UserRole } from '../constants';
 import { AppDispatch, RootState } from '../store';
 
 export interface IInitialState {
@@ -17,13 +19,15 @@ export interface IInitialState {
   photoURL: Nullable<string>;
   searchNickname: string;
   users: Array<IUser>;
+  lastUser: Nullable<QuerySnapshot>;
+  lengthDataUsers: number;
 }
 
 export interface IUser {
   phone: string;
   nickname: string;
   fullName: string;
-  role: string;
+  role: UserRole.Admin | UserRole.User;
   email: string;
   id: string;
   balance: number;
@@ -35,6 +39,7 @@ export interface IUpdateUser {
   fullName: string;
   nickname: string;
   role: string;
+  phone: string;
 }
 
 export interface IUniversalObjectArguments<T> {
@@ -66,3 +71,15 @@ export type ThunkApiConfig = {
   dispatch: AppDispatch;
   rejectValue: string;
 };
+
+export interface IReturnGetFirestoreData {
+  data: QuerySnapshot;
+  lastVisible: Nullable<QuerySnapshot>;
+  lengthData?: number;
+}
+
+export interface IReturnTypeGetUsersThank {
+  usersData: Array<IUser>;
+  lastVisible: Nullable<QuerySnapshot>;
+  lengthData?: number;
+}

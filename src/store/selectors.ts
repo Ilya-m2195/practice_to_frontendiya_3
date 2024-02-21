@@ -14,5 +14,7 @@ export const getErrorMessage = (state: RootState): string => state.main.errorMes
 export const getNickname = (state: RootState): string => state.main.nickname;
 export const getBalance = (state: RootState): number => state.main.balance;
 export const getIsOccupiedNick = (state: RootState): boolean => state.main.isOccupiedNick;
+export const getLengthDataUsers = (state: RootState): number =>
+  state.main.lengthDataUsers;
 export const getSearchData = (state: RootState): Nullable<DocumentData[]> =>
   state.search.data;

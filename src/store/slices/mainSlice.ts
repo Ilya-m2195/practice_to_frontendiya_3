@@ -2,6 +2,8 @@ import { Path, NamesDBCollection } from 'constants';
 
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
+import { handleError } from '../../helpers';
+
 import {
   logInUser,
   LogOut,
@@ -20,6 +22,7 @@ import {
   IResultUserInfoData,
   IUniversalObjectArguments,
   IUpdateUser,
+  IReturnTypeGetUsersThank,
 } from 'types';
 
 const initialState: IInitialState = {
@@ -36,6 +39,8 @@ const initialState: IInitialState = {
   photoURL: '',
   searchNickname: '',
   users: [],
+  lastUser: null,
+  lengthDataUsers: 0,
 };
 
 export type ThunkApiConfig = {
@@ -43,17 +48,15 @@ export type ThunkApiConfig = {
   dispatch: AppDispatch;
 };
 
-const errorHandler = (dispatch: AppDispatch, error: unknown): void => {
-  dispatch(setErrorMessage(error as string));
-};
-
 export const logOutUserThank = createAsyncThunk<void, undefined, ThunkApiConfig>(
   'mainSlice/logOutUser',
-  async (_, { rejectWithValue, dispatch }) => {
+  async (_, { rejectWithValue }) => {
     try {
       await LogOut();
     } catch (error) {
-      return rejectWithValue(errorHandler(dispatch, error));
+      const message = handleError(error as Error);
+
+      return rejectWithValue(message);
     }
   },
 );
@@ -77,7 +80,9 @@ export const logInUserThank = createAsyncThunk<void, ILogInUserArg, ThunkApiConf
         navigate(Path.SetNick);
       }
     } catch (error) {
-      return rejectWithValue(errorHandler(dispatch, error));
+      const message = handleError(error as Error);
+
+      return rejectWithValue(message);
     }
   },
 );
@@ -86,28 +91,69 @@ export const updateUserThank = createAsyncThunk<
   void,
   IUniversalObjectArguments<IUpdateUser>,
   ThunkApiConfig
->('mainSlice/updateUserThank', async ({ id, values }, { rejectWithValue, dispatch }) => {
+>('mainSlice/updateUserThank', async ({ id, values }, { rejectWithValue }) => {
   try {
     await updateFirestoreDataById<IUpdateUser>({ id, values }, NamesDBCollection.Users);
   } catch (error) {
-    return rejectWithValue(errorHandler(dispatch, error));
+    const message = handleError(error as Error);
+
+    return rejectWithValue(message);
   }
 });
 
-export const getUsersThank = createAsyncThunk<
-  Array<IUser>,
-  number | undefined,
+interface IArguments {
+  nickname: string;
+  limit: number;
+}
+
+export const getLimitUsersThank = createAsyncThunk<
+  IReturnTypeGetUsersThank,
+  IArguments,
   ThunkApiConfig
->('mainSlice/getUsersThank', async (limit, { rejectWithValue, dispatch }) => {
+>('mainSlice/getLimitUsersThank', async ({ nickname, limit }, { rejectWithValue }) => {
   try {
-    const result = await getFirestoreData(NamesDBCollection.Users, limit);
-    const usersData = result.docs.map((doc) => doc.data());
+    const { data, lastVisible, lengthData } = await getFirestoreData(
+      NamesDBCollection.Users,
+      nickname,
+      limit!,
+      null,
+    );
 
-    return usersData as Array<IUser>;
+    const usersData = data.docs.map((doc) => doc.data());
+
+    return { usersData, lastVisible, lengthData } as IReturnTypeGetUsersThank;
   } catch (error) {
-    return rejectWithValue(errorHandler(dispatch, error));
+    const message = handleError(error as Error);
+
+    return rejectWithValue(message);
   }
 });
+
+export const getMoreUsersThank = createAsyncThunk<
+  IReturnTypeGetUsersThank,
+  IArguments,
+  ThunkApiConfig
+>(
+  'mainSlice/getMoreUsersThank',
+  async ({ nickname, limit }, { rejectWithValue, getState }) => {
+    try {
+      const { data, lastVisible } = await getFirestoreData(
+        NamesDBCollection.Users,
+        nickname,
+        limit,
+        getState().main.lastUser,
+      );
+
+      const usersData = data.docs.map((doc) => doc.data());
+
+      return { usersData, lastVisible } as IReturnTypeGetUsersThank;
+    } catch (error) {
+      const message = handleError(error as Error);
+
+      return rejectWithValue(message);
+    }
+  },
+);
 
 export const setUserThank = createAsyncThunk<
   void,
@@ -127,18 +173,22 @@ export const setUserThank = createAsyncThunk<
 
       dispatch(setUser(values));
     } catch (error) {
-      return rejectWithValue(errorHandler(dispatch, error));
+      const message = handleError(error as Error);
+
+      return rejectWithValue(message);
     }
   },
 );
 
 export const deleteUserThank = createAsyncThunk<void, string, ThunkApiConfig>(
   'mainSlice/DeleteUserThank',
-  async (id, { dispatch, rejectWithValue }) => {
+  async (id, { rejectWithValue }) => {
     try {
       await deleteFirestoreDataById(NamesDBCollection.Users, id);
     } catch (error) {
-      return rejectWithValue(errorHandler(dispatch, error));
+      const message = handleError(error as Error);
+
+      return rejectWithValue(message);
     }
   },
 );
@@ -155,7 +205,9 @@ export const isOccupiedNickThank = createAsyncThunk<void, string, ThunkApiConfig
 
       dispatch(setIsOccupiedNick(isOccupiedNick));
     } catch (error) {
-      return rejectWithValue(errorHandler(dispatch, error));
+      const message = handleError(error as Error);
+
+      return rejectWithValue(message);
     }
   },
 );
@@ -174,16 +226,10 @@ const mainReducer = createSlice({
       state.photoURL = action.payload.photoURL;
       state.isAuth = true;
     },
-    setErrorMessage: (state, action: PayloadAction<string>) => {
-      state.errorMessage = action.payload;
-    },
     addCurrentEmailId: (state, action: PayloadAction<IResultUserInfoData>) => {
       state.email = action.payload.email!;
       state.id = action.payload.id;
       state.photoURL = action.payload.photoURL;
-    },
-    setRole: (state, action) => {
-      state.role = action.payload.role;
     },
     setIsOccupiedNick: (state, action: PayloadAction<boolean>) => {
       state.isOccupiedNick = action.payload;
@@ -228,12 +274,28 @@ const mainReducer = createSlice({
     builder.addCase(updateUserThank.rejected, (state) => {
       state.isLoading = false;
     });
-    builder.addCase(getUsersThank.pending, (state) => {
+    builder.addCase(getLimitUsersThank.pending, (state) => {
       state.errorMessage = '';
     });
 
-    builder.addCase(getUsersThank.fulfilled, (state, action) => {
-      state.users = action.payload;
+    builder.addCase(getLimitUsersThank.fulfilled, (state, action) => {
+      state.users = action.payload.usersData;
+      state.lastUser = action.payload.lastVisible;
+      state.lengthDataUsers = action.payload.lengthData!;
+    });
+    builder.addCase(getLimitUsersThank.rejected, (state) => {
+      state.isLoading = false;
+    });
+    builder.addCase(getMoreUsersThank.pending, (state) => {
+      state.errorMessage = '';
+    });
+
+    builder.addCase(getMoreUsersThank.fulfilled, (state, action) => {
+      state.users = [...state.users, ...action.payload.usersData];
+      state.lastUser = action.payload.lastVisible;
+    });
+    builder.addCase(getMoreUsersThank.rejected, (state) => {
+      state.isLoading = false;
     });
     builder.addCase(setUserThank.pending, (state) => {
       state.isLoading = true;
@@ -255,6 +317,5 @@ const mainReducer = createSlice({
   },
 });
 
-export const { setUser, setRole, addCurrentEmailId, setErrorMessage, setIsOccupiedNick } =
-  mainReducer.actions;
+export const { setUser, addCurrentEmailId, setIsOccupiedNick } = mainReducer.actions;
 export default mainReducer.reducer;
