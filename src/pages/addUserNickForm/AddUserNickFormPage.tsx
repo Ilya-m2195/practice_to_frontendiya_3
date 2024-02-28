@@ -1,5 +1,3 @@
-import { UserRole } from 'constants';
-
 import { FC } from 'react';
 
 import { Button, TextInput, Box, Group } from '@mantine/core';
@@ -7,17 +5,29 @@ import { useForm } from '@mantine/form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
+import { UserRole } from 'constant';
 import { validateNickname } from 'helpers';
 import { useAppDispatch, useAppSelector } from 'hooks';
-import { getEmail, getId, getIsOccupiedNick, getPhotoURl } from 'store';
-import { setUserThank } from 'store/slices/mainSlice';
+import {
+  getCreatedAt,
+  getEmail,
+  getFullName,
+  getId,
+  getIsOccupiedNick,
+  getPhotoURl,
+  getSteam,
+  setUserThank,
+} from 'store';
 import { IValuesAddUserNickForm } from 'types';
 
 export const AddUserNickFormPage: FC = () => {
   const id = useAppSelector(getId);
   const email = useAppSelector(getEmail);
   const photoURL = useAppSelector(getPhotoURl);
+  const fullName = useAppSelector(getFullName);
+  const createdAt = useAppSelector(getCreatedAt);
   const isOccupiedNick = useAppSelector(getIsOccupiedNick);
+  const steam = useAppSelector(getSteam);
   const dispatch = useAppDispatch();
 
   const goBackHandler = (): void => {
@@ -29,7 +39,6 @@ export const AddUserNickFormPage: FC = () => {
     nickname,
     balance,
     phone,
-    fullName,
   }: IValuesAddUserNickForm): void => {
     const searchNickname = nickname.toLowerCase();
 
@@ -43,6 +52,8 @@ export const AddUserNickFormPage: FC = () => {
       fullName,
       photoURL,
       searchNickname,
+      createdAt,
+      steam,
     };
 
     dispatch(setUserThank({ id, values }));
@@ -55,7 +66,6 @@ export const AddUserNickFormPage: FC = () => {
   const form = useForm({
     validateInputOnChange: ['nickname'],
     initialValues: {
-      fullName: '',
       nickname: '',
       role: UserRole.User,
       phone: '',

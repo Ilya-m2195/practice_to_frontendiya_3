@@ -1,9 +1,10 @@
-import { UsersKeys, NamesDBCollection } from 'constants';
-
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { DocumentData } from 'firebase/firestore';
 
+import { setErrorMessage } from '../appSlice/appSlice';
+
 import { searchData } from 'api';
+import { UsersKeys, NamesDBCollection } from 'constant';
 import { handleError } from 'helpers';
 import { ThunkApiConfig } from 'types';
 
@@ -42,7 +43,7 @@ export const searchDataThank = createAsyncThunk<
   Nullable<DocumentData[]>,
   string,
   ThunkApiConfig
->('mainSlice/searchDataThank', async (searchValue, { rejectWithValue }) => {
+>('userSlice/searchDataThank', async (searchValue, { dispatch, rejectWithValue }) => {
   try {
     const responseData = await searchData(
       NamesDBCollection.Users,
@@ -58,6 +59,8 @@ export const searchDataThank = createAsyncThunk<
     return responseData;
   } catch (error) {
     const message = handleError(error as Error);
+
+    dispatch(setErrorMessage(message));
 
     return rejectWithValue(message);
   }

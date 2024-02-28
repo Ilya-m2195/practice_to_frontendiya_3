@@ -1,5 +1,3 @@
-import { UserRole } from 'constants';
-
 import { FC } from 'react';
 
 import { Box, Button, Flex, Select, TextInput, Title } from '@mantine/core';
@@ -7,6 +5,7 @@ import { useForm } from '@mantine/form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 
+import { UserRole } from 'constant';
 import { validateNickname } from 'helpers';
 import { useAppDispatch, useAppSelector } from 'hooks';
 import { getIsOccupiedNick, updateUserThank } from 'store';

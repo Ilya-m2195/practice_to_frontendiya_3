@@ -1,8 +1,8 @@
-import { urlPicture } from 'constants';
-
 import { FC } from 'react';
 
 import { Avatar, Group, Text } from '@mantine/core';
+
+import { urlPicture } from 'constant';
 
 type Props = {
   name: string;

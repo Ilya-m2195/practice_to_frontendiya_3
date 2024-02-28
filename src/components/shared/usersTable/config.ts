@@ -1,4 +1,4 @@
-import { UsersKeys, UserRole } from 'constants/enums';
+import { UsersKeys, UserRole } from 'constant';
 
 export const headerTableNames = [
   UsersKeys.FullName,

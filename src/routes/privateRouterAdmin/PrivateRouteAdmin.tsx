@@ -1,9 +1,8 @@
-import { UserRole, Path } from 'constants';
-
 import { FC } from 'react';
 
 import { Navigate, Outlet } from 'react-router-dom';
 
+import { UserRole, Path } from 'constant';
 import { useAppSelector } from 'hooks';
 import { getRole } from 'store';
 

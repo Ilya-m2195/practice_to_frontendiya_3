@@ -1,5 +1,3 @@
-import { Path } from 'constants';
-
 import { FC } from 'react';
 
 import { Flex, Burger } from '@mantine/core';
@@ -14,6 +12,7 @@ import {
   UserInfoHeader,
 } from 'components';
 import styles from 'components/widget/header/header.module.css';
+import { Path } from 'constant';
 import { useAppSelector } from 'hooks';
 import { getIsAuth } from 'store';
 

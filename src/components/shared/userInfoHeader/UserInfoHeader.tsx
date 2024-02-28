@@ -1,11 +1,10 @@
-import { Path } from 'constants';
-
 import { FC } from 'react';
 
 import { Flex, Avatar, Group, Text, Box } from '@mantine/core';
 import { IconCoins } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
 
+import { Path } from 'constant';
 import { useAppSelector } from 'hooks';
 import { getNickname, getPhotoURl, getBalance } from 'store';
 

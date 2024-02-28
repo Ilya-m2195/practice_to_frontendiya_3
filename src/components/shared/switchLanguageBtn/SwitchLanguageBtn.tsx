@@ -1,5 +1,3 @@
-import { Languages } from 'constants';
-
 import { ChangeEvent, FC, useEffect, useState } from 'react';
 
 import { NativeSelect, rem } from '@mantine/core';
@@ -7,6 +5,7 @@ import { IconWorld } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 
 import { sizeIcon, widthSwitcher } from 'components/shared/switchLanguageBtn/config';
+import { Languages } from 'constant';
 
 export const SwitchLanguageBtn: FC = () => {
   const languageValueLocalStorage = localStorage.getItem('currentLanguage');
