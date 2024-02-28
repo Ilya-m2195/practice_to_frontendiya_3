@@ -69,7 +69,7 @@ export const SearchInput: FC = () => {
 
       <Combobox.Dropdown>
         <Combobox.Options>
-          {!searchData && <Combobox.Empty>Nothing found</Combobox.Empty>}
+          {!searchData && <Combobox.Empty>{t('nothingFound')}</Combobox.Empty>}
 
           {searchData &&
             searchData?.map((item) => (

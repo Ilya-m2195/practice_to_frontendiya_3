@@ -1,12 +1,11 @@
-import { Path } from 'constants';
-
 import { lazy } from 'react';
 
 import { createBrowserRouter } from 'react-router-dom';
 
 import { PrivateRouteAdmin } from './privateRouterAdmin/PrivateRouteAdmin';
 
-import { DefaultLayout, ErrorMessage } from 'components';
+import { DefaultLayout } from 'components';
+import { Path } from 'constant';
 import { LoginRoute, PrivateRoute } from 'routes';
 
 const UsersPage = lazy(() =>
@@ -23,6 +22,12 @@ const LoginPage = lazy(() =>
 );
 const UserEditingPage = lazy(() =>
   import('pages').then(({ UserEditingPage }) => ({ default: UserEditingPage })),
+);
+const ProfilePage = lazy(() =>
+  import('pages').then(({ ProfilePage }) => ({ default: ProfilePage })),
+);
+const NotFoundPage = lazy(() =>
+  import('pages').then(({ NotFoundPage }) => ({ default: NotFoundPage })),
 );
 
 export const router = createBrowserRouter([
@@ -49,6 +54,10 @@ export const router = createBrowserRouter([
             path: Path.Home,
             element: <HomePage />,
           },
+          {
+            path: Path.Profile,
+            element: <ProfilePage />,
+          },
         ],
       },
       {
@@ -66,7 +75,7 @@ export const router = createBrowserRouter([
       },
       {
         path: '*',
-        element: <ErrorMessage errorMessage='errorMessagePageNotFound' />,
+        element: <NotFoundPage />,
       },
     ],
   },

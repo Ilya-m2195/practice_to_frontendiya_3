@@ -1,5 +1,3 @@
-import { NamesDBCollection } from 'constants';
-
 import { signInWithPopup, signOut } from 'firebase/auth';
 import {
   DocumentData,
@@ -18,13 +16,22 @@ import {
   getCountFromServer,
   QuerySnapshot,
 } from 'firebase/firestore';
-
-import { auth, db } from 'firebase';
 import {
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+  deleteObject,
+} from 'firebase/storage';
+
+import { ErrorUpload, maxSizeUploadFile, NamesDBCollection } from 'constant';
+import { auth, db, storage } from 'firebase';
+import {
+  IDeleteDataStorage,
   ILogInUserArg,
   IResultUserInfoData,
   IReturnGetFirestoreData,
   IUniversalObjectArguments,
+  IUploadDataStorage,
 } from 'types';
 
 export const setFirestoreData = async <T extends {}>(
@@ -141,6 +148,7 @@ export const logInUser = async ({
   resultUserInfoData: IResultUserInfoData;
 }> => {
   const resultUserInfo = await signInWithPopup(auth, provider);
+
   const isUser = await checkFieldValueExists(
     NamesDBCollection.Users,
     'email',
@@ -151,7 +159,38 @@ export const logInUser = async ({
     email: resultUserInfo.user.email!,
     id: resultUserInfo.user.uid,
     photoURL: resultUserInfo.user.photoURL!,
+    createdAt: resultUserInfo.user.metadata.creationTime,
+    fullName: resultUserInfo.user.displayName,
+    phone: resultUserInfo.user.phoneNumber,
   };
 
   return { isUser, resultUserInfoData };
+};
+
+export const setDataStorage = async ({
+  fileCollection,
+  file,
+}: IUploadDataStorage): Promise<string> => {
+  if (file.size > maxSizeUploadFile) {
+    throw Error(ErrorUpload.Size);
+  }
+
+  const imagesRef = ref(storage, `${fileCollection}/${file.name}`);
+
+  await uploadBytesResumable(imagesRef, file);
+
+  const imageUrl = await getDownloadURL(imagesRef);
+
+  return imageUrl;
+};
+
+export const deleteDataStorage = async ({
+  fileCollection,
+  fileName,
+}: IDeleteDataStorage): Promise<void> => {
+  const imagesRef = ref(storage, `${fileCollection}/${fileName}`);
+
+  const deleteTask = await deleteObject(imagesRef);
+
+  return deleteTask;
 };

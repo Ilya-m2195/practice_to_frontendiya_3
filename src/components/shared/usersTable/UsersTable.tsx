@@ -1,5 +1,3 @@
-import { Path } from 'constants';
-
 import { FC } from 'react';
 
 import { Badge, Flex, Table, Text } from '@mantine/core';
@@ -11,6 +9,7 @@ import { Balance } from '../balance/Balance';
 import { headerTableNames, UserColor } from './config';
 
 import { ButtonSort, UserName } from 'components';
+import { Path } from 'constant';
 import { useAppSelector, useSortableData } from 'hooks';
 import { getUsers } from 'store';
 

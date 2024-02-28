@@ -1,15 +1,14 @@
-import { UserRole, NamesActiveStyles, Path } from 'constants';
-
 import { FC } from 'react';
 
 import { Flex } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import { NavLink } from 'react-router-dom';
 
-import 'styles/navigation.css';
-
+import { UserRole, NamesActiveStyles, Path } from 'constant';
 import { useAppSelector } from 'hooks';
 import { getRole } from 'store';
+
+import 'styles/navigation.css';
 
 export const Navigation: FC = () => {
   const currentUserRole = useAppSelector(getRole);

@@ -1,9 +1,9 @@
-import { UsersKeys } from 'constants';
-
 import { FC } from 'react';
 
 import { Button } from '@mantine/core';
 import { IconArrowsSort } from '@tabler/icons-react';
+
+import { UsersKeys } from 'constant';
 
 type Props = {
   nameField: UsersKeys;

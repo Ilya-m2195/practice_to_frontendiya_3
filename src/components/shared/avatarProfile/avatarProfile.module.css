@@ -1,0 +1,5 @@
+.btnGroup {
+    transform: translateY(-50%);
+    z-index: 3;
+    transition: opacity 0.3s ease-in-out;
+}

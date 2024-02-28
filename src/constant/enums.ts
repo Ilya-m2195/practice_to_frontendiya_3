@@ -42,3 +42,21 @@ export enum Path {
   Admin = '/admin',
   Profile = '/profile',
 }
+
+export enum Locale {
+  En = 'en-US',
+  Ru = 'ru-RU',
+}
+
+export enum FileCollections {
+  Images = 'images',
+}
+
+export enum ErrorUpload {
+  Size = 'errorUploadSize',
+}
+
+export enum Response {
+  Success = 'success',
+  Error = 'error',
+}

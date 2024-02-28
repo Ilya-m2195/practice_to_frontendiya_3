@@ -1,5 +1,3 @@
-import { UserRole } from 'constants';
-
 import { FC } from 'react';
 
 import { Group, Button, TextInput, Box, Flex, Text } from '@mantine/core';
@@ -7,6 +5,7 @@ import { useForm } from '@mantine/form';
 import { useMask } from '@react-input/mask';
 import { useTranslation } from 'react-i18next';
 
+import { UserRole } from 'constant';
 import { IValuesAddUserNickForm } from 'types';
 
 type Props = {
