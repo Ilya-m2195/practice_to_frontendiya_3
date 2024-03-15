@@ -6,6 +6,7 @@ import { IconPhoneCall, IconSettings } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 
 import { SetUserNicknameForm, AvatarProfile, SteamButton } from 'components';
+import { ModalsId } from 'constant';
 import { useAppSelector, useChangeFormatDate } from 'hooks';
 import { iconSize } from 'pages/profile/config';
 import { getCreatedAt, getFullName, getNickname, getPhone, getPhotoURl } from 'store';
@@ -25,7 +26,7 @@ export const ProfileInfo: FC = () => {
 
   const openModal = (): void => {
     modals.openContextModal({
-      modal: 'changeNickname',
+      modal: ModalsId.FormModal,
       title,
       centered: true,
       innerProps: {

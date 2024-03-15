@@ -26,7 +26,7 @@ const theme = createTheme({
 });
 
 const modals = {
-  changeNickname: ContextModal,
+  formModal: ContextModal,
 };
 
 root.render(

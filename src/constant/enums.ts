@@ -26,6 +26,7 @@ export enum ColorTheme {
 
 export enum NamesDBCollection {
   Users = 'users',
+  BalanceHistory = 'balanceHistory',
 }
 
 export enum UserRole {
@@ -56,7 +57,15 @@ export enum ErrorUpload {
   Size = 'errorUploadSize',
 }
 
-export enum Response {
-  Success = 'success',
-  Error = 'error',
+export enum BalanceOperation {
+  Accrue = 'accrue',
+  WriteOff = 'writeOff',
+}
+
+export enum FieldsTransaction {
+  DateOperation = 'dateOperation',
+}
+
+export enum ModalsId {
+  FormModal = 'formModal',
 }

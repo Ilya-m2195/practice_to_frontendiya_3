@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { SteamForm } from 'components';
 import { iconSize } from 'components/shared/steamButton/config';
 import style from 'components/shared/steamButton/steamButton.module.css';
+import { ModalsId } from 'constant';
 import { useAppSelector } from 'hooks';
 import { getSteam } from 'store';
 
@@ -20,7 +21,7 @@ export const SteamButton: FC = () => {
 
   const openModal = (): void => {
     modals.openContextModal({
-      modal: 'changeNickname',
+      modal: ModalsId.FormModal,
       title,
       centered: true,
       innerProps: {

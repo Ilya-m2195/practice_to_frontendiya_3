@@ -23,3 +23,5 @@ export const getLengthDataUsers = (state: RootState): number =>
   state.user.lengthDataUsers;
 export const getSearchData = (state: RootState): Nullable<DocumentData[]> =>
   state.search.data;
+export const getCurrentBalance = (state: RootState): number =>
+  state.balanceHistory.transaction.currentBalance;

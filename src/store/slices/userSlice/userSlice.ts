@@ -18,6 +18,7 @@ import {
   getFirestoreData,
   setDataStorage,
   deleteDataStorage,
+  userObserver,
 } from 'api';
 import { Path, NamesDBCollection, UserRole, FileCollections } from 'constant';
 import { handleError } from 'helpers';
@@ -52,6 +53,7 @@ const initialState: IInitialState = {
   users: [],
   lastUser: null,
   lengthDataUsers: 0,
+  userObserver: null,
 };
 
 export type ThunkApiConfig = {
@@ -61,8 +63,10 @@ export type ThunkApiConfig = {
 
 export const logOutUserThank = createAsyncThunk<void, undefined, ThunkApiConfig>(
   'userSlice/logOutUser',
-  async (_, { dispatch, rejectWithValue }) => {
+  async (_, { dispatch, rejectWithValue, getState }) => {
     try {
+      getState().user.userObserver?.();
+
       await LogOut();
     } catch (error) {
       const message = handleError(error as Error);
@@ -88,10 +92,16 @@ export const logInUserThank = createAsyncThunk<void, ILogInUserArg, ThunkApiConf
 
         dispatch(setUser(currentUserInfo as IUser));
         navigate(Path.Home);
-      } else {
-        dispatch(addCurrentEmailId(resultUserInfoData));
-        navigate(Path.SetNick);
+
+        const unsubscribe = userObserver(resultUserInfoData.id, (data) => {
+          dispatch(setUser(data));
+        });
+
+        dispatch(setUserObserver(unsubscribe));
       }
+
+      dispatch(addCurrentEmailId(resultUserInfoData));
+      navigate(Path.SetNick);
     } catch (error) {
       const message = handleError(error as Error);
 
@@ -355,6 +365,12 @@ const userReducer = createSlice({
       state.fullName = action.payload.fullName!;
       state.steam = action.payload.steam;
     },
+    setUserObserver: (state, action: PayloadAction<() => void>) => {
+      state.userObserver = action.payload;
+    },
+    setBalance: (state, action: PayloadAction<number>) => {
+      state.balance = action.payload;
+    },
     addCurrentEmailId: (state, action: PayloadAction<IResultUserInfoData>) => {
       state.email = action.payload.email!;
       state.id = action.payload.id;
@@ -401,5 +417,11 @@ const userReducer = createSlice({
   },
 });
 
-export const { setUser, addCurrentEmailId, setIsOccupiedNick } = userReducer.actions;
+export const {
+  setBalance,
+  setUser,
+  addCurrentEmailId,
+  setIsOccupiedNick,
+  setUserObserver,
+} = userReducer.actions;
 export default userReducer.reducer;

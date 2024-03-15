@@ -45,5 +45,16 @@
   "errorUploadSize": "Размер файла слишком велик. Файл не должен быть больше 3.5 Мб",
   "errorNameLength": "В профиле Steam должно быть не менее 2 букв",
   "pageNotFound": "Страница не найдена",
-  "goToMainPage": "Перейти на главную страницу"
+  "goToMainPage": "Перейти на главную страницу",
+  "changeBalance": "Изменить баланс",
+  "changeBalanceForm": "Форма изменения баланса",
+  "selectBalanceOperation": "Виберите необходимую операцию",
+  "accrue": "Начислить",
+  "writeOff": "Списать",
+  "enterAmount": "Введите сумму",
+  "amount": "Сумма",
+  "errorOperation": "Вы используете несуществующую операцию",
+  "errorInsufficientFunds": "У вас недостаточно средств",
+  "conversion": "1 рубль = 1 coin",
+  "errorUserId": "id пользователя не найден"
 }

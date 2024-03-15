@@ -18,21 +18,21 @@ export const UsersTable: FC = () => {
   const { sortUsers, requestSort } = useSortableData(users);
   const { t } = useTranslation();
 
-  const rowsTables = sortUsers.map((element) => (
-    <Table.Tr key={element.id}>
+  const rowsTables = sortUsers.map((user) => (
+    <Table.Tr key={user.id}>
       <Table.Td align='center'>
-        <Link to={`${Path.UserEditing}${element.id}`}>
-          <UserName name={element.fullName} photoURL={element.photoURL} />
+        <Link to={`${Path.UserEditing}${user.id}`} state={user}>
+          <UserName name={user.fullName} photoURL={user.photoURL} />
         </Link>
       </Table.Td>
       <Table.Td>
-        <Badge color={UserColor[element.role]}>{element.role}</Badge>
+        <Badge color={UserColor[user.role]}>{user.role}</Badge>
       </Table.Td>
-      <Table.Td>{element.nickname}</Table.Td>
-      <Table.Td>{element.phone}</Table.Td>
-      <Table.Td>{element.email}</Table.Td>
+      <Table.Td>{user.nickname}</Table.Td>
+      <Table.Td>{user.phone}</Table.Td>
+      <Table.Td>{user.email}</Table.Td>
       <Table.Td>
-        <Balance NumberCoins={element.balance} />
+        <Balance NumberCoins={user.balance} />
       </Table.Td>
     </Table.Tr>
   ));

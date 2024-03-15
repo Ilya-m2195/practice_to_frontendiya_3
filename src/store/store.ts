@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
 
 import appReducer from 'store/slices/appSlice/appSlice';
+import balanceHistoryReducer from 'store/slices/balanceHistorySlice/balanceHistorySlice';
 import searchReducer from 'store/slices/searchSlice/searchSliсe';
 import userReducer from 'store/slices/userSlice/userSlice';
 
@@ -10,6 +11,7 @@ export const store = configureStore({
     app: appReducer,
     user: userReducer,
     search: searchReducer,
+    balanceHistory: balanceHistoryReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

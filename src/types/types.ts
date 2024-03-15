@@ -2,7 +2,7 @@ import { GoogleAuthProvider, GithubAuthProvider } from 'firebase/auth';
 import { QuerySnapshot, QueryDocumentSnapshot } from 'firebase/firestore';
 import { NavigateFunction } from 'react-router-dom';
 
-import { UserRole, FileCollections } from 'constant';
+import { UserRole, FileCollections, BalanceOperation } from 'constant';
 import { AppDispatch, RootState } from 'store';
 
 export interface IInitialState {
@@ -23,6 +23,7 @@ export interface IInitialState {
   users: Array<IUser>;
   lastUser: Nullable<QuerySnapshot>;
   lengthDataUsers: number;
+  userObserver: Nullable<() => void>;
 }
 
 export interface IUser {
@@ -87,6 +88,14 @@ export interface IReturnTypeGetUsersThank {
   lengthData?: number;
 }
 
+export interface Transaction {
+  typeOperation: Nullable<BalanceOperation>;
+  currentBalance: number;
+  amount: number;
+  performerName: string;
+  dateOperation: Date;
+}
+
 export interface IUploadDataStorage {
   fileCollection: FileCollections;
   file: File;
@@ -95,4 +104,14 @@ export interface IUploadDataStorage {
 export interface IDeleteDataStorage {
   fileCollection: FileCollections;
   fileName: string;
+}
+
+export interface ISetBalanceHistoryThunkProps {
+  value: number;
+  typeOperation: Nullable<BalanceOperation>;
+}
+
+export interface IChangeBalanceHistoryThunkProps {
+  id?: string;
+  values: Transaction;
 }
