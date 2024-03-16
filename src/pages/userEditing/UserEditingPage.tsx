@@ -1,18 +1,21 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 
 import { Box, Button, Flex, Select, TextInput, Title } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import { modals } from '@mantine/modals';
 import { useTranslation } from 'react-i18next';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
-import { UserRole } from 'constant';
+import { ChangeBalanceForm } from 'components';
+import { ModalsId, UserRole } from 'constant';
 import { validateNickname } from 'helpers';
 import { useAppDispatch, useAppSelector } from 'hooks';
-import { getIsOccupiedNick, updateUserThank } from 'store';
+import { getIsOccupiedNick, updateUserThank, setCurrentBalance, setUserId } from 'store';
 import { IUpdateUser } from 'types';
 
 export const UserEditingPage: FC = () => {
   const navigate = useNavigate();
+  const currentUserData = useLocation().state;
   const { id } = useParams();
 
   const dispatch = useAppDispatch();
@@ -23,17 +26,23 @@ export const UserEditingPage: FC = () => {
   const goBackHandler = (): void => {
     navigate(-1);
   };
-  const onSubmitHandler = (values: IUpdateUser): void => {
+
+  const openModalBalance = (): void => {
     if (!id) {
       return;
     }
 
-    dispatch(updateUserThank({ id, values }));
-
-    form.reset();
+    modals.openContextModal({
+      modal: ModalsId.FormModal,
+      title: t('changeBalance'),
+      centered: true,
+      innerProps: {
+        modalBody: <ChangeBalanceForm userId={id} />,
+      },
+    });
   };
 
-  const form = useForm({
+  const { onSubmit, getInputProps, reset } = useForm({
     validateInputOnChange: ['nickname'],
     initialValues: {
       nickname: '',
@@ -46,6 +55,24 @@ export const UserEditingPage: FC = () => {
     },
   });
 
+  const onSubmitHandler = (values: IUpdateUser): void => {
+    if (!id) {
+      return;
+    }
+
+    dispatch(updateUserThank({ id, values })).then(() => {
+      reset();
+    });
+  };
+
+  useEffect(() => {
+    dispatch(setCurrentBalance(currentUserData.balance));
+  }, [currentUserData]);
+
+  useEffect(() => {
+    dispatch(setUserId(id));
+  }, []);
+
   return (
     <Box>
       <Title mb='xl' order={2}>
@@ -54,32 +81,37 @@ export const UserEditingPage: FC = () => {
       <Button mb='lg' onClick={goBackHandler}>
         {t('backToClients')}
       </Button>
-      <form onSubmit={form.onSubmit(onSubmitHandler)}>
+
+      <form onSubmit={onSubmit(onSubmitHandler)}>
         <Flex gap='md' align='end' wrap='wrap'>
           <TextInput
             label={t('nickname')}
             placeholder={t('addNickname')}
-            {...form.getInputProps('nickname')}
+            {...getInputProps('nickname')}
           />
           <TextInput
             label={t('fullName')}
             placeholder={t('AddFullName')}
-            {...form.getInputProps('fullName')}
+            {...getInputProps('fullName')}
           />
           <Select
             label={t('role')}
             data={[UserRole.User, UserRole.Admin]}
-            {...form.getInputProps('role')}
+            {...getInputProps('role')}
           />
           <TextInput
             disabled
             label={t('phone')}
             placeholder='+7-999-999-99-99'
-            {...form.getInputProps('phone')}
+            {...getInputProps('phone')}
           />
           <Button type='submit'>{t('save')}</Button>
         </Flex>
       </form>
+
+      <Button mt='lg' onClick={openModalBalance}>
+        {t('changeBalance')}
+      </Button>
     </Box>
   );
 };

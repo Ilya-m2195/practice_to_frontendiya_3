@@ -13,8 +13,11 @@ import {
   orderBy,
   limit,
   startAfter,
+  startAt,
   getCountFromServer,
   QuerySnapshot,
+  onSnapshot,
+  DocumentReference,
 } from 'firebase/firestore';
 import {
   ref,
@@ -23,7 +26,12 @@ import {
   deleteObject,
 } from 'firebase/storage';
 
-import { ErrorUpload, maxSizeUploadFile, NamesDBCollection } from 'constant';
+import {
+  ErrorUpload,
+  FieldsTransaction,
+  maxSizeUploadFile,
+  NamesDBCollection,
+} from 'constant';
 import { auth, db, storage } from 'firebase';
 import {
   IDeleteDataStorage,
@@ -45,6 +53,20 @@ export const setFirestoreData = async <T extends {}>(
   await setDoc(doc(collection(db, nameCollection), id), { ...values });
 };
 
+export const setFirestoreSubCollectionById = async <T extends {}>(
+  nameCollection: string,
+  nameSubCollection: string,
+  { id, values }: IUniversalObjectArguments<T>,
+): Promise<void> => {
+  if (!id) {
+    return;
+  }
+
+  const ref = collection(db, nameCollection, id, nameSubCollection);
+
+  await setDoc(doc(ref), { ...values });
+};
+
 export const deleteFirestoreDataById = async (
   nameCollection: string,
   id: string,
@@ -60,6 +82,33 @@ export const getFirestoreDataById = async (
   const docInfo = await getDoc(docRef);
 
   return docInfo.data();
+};
+
+export const getFirestoreSubCollectionById = async (
+  nameCollection: string,
+  id: string,
+  nameSubCollection: string,
+  orderField: FieldsTransaction,
+  limitCount: number,
+  lastVisibleData: Nullable<QuerySnapshot>,
+): Promise<IReturnGetFirestoreData> => {
+  const snapshot = await getCountFromServer(
+    collection(db, nameCollection, id, nameSubCollection),
+  );
+  const lengthData = snapshot.data().count;
+
+  const data = await getDocs(
+    query(
+      collection(db, nameCollection, id, nameSubCollection),
+      orderBy(orderField),
+      startAt(lastVisibleData),
+      limit(limitCount),
+    ),
+  );
+
+  const lastVisible = data.docs[data.docs.length - 1];
+
+  return { data, lastVisible, lengthData };
 };
 
 export const updateFirestoreDataById = async <T extends {}>(
@@ -135,6 +184,16 @@ export const searchData = async (
   });
 
   return data;
+};
+
+export const userObserver = (id: string, callback: (data: any) => void): (() => void) => {
+  const ref: DocumentReference = doc(db, NamesDBCollection.Users, id);
+
+  const unsubscribe = onSnapshot(ref, (doc) => {
+    callback(doc.data());
+  });
+
+  return unsubscribe;
 };
 
 export const LogOut = async (): Promise<void> => {

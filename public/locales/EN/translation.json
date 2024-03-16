@@ -13,7 +13,7 @@
   "AddFullName": "Add full name",
   "role": "Role",
   "email": "Email",
-  "balance": "balance",
+  "balance": "Balance",
   "reset": "reset",
   "save": "Save",
   "clientEditing": "Client editing",
@@ -45,5 +45,17 @@
   "errorUploadSize": "The file size is too large. The file should not be larger than 3.5 MB.",
   "errorNameLength": "Profile Steam must have at least 2 letters",
   "pageNotFound": "Page not found",
-  "goToMainPage": "Go to main page"
+  "goToMainPage": "Go to main page",
+  "changeBalance": "Change Balance",
+  "changeBalanceForm": "Change Balance Form",
+  "selectBalanceOperation": "Select the required operation",
+  "accrue": "Accrue",
+  "writeOff": "Write off",
+  "enterAmount": "Enter amount",
+  "amount": "Amount",
+  "errorAmount": "Amount must be greater than 0",
+  "errorOperation": "You're using an operation that doesn't exist",
+  "errorInsufficientFunds": "You don't have enough money",
+  "conversion": "1 ruble = 1 coin",
+  "errorUserId": "User id not found"
 }
