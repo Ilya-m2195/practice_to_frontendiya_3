@@ -1,4 +1,4 @@
-export * from 'components/shared/addUsersForm/AddUsersForm';
+export * from 'pages/addUserNickForm/AddUserNickFormPage';
 export * from 'components/shared/auth/LogOutUser';
 export * from 'components/shared/auth/SignInGitHub';
 export * from 'components/shared/auth/SignInGoogle';
@@ -19,3 +19,8 @@ export * from 'components/shared/switchLanguageBtn/SwitchLanguageBtn';
 export * from 'components/shared/userInfoHeader/UserInfoHeader';
 export * from 'components/shared/userName/UserName';
 export * from 'components/shared/usersTable/UsersTable';
+export * from 'components/shared/svgSprite/SvgSprite';
+export * from 'components/shared/userInfoHeader/UserInfoHeader';
+export * from 'components/shared/categoriesModal/CategoriesModal';
+export * from 'components/shared/productsModal/ProductsModal';
+export * from 'components/shared/shopCard/ShopCard';

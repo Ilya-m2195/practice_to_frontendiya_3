@@ -18,6 +18,7 @@ import {
   QuerySnapshot,
   onSnapshot,
   DocumentReference,
+  QueryDocumentSnapshot,
 } from 'firebase/firestore';
 import {
   ref,
@@ -47,6 +48,10 @@ export const setFirestoreData = async <T extends {}>(
   { id, values }: IUniversalObjectArguments<T>,
 ): Promise<void> => {
   if (!id) {
+    const newDocumentRef = doc(collection(db, nameCollection));
+
+    await setDoc(newDocumentRef, { id: newDocumentRef.id, ...values });
+
     return;
   }
 
@@ -127,10 +132,27 @@ export const getFirestoreData = async (
   nameCollection: string,
   nameField: string,
   limitNumber: number,
-  lastVisibleData: Nullable<QuerySnapshot>,
+  valueSearchField: Nullable<string>,
+  lastVisibleData: Nullable<QueryDocumentSnapshot>,
 ): Promise<IReturnGetFirestoreData> => {
   const snapshot = await getCountFromServer(collection(db, nameCollection));
   const lengthData = snapshot.data().count;
+
+  if (valueSearchField) {
+    const data = await getDocs(
+      query(
+        collection(db, nameCollection),
+        orderBy(nameField),
+        startAfter(lastVisibleData),
+        limit(limitNumber),
+        where(nameField, '==', valueSearchField),
+      ),
+    );
+
+    const lastVisible = data.docs[data.docs.length - 1];
+
+    return { data, lastVisible, lengthData };
+  }
 
   const data = await getDocs(
     query(

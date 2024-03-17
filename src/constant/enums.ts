@@ -27,6 +27,8 @@ export enum ColorTheme {
 export enum NamesDBCollection {
   Users = 'users',
   BalanceHistory = 'balanceHistory',
+  ProductCategories = 'productCategories',
+  Products = 'products',
 }
 
 export enum UserRole {
@@ -42,6 +44,7 @@ export enum Path {
   UserEditing = '/editing/',
   Admin = '/admin',
   Profile = '/profile',
+  Shop = '/shop',
 }
 
 export enum Locale {
@@ -68,4 +71,9 @@ export enum FieldsTransaction {
 
 export enum ModalsId {
   FormModal = 'formModal',
+}
+
+export enum Response {
+  Success = 'success',
+  Error = 'error',
 }

@@ -31,7 +31,7 @@ export const UsersPage: FC = () => {
     if (!usersLength) {
       dispatch(getLimitUsersThank({ nickname: 'nickname', limit }));
     }
-  }, [limit]);
+  }, [dispatch, getLimitUsersThank, limit]);
 
   return (
     <Box>

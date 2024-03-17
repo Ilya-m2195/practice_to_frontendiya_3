@@ -21,7 +21,7 @@ export interface IInitialState {
   searchNickname: string;
   steam: Nullable<string>;
   users: Array<IUser>;
-  lastUser: Nullable<QuerySnapshot>;
+  lastUser: Nullable<QueryDocumentSnapshot>;
   lengthDataUsers: number;
   userObserver: Nullable<() => void>;
 }
@@ -84,7 +84,7 @@ export interface IReturnGetFirestoreData {
 
 export interface IReturnTypeGetUsersThank {
   usersData: Array<IUser>;
-  lastVisible: Nullable<QuerySnapshot>;
+  lastVisible: Nullable<QueryDocumentSnapshot>;
   lengthData?: number;
 }
 

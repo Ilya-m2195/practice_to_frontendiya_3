@@ -67,11 +67,11 @@ export const UserEditingPage: FC = () => {
 
   useEffect(() => {
     dispatch(setCurrentBalance(currentUserData.balance));
-  }, [currentUserData]);
+  }, [dispatch, setCurrentBalance, currentUserData]);
 
   useEffect(() => {
     dispatch(setUserId(id));
-  }, []);
+  }, [dispatch, setUserId]);
 
   return (
     <Box>

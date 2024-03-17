@@ -40,7 +40,7 @@ export const SearchInput: FC = () => {
 
   useEffect(() => {
     requestData();
-  }, [search]);
+  }, [search, requestData]);
 
   return (
     <Combobox

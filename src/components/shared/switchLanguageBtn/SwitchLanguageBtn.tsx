@@ -24,7 +24,7 @@ export const SwitchLanguageBtn: FC = () => {
 
   useEffect(() => {
     i18n.changeLanguage(valueLanguage);
-  }, [valueLanguage]);
+  }, [valueLanguage, i18n.changeLanguage]);
 
   return (
     <NativeSelect

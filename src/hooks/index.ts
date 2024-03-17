@@ -3,3 +3,4 @@ export * from 'hooks/useAppSelector';
 export * from 'hooks/useChangeFormatDate';
 export * from 'hooks/useSortableData';
 export * from 'hooks/useNotificationError';
+export * from 'hooks/useRole';

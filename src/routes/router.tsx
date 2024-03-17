@@ -30,6 +30,10 @@ const NotFoundPage = lazy(() =>
   import('pages').then(({ NotFoundPage }) => ({ default: NotFoundPage })),
 );
 
+const ShopPage = lazy(() =>
+  import('pages').then(({ ShopPage }) => ({ default: ShopPage })),
+);
+
 export const router = createBrowserRouter([
   {
     element: <DefaultLayout />,
@@ -53,6 +57,16 @@ export const router = createBrowserRouter([
           {
             path: Path.Home,
             element: <HomePage />,
+          },
+          {
+            path: Path.Shop,
+            element: <ShopPage />,
+            children: [
+              {
+                path: `${Path.Shop}:name`,
+                element: <UserEditingPage />,
+              },
+            ],
           },
           {
             path: Path.Profile,
