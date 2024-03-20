@@ -18,7 +18,6 @@ import {
   getSteam,
   setUserThank,
 } from 'store';
-import { IValuesAddUserNickForm } from 'types';
 
 export const AddUserNickFormPage: FC = () => {
   const id = useAppSelector(getId);
@@ -39,7 +38,7 @@ export const AddUserNickFormPage: FC = () => {
     nickname,
     balance,
     phone,
-  }: IValuesAddUserNickForm): void => {
+  }: typeof form.values): void => {
     const searchNickname = nickname.toLowerCase();
 
     const values = {

@@ -150,6 +150,7 @@ export const getLimitUsersThank = createAsyncThunk<
         nickname,
         limit!,
         null,
+        null,
       );
 
       const usersData = data.docs.map((doc) => doc.data());
@@ -177,6 +178,7 @@ export const getMoreUsersThank = createAsyncThunk<
         NamesDBCollection.Users,
         nickname,
         limit,
+        null,
         getState().user.lastUser,
       );
 
@@ -330,6 +332,7 @@ const isPendingAction = isPending(
 
 const isFulfilledAction = isFulfilled(
   logInUserThank,
+  logOutUserThank,
   updateUserThank,
   setUserThank,
   getUserThank,

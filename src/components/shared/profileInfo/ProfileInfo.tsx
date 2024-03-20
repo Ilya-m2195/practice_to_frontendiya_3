@@ -39,19 +39,19 @@ export const ProfileInfo: FC = () => {
     <Group>
       <AvatarProfile photoURL={photoURL} />
       <Stack gap='0'>
-        <Text size='md' color='dimmed' fw={500}>
+        <Text size='md' c='dimmed' fw={500}>
           {fullName}
         </Text>
         <Title order={4}>{nickname}</Title>
         {createdAt && (
-          <Text mt='5' size='sm' color='dimmed'>
+          <Text mt='5' size='sm' c='dimmed'>
             {`${t('participatesWith')} ${date}`}
           </Text>
         )}
         {phone && (
           <Group gap='10px'>
             <IconPhoneCall size={iconSize} color='white' opacity='0.4' />
-            <Text mt='5' size='sm' color='dimmed'>
+            <Text mt='5' size='sm' c='dimmed'>
               {phone}
             </Text>
           </Group>

@@ -57,5 +57,15 @@
   "errorOperation": "You're using an operation that doesn't exist",
   "errorInsufficientFunds": "You don't have enough money",
   "conversion": "1 ruble = 1 coin",
-  "errorUserId": "User id not found"
+  "errorUserId": "User id not found",
+  "shop": "Shop",
+  "addCategory": "Add category",
+  "addProduct": "Add product",
+  "count": "Count",
+  "addToBasket": "Add to basket",
+  "productName": "Product name",
+  "availabilityProduct": "Availability product",
+  "productPrice": "Product price",
+  "productImage": "Product image",
+  "nameCategory": "Name category"
 }

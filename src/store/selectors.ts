@@ -1,6 +1,6 @@
 import { DocumentData } from 'firebase/firestore';
 
-import { RootState } from 'store';
+import { IProduct, IProductCategory, RootState } from 'store';
 import { IUser } from 'types';
 
 export const getIsLoading = (state: RootState): boolean => state.user.isLoading;
@@ -25,3 +25,10 @@ export const getSearchData = (state: RootState): Nullable<DocumentData[]> =>
   state.search.data;
 export const getCurrentBalance = (state: RootState): number =>
   state.balanceHistory.transaction.currentBalance;
+
+export const getProductCategories = (state: RootState): Array<IProductCategory> =>
+  state.shop.productCategories;
+
+export const getProducts = (state: RootState): Array<IProduct> => state.shop.products;
+
+export const getCategoryId = (state: RootState): string => state.shop.currentCategoryId;
