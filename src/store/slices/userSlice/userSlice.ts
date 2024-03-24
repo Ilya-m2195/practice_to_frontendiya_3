@@ -33,6 +33,7 @@ import {
   IUpdateUser,
   IReturnTypeGetUsersThank,
   IDeleteDataStorage,
+  ILogOutArg,
 } from 'types';
 
 const initialState: IInitialState = {
@@ -61,13 +62,15 @@ export type ThunkApiConfig = {
   dispatch: AppDispatch;
 };
 
-export const logOutUserThank = createAsyncThunk<void, undefined, ThunkApiConfig>(
+export const logOutUserThank = createAsyncThunk<void, ILogOutArg, ThunkApiConfig>(
   'userSlice/logOutUser',
-  async (_, { dispatch, rejectWithValue, getState }) => {
+  async ({ navigate }, { dispatch, rejectWithValue, getState }) => {
     try {
       getState().user.userObserver?.();
 
       await LogOut();
+
+      navigate(Path.Home);
     } catch (error) {
       const message = handleError(error as Error);
 

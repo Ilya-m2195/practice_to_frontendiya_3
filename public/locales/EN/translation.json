@@ -67,5 +67,11 @@
   "availabilityProduct": "Availability product",
   "productPrice": "Product price",
   "productImage": "Product image",
-  "nameCategory": "Name category"
+  "nameCategory": "Name category",
+  "reservation": "Reservation",
+  "tournaments": "Tournaments",
+  "adminPanel": "Admin panel",
+  "settings": "Settings",
+  "logout": "Logout",
+  "authorization": "Authorization"
 }

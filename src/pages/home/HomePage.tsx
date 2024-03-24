@@ -13,12 +13,10 @@ export const HomePage: FC = () => {
 
   return (
     <Box>
-      {email && (
-        <Group>
-          <Text> {t('welcome')}</Text>
-          <Text> {nickname}</Text>
-        </Group>
-      )}
+      <Group>
+        <Text> {t('welcome')}</Text>
+        {email && <Text> {nickname}</Text>}
+      </Group>
     </Box>
   );
 };

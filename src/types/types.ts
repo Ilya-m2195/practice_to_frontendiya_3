@@ -54,6 +54,10 @@ export interface ILogInUserArg {
   navigate: NavigateFunction;
 }
 
+export interface ILogOutArg {
+  navigate: NavigateFunction;
+}
+
 export interface IResultUserInfoData {
   email: string;
   id: string;

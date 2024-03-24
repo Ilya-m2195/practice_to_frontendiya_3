@@ -34,6 +34,22 @@ const ShopPage = lazy(() =>
   import('pages').then(({ ShopPage }) => ({ default: ShopPage })),
 );
 
+const TournamentsPage = lazy(() =>
+  import('pages').then(({ TournamentsPage }) => ({ default: TournamentsPage })),
+);
+
+const ReservationPage = lazy(() =>
+  import('pages').then(({ ReservationPage }) => ({ default: ReservationPage })),
+);
+
+const AdminPanelPage = lazy(() =>
+  import('pages').then(({ AdminPanelPage }) => ({ default: AdminPanelPage })),
+);
+
+const SettingsPage = lazy(() =>
+  import('pages').then(({ SettingsPage }) => ({ default: SettingsPage })),
+);
+
 export const router = createBrowserRouter([
   {
     element: <DefaultLayout />,
@@ -59,12 +75,23 @@ export const router = createBrowserRouter([
             element: <HomePage />,
           },
           {
+            path: Path.Tournaments,
+            element: <TournamentsPage />,
+          },
+          {
+            path: Path.Reservation,
+            element: <ReservationPage />,
+          },
+          {
+            path: Path.Settings,
+            element: <SettingsPage />,
+          },
+          {
             path: Path.Shop,
             element: <ShopPage />,
             children: [
               {
                 path: `${Path.Shop}:name`,
-                element: <UserEditingPage />,
               },
             ],
           },
@@ -80,6 +107,10 @@ export const router = createBrowserRouter([
           {
             path: Path.Users,
             element: <UsersPage />,
+          },
+          {
+            path: Path.Admin,
+            element: <AdminPanelPage />,
           },
           {
             path: `${Path.UserEditing}:id`,

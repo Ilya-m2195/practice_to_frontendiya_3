@@ -1,26 +1,25 @@
 import { FC } from 'react';
 
-import { Button } from '@mantine/core';
 import { IconLogout2 } from '@tabler/icons-react';
+import { useNavigate } from 'react-router-dom';
 
 import { useAppDispatch } from 'hooks';
 import { logOutUserThank } from 'store';
 
 export const LogOutUser: FC = () => {
   const theme = {
-    color: 'rgba(99, 99, 99, 1)',
-    variant: 'default',
-    w: '55px',
+    variant: 'transparent',
+    type: 'button',
+    cursor: 'pointer',
   };
+
+  const navigate = useNavigate();
+
   const dispatch = useAppDispatch();
 
   const logOutHandler = (): void => {
-    dispatch(logOutUserThank());
+    dispatch(logOutUserThank({ navigate }));
   };
 
-  return (
-    <Button {...theme} onClick={logOutHandler}>
-      <IconLogout2 width={20} height={20} color='grey' className='buttonOut' />
-    </Button>
-  );
+  return <IconLogout2 {...theme} onClick={logOutHandler} />;
 };
