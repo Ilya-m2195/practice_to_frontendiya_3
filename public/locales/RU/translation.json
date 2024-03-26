@@ -64,6 +64,12 @@
   "errorOperation": "Вы используете несуществующую операцию",
   "errorInsufficientFunds": "У вас недостаточно средств",
   "conversion": "1 рубль = 1 coin",
-  "errorUserId": "id пользователя не найден"
+  "errorUserId": "id пользователя не найден",
+  "reservation": "Бронирование",
+  "tournaments": "Турниры",
+  "adminPanel": "Панель администатора",
+  "settings": "Настройки",
+  "logout": "Выйти",
+  "authorization": "Авторизоваться"
 
 }

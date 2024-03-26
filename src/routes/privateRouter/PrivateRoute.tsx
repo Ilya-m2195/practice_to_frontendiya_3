@@ -9,5 +9,5 @@ import { getIsAuth } from 'store';
 export const PrivateRoute: FC = () => {
   const isAuth = useAppSelector(getIsAuth);
 
-  return isAuth ? <Outlet /> : <Navigate to={Path.Login} />;
+  return isAuth ? <Outlet /> : <Navigate to={Path.Home} />;
 };

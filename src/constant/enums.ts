@@ -45,6 +45,9 @@ export enum Path {
   Admin = '/admin',
   Profile = '/profile',
   Shop = '/shop',
+  Tournaments = '/tournaments',
+  Reservation = '/reservation',
+  Settings = '/settings',
 }
 
 export enum Locale {

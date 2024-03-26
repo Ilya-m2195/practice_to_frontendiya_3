@@ -1,11 +1,19 @@
 .item {
-  color: rgb(122, 121, 116);
-  text-align: center;
-  text-transform: capitalize;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  width: fit-content;
+  border-radius: 10px;
+}
+
+.item:hover {
+  color: white;
+  background: #8d8989;
+  transition: 0.3s;
 }
 
 .active {
-  color: rgb(61, 61, 248);
+  color: rgb(110, 110, 215);
   transform: scale(1.1);
-  text-decoration: underline;
 }
