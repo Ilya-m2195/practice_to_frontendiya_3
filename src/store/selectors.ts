@@ -32,3 +32,5 @@ export const getProductCategories = (state: RootState): Array<IProductCategory> 
 export const getProducts = (state: RootState): Array<IProduct> => state.shop.products;
 
 export const getCategoryId = (state: RootState): string => state.shop.currentCategoryId;
+
+export const getBasketCount = (state: RootState): number => state.user.basketCount;

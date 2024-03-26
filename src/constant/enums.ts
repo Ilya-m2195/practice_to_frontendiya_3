@@ -29,6 +29,7 @@ export enum NamesDBCollection {
   BalanceHistory = 'balanceHistory',
   ProductCategories = 'productCategories',
   Products = 'products',
+  Basket = 'basket',
 }
 
 export enum UserRole {

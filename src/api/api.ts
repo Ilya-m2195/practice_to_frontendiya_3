@@ -19,6 +19,7 @@ import {
   onSnapshot,
   DocumentReference,
   QueryDocumentSnapshot,
+  writeBatch,
 } from 'firebase/firestore';
 import {
   ref,
@@ -58,7 +59,7 @@ export const setFirestoreData = async <T extends {}>(
   await setDoc(doc(collection(db, nameCollection), id), { ...values });
 };
 
-export const setFirestoreSubCollectionById = async <T extends {}>(
+export const setDocSubCollectionById = async <T extends {}>(
   nameCollection: string,
   nameSubCollection: string,
   { id, values }: IUniversalObjectArguments<T>,
@@ -72,11 +73,55 @@ export const setFirestoreSubCollectionById = async <T extends {}>(
   await setDoc(doc(ref), { ...values });
 };
 
+export const deleteDocSubCollectionById = async (
+  nameCollection: string,
+  nameSubCollection: string,
+  userId: string,
+  documentId: string,
+): Promise<void> => {
+  if (!userId) {
+    return;
+  }
+
+  const ref = collection(db, nameCollection, userId, nameSubCollection);
+
+  await deleteDoc(doc(ref, documentId));
+};
+
+export const updateDocSubCollectionById = async (
+  nameCollection: string,
+  nameSubCollection: string,
+  userId: string,
+  { id, values }: IUniversalObjectArguments<{}>,
+): Promise<void> => {
+  if (!userId) {
+    return;
+  }
+
+  const ref = collection(db, nameCollection, userId, nameSubCollection);
+
+  await updateDoc(doc(ref, id), { ...values });
+};
+
 export const deleteFirestoreDataById = async (
   nameCollection: string,
   id: string,
 ): Promise<void> => {
   await deleteDoc(doc(db, nameCollection, id));
+};
+
+export const clearSnapshotCollection = async (
+  snapshot: Nullable<QuerySnapshot>,
+): Promise<void> => {
+  if (!snapshot) return;
+
+  const batch = writeBatch(db);
+
+  snapshot.docs.forEach((doc) => {
+    batch.delete(doc.ref);
+  });
+
+  await batch.commit();
 };
 
 export const getFirestoreDataById = async (
@@ -213,6 +258,21 @@ export const userObserver = (id: string, callback: (data: any) => void): (() => 
 
   const unsubscribe = onSnapshot(ref, (doc) => {
     callback(doc.data());
+  });
+
+  return unsubscribe;
+};
+
+export const basketObserver = (
+  id: string,
+  nameCollection: NamesDBCollection,
+  nameSubCollection: NamesDBCollection,
+  callback: (data: any) => void,
+): (() => void) => {
+  const ref = collection(db, nameCollection, id, nameSubCollection);
+
+  const unsubscribe = onSnapshot(ref, (doc) => {
+    callback(doc);
   });
 
   return unsubscribe;

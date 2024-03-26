@@ -19,12 +19,13 @@ import {
   setDataStorage,
   deleteDataStorage,
   userObserver,
+  basketObserver,
 } from 'api';
 import { Path, NamesDBCollection, UserRole, FileCollections } from 'constant';
 import { handleError } from 'helpers';
-import { AppDispatch, RootState } from 'store';
-import { setErrorMessage } from 'store/slices/appSlice/appSlice';
+import { setErrorMessage, setBasket, setBasketObserver } from 'store';
 import {
+  ThunkApiConfig,
   IInitialState,
   ILogInUserArg,
   IUser,
@@ -55,11 +56,8 @@ const initialState: IInitialState = {
   lastUser: null,
   lengthDataUsers: 0,
   userObserver: null,
-};
-
-export type ThunkApiConfig = {
-  state: RootState;
-  dispatch: AppDispatch;
+  basketObserver: null,
+  basketCount: 0,
 };
 
 export const logOutUserThank = createAsyncThunk<void, ILogOutArg, ThunkApiConfig>(
@@ -67,6 +65,7 @@ export const logOutUserThank = createAsyncThunk<void, ILogOutArg, ThunkApiConfig
   async ({ navigate }, { dispatch, rejectWithValue, getState }) => {
     try {
       getState().user.userObserver?.();
+      getState().user.basketObserver?.();
 
       await LogOut();
 
@@ -100,7 +99,18 @@ export const logInUserThank = createAsyncThunk<void, ILogInUserArg, ThunkApiConf
           dispatch(setUser(data));
         });
 
+        const onSubscribeBasket = basketObserver(
+          resultUserInfoData.id,
+          NamesDBCollection.Users,
+          NamesDBCollection.Basket,
+          (data) => {
+            dispatch(setBasket(data));
+            dispatch(setBasketCount(data.size));
+          },
+        );
+
         dispatch(setUserObserver(unsubscribe));
+        dispatch(setBasketObserver(onSubscribeBasket));
       }
 
       dispatch(addCurrentEmailId(resultUserInfoData));
@@ -374,6 +384,9 @@ const userReducer = createSlice({
     setUserObserver: (state, action: PayloadAction<() => void>) => {
       state.userObserver = action.payload;
     },
+    setBasketCount: (state, action: PayloadAction<number>) => {
+      state.basketCount = action.payload;
+    },
     setBalance: (state, action: PayloadAction<number>) => {
       state.balance = action.payload;
     },
@@ -426,6 +439,7 @@ const userReducer = createSlice({
 export const {
   setBalance,
   setUser,
+  setBasketCount,
   addCurrentEmailId,
   setIsOccupiedNick,
   setUserObserver,

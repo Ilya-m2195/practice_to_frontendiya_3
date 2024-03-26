@@ -5,3 +5,4 @@ export * from 'store/slices/userSlice';
 export * from 'store/slices/shopSlice';
 export * from 'store/slices/balanceHistorySlice';
 export * from 'store/slices/appSlice';
+export * from 'store/slices/basketSlice';

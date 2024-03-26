@@ -4,6 +4,7 @@ export * from 'components/shared/auth/SignInGitHub';
 export * from 'components/shared/auth/SignInGoogle';
 export * from 'components/shared/avatarProfile/AvatarProfile';
 export * from 'components/shared/buttonSort/ButtonSort';
+export * from 'components/shared/basketHeader/BasketHeader';
 export * from 'components/shared/changeBalanceForm/ChangeBalanceForm';
 export * from 'components/shared/loaderFC/LoaderFC';
 export * from 'components/shared/navigation/Navigation';

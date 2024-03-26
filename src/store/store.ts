@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 
 import appReducer from 'store/slices/appSlice/appSlice';
 import balanceHistoryReducer from 'store/slices/balanceHistorySlice/balanceHistorySlice';
+import basketReducer from 'store/slices/basketSlice/basketSlice';
 import searchReducer from 'store/slices/searchSlice/searchSliсe';
 import shopReducer from 'store/slices/shopSlice/shopSlice';
 import userReducer from 'store/slices/userSlice/userSlice';
@@ -14,6 +15,7 @@ export const store = configureStore({
     search: searchReducer,
     balanceHistory: balanceHistoryReducer,
     shop: shopReducer,
+    basket: basketReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

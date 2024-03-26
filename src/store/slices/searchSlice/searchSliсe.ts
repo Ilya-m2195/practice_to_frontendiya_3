@@ -1,11 +1,10 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { DocumentData } from 'firebase/firestore';
 
-import { setErrorMessage } from '../appSlice/appSlice';
-
 import { searchData } from 'api';
 import { UsersKeys, NamesDBCollection } from 'constant';
 import { handleError } from 'helpers';
+import { setErrorMessage } from 'store';
 import { ThunkApiConfig } from 'types';
 
 export interface IInitialState {

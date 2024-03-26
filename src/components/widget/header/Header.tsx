@@ -10,6 +10,7 @@ import {
   SwitchLanguageBtn,
   SvgSprite,
   UserInfoHeader,
+  BasketHeader,
 } from 'components';
 import styles from 'components/widget/header/header.module.css';
 import { Path } from 'constant';
@@ -42,6 +43,7 @@ export const Header: FC<IProps> = ({ opened, toggle }) => {
         {isAuth && matches && <SearchInput />}
         {matches && <SwitchLanguageBtn />}
         {matches && <SwitchButton />}
+        {isAuth && <BasketHeader />}
         {isAuth && <UserInfoHeader />}
         <Burger opened={opened} onClick={toggle} hiddenFrom='sm' size='md' />
       </Flex>

@@ -9,16 +9,17 @@ import { DocumentData, increment, QuerySnapshot } from 'firebase/firestore';
 
 import {
   getFirestoreSubCollectionById,
-  setFirestoreSubCollectionById,
+  setDocSubCollectionById,
   updateFirestoreDataById,
 } from 'api';
 import { BalanceOperation, FieldsTransaction, NamesDBCollection } from 'constant';
 import { handleError } from 'helpers';
-import { ThunkApiConfig, setErrorMessage } from 'store';
+import { setErrorMessage } from 'store';
 import {
   IChangeBalanceHistoryThunkProps,
   ISetBalanceHistoryThunkProps,
   Transaction,
+  ThunkApiConfig,
 } from 'types';
 
 export interface IBalanceHistory {
@@ -129,7 +130,7 @@ export const setBalanceHistoryThunk = createAsyncThunk<
     try {
       dispatch(setTransaction(data.values));
 
-      await setFirestoreSubCollectionById(
+      await setDocSubCollectionById(
         NamesDBCollection.Users,
         NamesDBCollection.BalanceHistory,
         data,
