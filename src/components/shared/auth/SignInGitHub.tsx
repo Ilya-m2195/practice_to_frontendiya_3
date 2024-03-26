@@ -15,7 +15,7 @@ export const SignInGitHub: FC = () => {
   const provider = gitHubProvider;
 
   const logInUserGitHub = (): void => {
-    dispatch(logInUserThank({ provider, navigate }));
+    dispatch(logInUserThank({ provider, navigate })).then(() => {});
   };
 
   return (

@@ -7,9 +7,6 @@ import {
   PayloadAction,
 } from '@reduxjs/toolkit';
 
-import { setErrorMessage } from '../appSlice';
-import { logOutUserThank, ThunkApiConfig } from '../userSlice';
-
 import { IProduct, IProductCategory, IRemoveShopData, IUpdateShopData } from './types';
 
 import {
@@ -20,6 +17,8 @@ import {
 } from 'api';
 import { NamesDBCollection } from 'constant';
 import { handleError } from 'helpers';
+import { logOutUserThank, setErrorMessage } from 'store';
+import { ThunkApiConfig } from 'types';
 
 const reserveLimit = 100;
 

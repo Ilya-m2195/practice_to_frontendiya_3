@@ -24,6 +24,8 @@ export interface IInitialState {
   lastUser: Nullable<QueryDocumentSnapshot>;
   lengthDataUsers: number;
   userObserver: Nullable<() => void>;
+  basketObserver: Nullable<() => void>;
+  basketCount: number;
 }
 
 export interface IUser {
